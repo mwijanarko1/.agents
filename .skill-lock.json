@@ -1,0 +1,101 @@
+{
+  "version": 3,
+  "skills": {
+    "vercel-composition-patterns": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/agent-skills.git",
+      "skillPath": "skills/composition-patterns/SKILL.md",
+      "skillFolderHash": "bf90d0a4b83ea054653350f9c67f6de235d3a368",
+      "installedAt": "2026-01-28T16:39:17.284Z",
+      "updatedAt": "2026-01-28T16:39:17.284Z"
+    },
+    "vercel-react-best-practices": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/agent-skills.git",
+      "skillPath": "skills/react-best-practices/SKILL.md",
+      "skillFolderHash": "079b06a135401704ea94ab74c7c9d86c92ba259f",
+      "installedAt": "2026-01-28T16:39:17.303Z",
+      "updatedAt": "2026-01-28T16:39:17.303Z"
+    },
+    "vercel-react-native-skills": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/agent-skills.git",
+      "skillPath": "skills/react-native-skills/SKILL.md",
+      "skillFolderHash": "8b4c6a51914e2111ab6f4f00cb81778652aa241d",
+      "installedAt": "2026-01-28T16:39:17.321Z",
+      "updatedAt": "2026-01-28T16:39:17.321Z"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/agent-skills.git",
+      "skillPath": "skills/web-design-guidelines/SKILL.md",
+      "skillFolderHash": "3116f3e62dbd02b44a598b1aa690d2a8938e8f89",
+      "installedAt": "2026-01-28T16:39:17.340Z",
+      "updatedAt": "2026-01-28T16:39:17.340Z"
+    },
+    "add-component": {
+      "source": "signerlabs/shipswift-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/signerlabs/shipswift-skills.git",
+      "skillPath": "skills/add-component/SKILL.md",
+      "skillFolderHash": "90b623fb7809f369046b3d3d20ea82560f0e08b9",
+      "installedAt": "2026-03-12T10:21:52.295Z",
+      "updatedAt": "2026-03-12T10:21:52.295Z"
+    },
+    "build-feature": {
+      "source": "signerlabs/shipswift-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/signerlabs/shipswift-skills.git",
+      "skillPath": "skills/build-feature/SKILL.md",
+      "skillFolderHash": "fe01197fcf88c7c0ecdd76c1fff7c3419ac9dadf",
+      "installedAt": "2026-03-12T10:21:52.849Z",
+      "updatedAt": "2026-03-12T10:21:52.849Z"
+    },
+    "explore-recipes": {
+      "source": "signerlabs/shipswift-skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/signerlabs/shipswift-skills.git",
+      "skillPath": "skills/explore-recipes/SKILL.md",
+      "skillFolderHash": "4f8aee7caddea45ba54a0475426250d98b2cab52",
+      "installedAt": "2026-03-12T10:21:53.299Z",
+      "updatedAt": "2026-03-12T10:21:53.299Z"
+    },
+    "swiftui-pro": {
+      "source": "twostraws/swiftui-agent-skill",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/twostraws/swiftui-agent-skill.git",
+      "skillPath": "swiftui-pro/SKILL.md",
+      "skillFolderHash": "550a5713c0b66f50ac33abe6a23199bd29bed76e",
+      "installedAt": "2026-03-16T10:05:28.988Z",
+      "updatedAt": "2026-03-16T10:05:28.988Z"
+    },
+    "find-skills": {
+      "source": "vercel-labs/skills",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vercel-labs/skills.git",
+      "skillPath": "skills/find-skills/SKILL.md",
+      "skillFolderHash": "3013fdeb8a11b10b1eb795ec3ae8bfca38f7c26d",
+      "installedAt": "2026-03-16T10:05:44.686Z",
+      "updatedAt": "2026-03-16T10:05:44.686Z"
+    }
+  },
+  "dismissed": {
+    "findSkillsPrompt": true
+  },
+  "lastSelectedAgents": [
+    "amp",
+    "cline",
+    "codex",
+    "cursor",
+    "gemini-cli",
+    "github-copilot",
+    "kimi-cli",
+    "opencode",
+    "warp",
+    "antigravity"
+  ]
+}

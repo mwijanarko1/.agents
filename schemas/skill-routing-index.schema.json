@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mikhailspeaks.dev/schemas/skill-routing-index.schema.json",
+  "title": "Skill Routing Index",
+  "type": "object",
+  "required": [
+    "version",
+    "generated_at",
+    "source_root",
+    "skills"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "const": 1
+    },
+    "generated_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_root": {
+      "type": "string",
+      "minLength": 1
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "path",
+          "description",
+          "category",
+          "priority",
+          "tokens"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "foundation",
+              "primary",
+              "secondary",
+              "reference",
+              "utility"
+            ]
+          },
+          "tokens": {
+            "type": "object",
+            "required": [
+              "frontmatter_chars",
+              "skill_chars"
+            ],
+            "properties": {
+              "frontmatter_chars": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "skill_chars": {
+                "type": "integer",
+                "minimum": 1
+              }
+            },
+            "additionalProperties": false
+          },
+          "triggers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "avoid_when": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "requires_one_of": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "only_after": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "never_alone": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

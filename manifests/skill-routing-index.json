@@ -1,0 +1,843 @@
+{
+  "version": 1,
+  "generated_at": "2026-05-28T20:25:44Z",
+  "source_root": "/Users/mikhail/.agents/skills",
+  "skills": [
+    {
+      "name": "add-3d-assets",
+      "path": "skills/add-3d-assets/SKILL.md",
+      "description": "Replace primitive 3D shapes with GLB models for Three.js games.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 242,
+        "skill_chars": 8667
+      }
+    },
+    {
+      "name": "add-assets",
+      "path": "skills/add-assets/SKILL.md",
+      "description": "Replace geometric game shapes with pixel art sprites.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 239,
+        "skill_chars": 5009
+      }
+    },
+    {
+      "name": "add-audio",
+      "path": "skills/add-audio/SKILL.md",
+      "description": "Add procedural music and sound effects to browser games.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 231,
+        "skill_chars": 4006
+      }
+    },
+    {
+      "name": "add-component",
+      "path": "skills/add-component/SKILL.md",
+      "description": ">",
+      "category": "mobile",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 221,
+        "skill_chars": 2947
+      }
+    },
+    {
+      "name": "add-feature",
+      "path": "skills/add-feature/SKILL.md",
+      "description": "Add a gameplay mechanic to an existing browser game.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 241,
+        "skill_chars": 4004
+      }
+    },
+    {
+      "name": "agent-delegation",
+      "path": "skills/agent-delegation/SKILL.md",
+      "description": "Delegate work to another coding agent or configured adapter.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 98,
+        "skill_chars": 4788
+      }
+    },
+    {
+      "name": "ai-interaction-workflow",
+      "path": "skills/ai-interaction-workflow/SKILL.md",
+      "description": "Foundation workflow for execution discipline, reviews, and version control.",
+      "category": "foundation",
+      "priority": "foundation",
+      "tokens": {
+        "frontmatter_chars": 120,
+        "skill_chars": 6627
+      }
+    },
+    {
+      "name": "ai-regression-testing",
+      "path": "skills/ai-regression-testing/SKILL.md",
+      "description": "Regression testing strategies for AI-assisted development.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 113,
+        "skill_chars": 11215
+      }
+    },
+    {
+      "name": "architecture-decision-records",
+      "path": "skills/architecture-decision-records/SKILL.md",
+      "description": "Record architectural decisions as ADRs during development.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 121,
+        "skill_chars": 6826
+      }
+    },
+    {
+      "name": "backend-architecture",
+      "path": "skills/backend-architecture/SKILL.md",
+      "description": "Backend design patterns, API design, database schemas, auth, and observability.",
+      "category": "web",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 119,
+        "skill_chars": 5340
+      }
+    },
+    {
+      "name": "build-feature",
+      "path": "skills/build-feature/SKILL.md",
+      "description": ">",
+      "category": "mobile",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 205,
+        "skill_chars": 2526
+      }
+    },
+    {
+      "name": "cartographer",
+      "path": "skills/cartographer/SKILL.md",
+      "description": "Map a codebase into CODEBASE_MAP with module boundaries and navigation paths.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 111,
+        "skill_chars": 1171
+      }
+    },
+    {
+      "name": "coding-standards",
+      "path": "skills/coding-standards/SKILL.md",
+      "description": "Universal engineering standards for naming, code style, documentation, and modularity.",
+      "category": "foundation",
+      "priority": "foundation",
+      "tokens": {
+        "frontmatter_chars": 122,
+        "skill_chars": 3055
+      }
+    },
+    {
+      "name": "context-budget",
+      "path": "skills/context-budget/SKILL.md",
+      "description": "Audit agent context consumption and recommend token savings.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 108,
+        "skill_chars": 5175
+      }
+    },
+    {
+      "name": "continuous-learning-v2",
+      "path": "skills/continuous-learning-v2/SKILL.md",
+      "description": "Maintain project-scoped learning observations, instincts, and memory.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 140,
+        "skill_chars": 12464
+      }
+    },
+    {
+      "name": "design-game",
+      "path": "skills/design-game/SKILL.md",
+      "description": "Improve visual polish and player experience for existing games.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 245,
+        "skill_chars": 3296
+      }
+    },
+    {
+      "name": "design-md-gallery",
+      "path": "skills/design-md-gallery/SKILL.md",
+      "description": "Reference known product visual languages after a primary design skill.",
+      "category": "design",
+      "priority": "secondary",
+      "tokens": {
+        "frontmatter_chars": 109,
+        "skill_chars": 2992
+      }
+    },
+    {
+      "name": "design-systems-reference",
+      "path": "skills/design-systems-reference/SKILL.md",
+      "description": "Reference design systems, accessibility guidance, and component docs.",
+      "category": "design",
+      "priority": "secondary",
+      "tokens": {
+        "frontmatter_chars": 115,
+        "skill_chars": 4012
+      }
+    },
+    {
+      "name": "documentation-lookup",
+      "path": "skills/documentation-lookup/SKILL.md",
+      "description": "Look up current library and framework documentation before implementation.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 128,
+        "skill_chars": 4764
+      }
+    },
+    {
+      "name": "electron-app-release",
+      "path": "skills/electron-app-release/SKILL.md",
+      "description": "Build, notarize, and publish Electron app releases for macOS (arm64 + x64) and Windows (arm64). Create GitHub releases, upload artifacts, and update website auto-update metadata. Use when the user says \"rebuild\", \"new release\", \"bump version\", \"deploy\", \"dist\", or wants to publish a new version.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 336,
+        "skill_chars": 10306
+      }
+    },
+    {
+      "name": "eval-harness",
+      "path": "skills/eval-harness/SKILL.md",
+      "description": "Formal evaluation framework for Claude Code sessions implementing eval-driven development (EDD) principles",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 193,
+        "skill_chars": 6494
+      }
+    },
+    {
+      "name": "explore-recipes",
+      "path": "skills/explore-recipes/SKILL.md",
+      "description": "Browse available ShipSwift components and feature recipes.",
+      "category": "mobile",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 95,
+        "skill_chars": 2362
+      }
+    },
+    {
+      "name": "expo-docs",
+      "path": "skills/expo-docs/SKILL.md",
+      "description": ">-",
+      "category": "mobile",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 241,
+        "skill_chars": 2476
+      }
+    },
+    {
+      "name": "extract-mosque-prayer-times",
+      "path": "skills/extract-mosque-prayer-times/SKILL.md",
+      "description": "Extract full-year structured prayer times (adhan + iqamah) from a mosque website and seed to Convex dev AND production databases. Data must come from pure API/endpoints only \u2014 no HTML scraping, no OCR, no computed/calculated times.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 310,
+        "skill_chars": 6511
+      }
+    },
+    {
+      "name": "fetch-tweet",
+      "path": "skills/fetch-tweet/SKILL.md",
+      "description": "Fetch tweet content and metadata from an X/Twitter URL.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 237,
+        "skill_chars": 2756
+      }
+    },
+    {
+      "name": "find-skills",
+      "path": "skills/find-skills/SKILL.md",
+      "description": "Discover installable agent skills for a requested capability.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 94,
+        "skill_chars": 5190
+      }
+    },
+    {
+      "name": "frontend-web-development",
+      "path": "skills/frontend-web-development/SKILL.md",
+      "description": "Implement Next.js and frontend web features.",
+      "category": "web",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 90,
+        "skill_chars": 14210
+      }
+    },
+    {
+      "name": "game-3d-assets",
+      "path": "skills/game-3d-assets/SKILL.md",
+      "description": "Find, download, and integrate GLB/GLTF assets into Three.js games.",
+      "category": "game",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 259,
+        "skill_chars": 20617
+      }
+    },
+    {
+      "name": "game-architecture",
+      "path": "skills/game-architecture/SKILL.md",
+      "description": "Design browser game systems and module architecture.",
+      "category": "game",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 255,
+        "skill_chars": 6210
+      }
+    },
+    {
+      "name": "game-assets",
+      "path": "skills/game-assets/SKILL.md",
+      "description": "Create pixel art sprites and animated visual entities for browser games.",
+      "category": "game",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 252,
+        "skill_chars": 10845
+      }
+    },
+    {
+      "name": "game-audio",
+      "path": "skills/game-audio/SKILL.md",
+      "description": "Add procedural music and SFX to browser games with Web Audio API.",
+      "category": "game",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 239,
+        "skill_chars": 6584
+      }
+    },
+    {
+      "name": "game-deploy",
+      "path": "skills/game-deploy/SKILL.md",
+      "description": "Deploy browser games to here.now, GitHub Pages, or similar hosting.",
+      "category": "game",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 349,
+        "skill_chars": 7528
+      }
+    },
+    {
+      "name": "game-designer",
+      "path": "skills/game-designer/SKILL.md",
+      "description": "Improve game UI, atmosphere, juice, animation, and visual polish.",
+      "category": "game",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 249,
+        "skill_chars": 15536
+      }
+    },
+    {
+      "name": "game-qa",
+      "path": "skills/game-qa/SKILL.md",
+      "description": "Test browser games with Playwright for visuals, gameplay, and performance.",
+      "category": "game",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 310,
+        "skill_chars": 8291
+      }
+    },
+    {
+      "name": "gateguard",
+      "path": "skills/gateguard/SKILL.md",
+      "description": "Force concrete investigation before risky edits or commands.",
+      "category": "triggered",
+      "priority": "reference",
+      "tokens": {
+        "frontmatter_chars": 109,
+        "skill_chars": 4523
+      }
+    },
+    {
+      "name": "improve-game",
+      "path": "skills/improve-game/SKILL.md",
+      "description": "Analyze and implement the highest-impact improvement for an existing game.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 248,
+        "skill_chars": 9702
+      }
+    },
+    {
+      "name": "ios-app-store-compliance",
+      "path": "skills/ios-app-store-compliance/SKILL.md",
+      "description": ">",
+      "category": "mobile",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 695,
+        "skill_chars": 11054
+      }
+    },
+    {
+      "name": "ios-development",
+      "path": "skills/ios-development/SKILL.md",
+      "description": "Mobile app development standards for Swift (iOS).",
+      "category": "mobile",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 84,
+        "skill_chars": 4640
+      }
+    },
+    {
+      "name": "make-game",
+      "path": "skills/make-game/SKILL.md",
+      "description": "Build a complete browser game from concept through deploy pipeline.",
+      "category": "game",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 283,
+        "skill_chars": 21726
+      }
+    },
+    {
+      "name": "meshyai",
+      "path": "skills/meshyai/SKILL.md",
+      "description": "Generate custom 3D models with Meshy AI for Three.js games.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 367,
+        "skill_chars": 13097
+      }
+    },
+    {
+      "name": "monetize-game",
+      "path": "skills/monetize-game/SKILL.md",
+      "description": "Register a browser game on Play.fun and integrate monetization rewards.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 379,
+        "skill_chars": 12689
+      }
+    },
+    {
+      "name": "output-skill",
+      "path": "skills/output-skill/SKILL.md",
+      "description": "Generate complete unabridged outputs and avoid placeholder code.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 98,
+        "skill_chars": 2434
+      }
+    },
+    {
+      "name": "phaser",
+      "path": "skills/phaser/SKILL.md",
+      "description": ">",
+      "category": "game",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 397,
+        "skill_chars": 17612
+      }
+    },
+    {
+      "name": "promo-video",
+      "path": "skills/promo-video/SKILL.md",
+      "description": ">",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 440,
+        "skill_chars": 12948
+      }
+    },
+    {
+      "name": "qa-game",
+      "path": "skills/qa-game/SKILL.md",
+      "description": "Add Playwright QA tests for browser games.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 225,
+        "skill_chars": 6212
+      }
+    },
+    {
+      "name": "quick-game",
+      "path": "skills/quick-game/SKILL.md",
+      "description": "Rapidly scaffold a playable browser game prototype.",
+      "category": "game",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 240,
+        "skill_chars": 5738
+      }
+    },
+    {
+      "name": "record-promo",
+      "path": "skills/record-promo/SKILL.md",
+      "description": "Record autonomous high-FPS gameplay footage for promotion.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 247,
+        "skill_chars": 2783
+      }
+    },
+    {
+      "name": "redesign-skill",
+      "path": "skills/redesign-skill/SKILL.md",
+      "description": "Redesign an existing interface without rewriting the product.",
+      "category": "design",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 97,
+        "skill_chars": 15380
+      }
+    },
+    {
+      "name": "review-game",
+      "path": "skills/review-game/SKILL.md",
+      "description": "Review browser game code for architecture, performance, and best practices.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 270,
+        "skill_chars": 3964
+      }
+    },
+    {
+      "name": "search-first",
+      "path": "skills/search-first/SKILL.md",
+      "description": "Research existing tools, libraries, and patterns before custom code.",
+      "category": "triggered",
+      "priority": "reference",
+      "tokens": {
+        "frontmatter_chars": 114,
+        "skill_chars": 5597
+      }
+    },
+    {
+      "name": "security-vulnerability-mitigation",
+      "path": "skills/security-vulnerability-mitigation/SKILL.md",
+      "description": "Comprehensive security guidelines including input validation, data encryption, and OWASP mitigation.",
+      "category": "triggered",
+      "priority": "reference",
+      "tokens": {
+        "frontmatter_chars": 153,
+        "skill_chars": 2792
+      }
+    },
+    {
+      "name": "skill-stocktake",
+      "path": "skills/skill-stocktake/SKILL.md",
+      "description": "Audit Claude skills and commands for quality.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 94,
+        "skill_chars": 7655
+      }
+    },
+    {
+      "name": "soft-skill",
+      "path": "skills/soft-skill/SKILL.md",
+      "description": "Add premium visual polish after a primary design skill.",
+      "category": "design",
+      "priority": "secondary",
+      "tokens": {
+        "frontmatter_chars": 87,
+        "skill_chars": 10713
+      }
+    },
+    {
+      "name": "strategic-compact",
+      "path": "skills/strategic-compact/SKILL.md",
+      "description": "Suggest context compaction at logical task phase boundaries.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 111,
+        "skill_chars": 5151
+      }
+    },
+    {
+      "name": "swift-concurrency-pro",
+      "path": "skills/swift-concurrency-pro/SKILL.md",
+      "description": "Review Swift concurrency code for correctness and modern async APIs.",
+      "category": "mobile",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 173,
+        "skill_chars": 5397
+      }
+    },
+    {
+      "name": "swift-testing-pro",
+      "path": "skills/swift-testing-pro/SKILL.md",
+      "description": "Write and review Swift Testing code with modern APIs.",
+      "category": "mobile",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 154,
+        "skill_chars": 4194
+      }
+    },
+    {
+      "name": "swiftdata-pro",
+      "path": "skills/swiftdata-pro/SKILL.md",
+      "description": "Write and review SwiftData code with modern APIs.",
+      "category": "mobile",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 146,
+        "skill_chars": 3618
+      }
+    },
+    {
+      "name": "swiftui-pro",
+      "path": "skills/swiftui-pro/SKILL.md",
+      "description": "Review SwiftUI code for correctness, maintainability, and performance.",
+      "category": "mobile",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 165,
+        "skill_chars": 4050
+      }
+    },
+    {
+      "name": "taste-skill",
+      "path": "skills/taste-skill/SKILL.md",
+      "description": "Create premium greenfield frontend UI and landing pages.",
+      "category": "design",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 89,
+        "skill_chars": 21682
+      }
+    },
+    {
+      "name": "tdd-workflow",
+      "path": "skills/tdd-workflow/SKILL.md",
+      "description": "Apply test-driven development for features, fixes, and refactors.",
+      "category": "triggered",
+      "priority": "reference",
+      "tokens": {
+        "frontmatter_chars": 111,
+        "skill_chars": 12830
+      }
+    },
+    {
+      "name": "technical-seo",
+      "path": "skills/technical-seo/SKILL.md",
+      "description": "Audit and improve technical SEO and LLM-readable surfaces.",
+      "category": "review_audit",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 93,
+        "skill_chars": 10538
+      }
+    },
+    {
+      "name": "testing-strategies",
+      "path": "skills/testing-strategies/SKILL.md",
+      "description": "Testing philosophy and implementation details for Unit, Integration, and E2E testing.",
+      "category": "foundation",
+      "priority": "foundation",
+      "tokens": {
+        "frontmatter_chars": 123,
+        "skill_chars": 2663
+      }
+    },
+    {
+      "name": "thermo-nuclear-code-quality-review",
+      "path": "skills/thermo-nuclear-code-quality-review/SKILL.md",
+      "description": "Run an extremely strict maintainability review for abstraction quality, giant files, and spaghetti-condition growth. Use for a thermo-nuclear code quality review, thermonuclear review, deep code quality audit, or especially harsh maintainability review.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 437,
+        "skill_chars": 12536
+      }
+    },
+    {
+      "name": "thermo-nuclear-review",
+      "path": "skills/thermo-nuclear-review/SKILL.md",
+      "description": "Comprehensive security and correctness audit of a branch's changes. Use for thermo nuclear, thermonuclear, or deep review requests, or branch/PR diff audits focused on bugs, breaking changes, security issues, devex regressions, and feature-gate leaks.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 422,
+        "skill_chars": 4642
+      }
+    },
+    {
+      "name": "thermos",
+      "path": "skills/thermos/SKILL.md",
+      "description": "Launch both thermo-nuclear review subagents in parallel, then synthesize their findings. Use for thermos, double thermo review, or combined bug/security and code-quality branch audits.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 343,
+        "skill_chars": 2150
+      }
+    },
+    {
+      "name": "threejs-game",
+      "path": "skills/threejs-game/SKILL.md",
+      "description": "Build 3D browser games with Three.js architecture patterns.",
+      "category": "game",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 239,
+        "skill_chars": 13896
+      }
+    },
+    {
+      "name": "turath-research",
+      "path": "skills/turath-research/SKILL.md",
+      "description": "Search and cite Islamic and Arabic heritage texts with turath-sdk.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 103,
+        "skill_chars": 9003
+      }
+    },
+    {
+      "name": "update-agents",
+      "path": "skills/update-agents/SKILL.md",
+      "description": "Check and update pi, cmd (VS Code CLI), and codex coding agents. Saves and restores npmrc guardrails around the update. Run /skill:update-agents to execute.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 189,
+        "skill_chars": 1503
+      }
+    },
+    {
+      "name": "use-template",
+      "path": "skills/use-template/SKILL.md",
+      "description": "Clone a browser game template as a starting point.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 244,
+        "skill_chars": 4556
+      }
+    },
+    {
+      "name": "vercel-composition-patterns",
+      "path": "skills/vercel-composition-patterns/SKILL.md",
+      "description": "Apply scalable React composition patterns and component APIs.",
+      "category": "web",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 169,
+        "skill_chars": 2625
+      }
+    },
+    {
+      "name": "vercel-react-best-practices",
+      "path": "skills/vercel-react-best-practices/SKILL.md",
+      "description": "Optimize React and Next.js code using Vercel best practices.",
+      "category": "web",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 168,
+        "skill_chars": 5898
+      }
+    },
+    {
+      "name": "vercel-react-native-skills",
+      "path": "skills/vercel-react-native-skills/SKILL.md",
+      "description": "No description provided.",
+      "category": "mobile",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 408,
+        "skill_chars": 4556
+      }
+    },
+    {
+      "name": "verification-loop",
+      "path": "skills/verification-loop/SKILL.md",
+      "description": "A comprehensive verification system for Claude Code sessions.",
+      "category": "triggered",
+      "priority": "reference",
+      "tokens": {
+        "frontmatter_chars": 112,
+        "skill_chars": 2665
+      }
+    },
+    {
+      "name": "web-design-guidelines",
+      "path": "skills/web-design-guidelines/SKILL.md",
+      "description": "Review web UI for accessibility, UX, and interface guidelines.",
+      "category": "review_audit",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 186,
+        "skill_chars": 1111
+      }
+    },
+    {
+      "name": "website-compliance",
+      "path": "skills/website-compliance/SKILL.md",
+      "description": "No description provided.",
+      "category": "review_audit",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 329,
+        "skill_chars": 3906
+      }
+    },
+    {
+      "name": "worldlabs",
+      "path": "skills/worldlabs/SKILL.md",
+      "description": "Generate photorealistic 3D worlds with World Labs Marble API.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 375,
+        "skill_chars": 13586
+      }
+    }
+  ]
+}

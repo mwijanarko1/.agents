@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mikhailspeaks.dev/schemas/agent-policy.schema.json",
+  "title": "Agent Policy",
+  "type": "object",
+  "required": [
+    "version",
+    "default_stack",
+    "skill_triggers",
+    "task_mapping",
+    "conflict_resolution",
+    "codebase_awareness",
+    "core_principles",
+    "delegation",
+    "subagent_routing",
+    "ai_bridge",
+    "skill_loading_disclosure",
+    "output_economy"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "default_stack": {
+      "type": "object"
+    },
+    "skill_triggers": {
+      "type": "object"
+    },
+    "task_mapping": {
+      "type": "object"
+    },
+    "conflict_resolution": {
+      "type": "array"
+    },
+    "codebase_awareness": {
+      "type": "object"
+    },
+    "core_principles": {
+      "type": "array"
+    },
+    "delegation": {
+      "type": "object"
+    },
+    "subagent_routing": {
+      "type": "object"
+    },
+    "ai_bridge": {
+      "type": "object"
+    },
+    "skill_loading_disclosure": {
+      "type": "object"
+    },
+    "output_economy": {
+      "type": "object",
+      "required": [
+        "default",
+        "style",
+        "spend_tokens_on",
+        "avoid",
+        "progress_updates",
+        "final_responses",
+        "subagents"
+      ],
+      "properties": {
+        "default": {
+          "enum": [
+            "professional_concise"
+          ]
+        },
+        "style": {
+          "enum": [
+            "normal_grammar_no_gimmick_voice"
+          ]
+        },
+        "spend_tokens_on": {
+          "type": "array",
+          "minItems": 1
+        },
+        "avoid": {
+          "type": "array",
+          "minItems": 1
+        },
+        "progress_updates": {
+          "type": "object"
+        },
+        "final_responses": {
+          "type": "object"
+        },
+        "subagents": {
+          "type": "object"
+        }
+      }
+    },
+    "mandatory_tdd": {
+      "type": "object"
+    },
+    "continuous_learning": {
+      "type": "object"
+    },
+    "validators": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}

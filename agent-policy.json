@@ -1,0 +1,899 @@
+{
+  "version": 2,
+  "environment": "shared",
+  "root": "/Users/mikhail/.agents",
+  "docs_required": [
+    "AGENTS.md",
+    "docs/CODEBASE_MAP.md",
+    "docs/DESIGN_CONCEPT.md",
+    "docs/GLOSSARY.md"
+  ],
+  "skills_dir": "skills",
+  "skills_root": "/Users/mikhail/.agents/skills",
+  "default_stack": {
+    "always": [
+      "ai-interaction-workflow",
+      "coding-standards",
+      "testing-strategies"
+    ],
+    "skip_when": "task clearly does not need them"
+  },
+  "skill_triggers": {
+    "security-vulnerability-mitigation": {
+      "add_when": [
+        "auth",
+        "input_handling",
+        "networking",
+        "persistence",
+        "secrets",
+        "user_data"
+      ],
+      "condition": "task touches any of these"
+    },
+    "tdd-workflow": {
+      "add_when": [
+        "behavior_changes",
+        "bug_fixes",
+        "runtime_logic_refactors"
+      ],
+      "condition": "task changes observable behavior"
+    },
+    "verification-loop": {
+      "add_when": [
+        "shared_behavior",
+        "cross_module_contracts",
+        "pre_release_checks"
+      ],
+      "condition": "task has medium or higher regression risk"
+    },
+    "search-first": {
+      "add_when": [
+        "unknown_codebase",
+        "external_api_use",
+        "implementation_uncertainty"
+      ],
+      "condition": "discovery materially reduces risk before edits"
+    },
+    "gateguard": {
+      "add_when": [
+        "unknown_codebase",
+        "multi_file_edits",
+        "schema_or_data_model_changes",
+        "public_api_changes",
+        "auth_or_permission_changes",
+        "high_assumption_risk"
+      ],
+      "condition": "pre-edit investigation materially reduces risk or prevents guessing"
+    }
+  },
+  "task_mapping": {
+    "web": {
+      "required": [
+        "frontend-web-development"
+      ],
+      "add_when": {
+        "backend-architecture": [
+          "server_logic",
+          "apis"
+        ],
+        "vercel-react-best-practices": [
+          "react_performance",
+          "nextjs_performance"
+        ],
+        "vercel-composition-patterns": [
+          "component_apis",
+          "reusable_primitives"
+        ]
+      }
+    },
+    "mobile": {
+      "required": [],
+      "add_when": {
+        "ios-development": [
+          "swift",
+          "swiftui"
+        ],
+        "ios-app-store-compliance": [
+          "app_store_review",
+          "submission_readiness"
+        ],
+        "vercel-react-native-skills": [
+          "react_native",
+          "expo"
+        ],
+        "expo-docs": [
+          "expo_apis",
+          "expo_behavior"
+        ]
+      }
+    },
+    "review_audit": {
+      "add_when": {
+        "web-design-guidelines": [
+          "ui_review"
+        ],
+        "website-compliance": [
+          "privacy",
+          "legal",
+          "consumer_protection",
+          "accessibility_obligations"
+        ],
+        "technical-seo": [
+          "crawlability",
+          "search_performance"
+        ]
+      }
+    },
+    "design": {
+      "primary_exactly_one": [
+        "taste-skill",
+        "redesign-skill"
+      ],
+      "primary_triggers": {
+        "taste-skill": [
+          "net_new_interface",
+          "greenfield_ui"
+        ],
+        "redesign-skill": [
+          "improve_existing_ui",
+          "upgrade_interface"
+        ]
+      },
+      "secondary": {
+        "design-md-gallery": {
+          "only_after": [
+            "taste-skill",
+            "redesign-skill"
+          ],
+          "never_alone": true
+        },
+        "design-systems-reference": {
+          "only_after": [
+            "taste-skill",
+            "redesign-skill"
+          ],
+          "never_alone": true
+        },
+        "soft-skill": {
+          "only_after": [
+            "taste-skill",
+            "redesign-skill"
+          ],
+          "never_alone": true
+        }
+      }
+    }
+  },
+  "conflict_resolution": [
+    {
+      "priority": 1,
+      "rule": "prefer_more_specific_over_general"
+    },
+    {
+      "priority": 2,
+      "rule": "prefer_implementation_for_building_audit_for_review_finish_for_polish"
+    },
+    {
+      "priority": 3,
+      "rule": "overlap_keep_narrower_trigger_use_broader_for_gaps"
+    },
+    {
+      "priority": 4,
+      "rule": "visual_design_never_overrides",
+      "overrides_forbidden": [
+        "accessibility",
+        "security",
+        "functional_correctness"
+      ]
+    }
+  ],
+  "codebase_awareness": {
+    "check_paths": [
+      "docs/CODEBASE_MAP.md",
+      "CODEBASE_MAP.md"
+    ],
+    "if_missing": {
+      "action": "use_cartographer",
+      "create_before": "substantial_changes"
+    },
+    "if_present": {
+      "action": "review_before_editing"
+    }
+  },
+  "collaboration_practices": {
+    "shared_design_concept": {
+      "default": "required_before_non_trivial_implementation",
+      "applies_to": [
+        "substantial_feature_work",
+        "broad_refactors",
+        "cross_module_changes",
+        "ambiguous_requests",
+        "new_public_interfaces",
+        "data_model_or_api_changes"
+      ],
+      "may_skip_for": [
+        "tiny_single_file_edits",
+        "documentation_only_changes",
+        "mechanical_formatting",
+        "obvious_low_risk_fixes"
+      ],
+      "must_cover": [
+        "goal",
+        "affected_modules",
+        "contracts_and_invariants",
+        "non_goals",
+        "verification_loop"
+      ],
+      "if_unclear": "ask_focused_questions_or_state_smallest_reasonable_assumptions",
+      "preserve_when_useful": [
+        "final_response",
+        "issue",
+        "prd",
+        "adr",
+        "project_docs"
+      ]
+    },
+    "ubiquitous_language": {
+      "default": "maintain_project_glossary",
+      "preferred_path": "docs/GLOSSARY.md",
+      "create_when_missing_for": [
+        "substantial_domain_work",
+        "new_domain_concepts",
+        "new_workflow_states",
+        "new_module_boundaries",
+        "new_roles_or_permissions",
+        "public_api_or_event_names"
+      ],
+      "reuse_terms_in": [
+        "prompts",
+        "code_identifiers",
+        "tests",
+        "docs",
+        "issues",
+        "pull_requests"
+      ],
+      "conflict_resolution": "prefer_terms_used_at_stable_module_boundaries_and_note_inconsistencies_before_editing"
+    },
+    "feedback_loops": {
+      "default": "verify_in_small_increments",
+      "required_for_behavior_changes": [
+        "tdd_red_green_evidence",
+        "closest_fast_test",
+        "final_relevant_test_target"
+      ],
+      "linted_projects": "run_relevant_lint_command_before_final_response_after_code_changes_and_do_not_knowingly_leave_lint_errors",
+      "typed_projects": "run_relevant_type_check_before_final_response_when_practical",
+      "frontend_changes": "use_browser_or_playwright_when_layout_interaction_routing_forms_rendering_or_accessibility_are_affected",
+      "shared_contracts": "test_at_module_or_api_boundary",
+      "avoid": "large_unverified_diffs"
+    }
+  },
+  "ai_flow": {
+    "enabled": true,
+    "default_mode": "unset",
+    "mode_selection": "prompt_command_required",
+    "state_file": ".git/agent-notes/ai-flow-state.json",
+    "commands": {
+      "serious": "/serious",
+      "fun": "/fun"
+    },
+    "modes": {
+      "serious": {
+        "requires_interview_before_mutation": true,
+        "requires_brief": true,
+        "requires_tdd_for_behavior_changes": true,
+        "requires_verification_report": true
+      },
+      "fun": {
+        "requires_interview_before_mutation": false,
+        "requires_brief": false,
+        "requires_tdd_for_behavior_changes": false,
+        "safety_gates_enabled": true
+      }
+    },
+    "required_brief_fields": [
+      "goal",
+      "success_criteria",
+      "current_state",
+      "affected_modules",
+      "contracts_and_invariants",
+      "ubiquitous_language",
+      "risks_and_edge_cases",
+      "verification_loop",
+      "out_of_scope"
+    ]
+  },
+  "core_principles": [
+    {
+      "id": "test_driven_programming",
+      "rule": "write_or_update_a_failing_behavior_test_before_production_changes_when_changing_behavior_or_fixing_defects"
+    },
+    {
+      "id": "shared_design_concept",
+      "rule": "align_on_goal_affected_modules_contracts_non_goals_and_verification_before_non_trivial_implementation"
+    },
+    {
+      "id": "ubiquitous_language",
+      "rule": "maintain_and_reuse_project_domain_terms_through_docs_code_tests_prompts_and_prs"
+    },
+    {
+      "id": "feedback_loops",
+      "rule": "run_small_incremental_tests_type_checks_lint_checks_browser_checks_or_manual_checks_close_to_the_change"
+    },
+    {
+      "id": "no_lint_errors",
+      "rule": "run_project_lint_when_available_after_code_changes_and_do_not_finish_with_known_lint_errors"
+    },
+    {
+      "id": "simplicity_first",
+      "rule": "smallest_change_that_fully_solves"
+    },
+    {
+      "id": "no_laziness",
+      "rule": "find_root_causes_no_papering_over"
+    },
+    {
+      "id": "minimal_impact",
+      "rule": "touch_only_what_materially_needs_change"
+    },
+    {
+      "id": "surface_assumptions",
+      "rule": "state_material_assumptions_before_acting_and_ask_when_ambiguity_changes_the_solution"
+    },
+    {
+      "id": "no_speculative_abstractions",
+      "rule": "do_not_add_unrequested_abstractions_configurability_features_or_impossible_error_handling"
+    },
+    {
+      "id": "surgical_changes",
+      "rule": "preserve_adjacent_code_comments_formatting_and_style_unless_directly_required_by_the_task"
+    },
+    {
+      "id": "changed_lines_trace_to_request",
+      "rule": "every_changed_line_should_trace_to_the_user_request_or_to_cleanup_created_by_this_change"
+    }
+  ],
+  "test_driven_programming": {
+    "default": "test_first_for_behavior_changes_and_defect_fixes",
+    "workflow": [
+      "define_observable_behavior_and_edge_cases",
+      "write_or_update_the_narrowest_meaningful_failing_test",
+      "make_the_smallest_production_change_to_pass",
+      "run_the_relevant_test_target",
+      "report_tests_run_or_explain_why_not_run"
+    ],
+    "exceptions": [
+      "documentation_only_changes",
+      "mechanical_formatting_or_renames_with_no_behavior_change",
+      "test_first_impractical_because_no_runnable_harness_or_external_constraint"
+    ],
+    "exception_requirement": "state_the_reason_and_use_the_smallest_alternative_verification",
+    "quality_bar": "test_user_visible_behavior_and_regression_risk_not_implementation_details"
+  },
+  "domain_subagents": {
+    "game": {
+      "optional": [
+        "game-creator",
+        "game-deploy",
+        "game-qa-runner",
+        "game-reviewer"
+      ],
+      "route_by_task_intent": {
+        "game_creation": "game-creator",
+        "game_deployment": "game-deploy",
+        "game_qa": "game-qa-runner",
+        "game_review": "game-reviewer"
+      }
+    }
+  },
+  "mandatory_tdd": {
+    "enabled": true,
+    "applies_to": [
+      "behavior_changes",
+      "bug_fixes",
+      "refactors_touching_runtime_logic"
+    ],
+    "evidence_file": ".git/agent-notes/tdd-evidence.json",
+    "required_stages": [
+      "red",
+      "green"
+    ],
+    "allowed_exceptions": [
+      "docs_only",
+      "mechanical_no_behavior_change",
+      "no_runnable_harness",
+      "external_constraint"
+    ],
+    "exception_requires": [
+      "reason",
+      "alternative_verification"
+    ]
+  },
+  "continuous_learning": {
+    "enabled": true,
+    "state_root": "/Users/mikhail/.agents/state/learning",
+    "state_db": "/Users/mikhail/.agents/state/learning/state.db",
+    "memory_root": "/Users/mikhail/.agents/state/memory",
+    "project_scoped": true,
+    "global_preferences": true,
+    "auto_globalize_explicit_preferences": true,
+    "session_search": "sqlite_fts5_with_like_fallback",
+    "context_injection": "fenced_memory_context_not_user_input",
+    "memory_tiers": [
+      "working",
+      "episodic",
+      "semantic",
+      "procedural"
+    ],
+    "redact_secrets": true,
+    "max_observation_bytes": 5000,
+    "durable_wiki": {
+      "enabled": true,
+      "root": "~/Documents/llm-wiki",
+      "agent_symlink": "~/.agents/state/memory/llm-wiki",
+      "helper": "~/.agents/scripts/agent_wiki.py",
+      "use_when": [
+        "personal_or_project_memory",
+        "codex_memory",
+        "obsidian_memory",
+        "durable_context",
+        "cross_session_synthesis",
+        "agent_session_history"
+      ],
+      "read_first": [
+        "AGENTS.md",
+        "index.md"
+      ],
+      "immutable_paths": [
+        "raw/"
+      ],
+      "audit_log": "log.md",
+      "context_injection": "fenced_memory_context_not_user_input"
+    }
+  },
+  "validators": {
+    "schema_validation": true,
+    "skill_non_empty": true,
+    "docs_frontmatter": true,
+    "subagent_frontmatter": true,
+    "no_personal_paths": true,
+    "sync_manifest": true,
+    "hook_manifest": true,
+    "skill_catalog": true,
+    "shared_references": true,
+    "supply_chain_recipes": true
+  },
+  "supply_chain_hardening": {
+    "dependency_updates": "explicit_user_request_only",
+    "prefer_local_pinned_binaries": true,
+    "forbid_runtime_executors": [
+      "npx",
+      "pnpm dlx",
+      "bunx",
+      "uvx",
+      "curl | sh",
+      "@latest"
+    ],
+    "forbid_release_check_commands": [
+      "npm outdated",
+      "pnpm outdated",
+      "bun outdated",
+      "npm-check-updates",
+      "npm view"
+    ],
+    "safe_install_commands": {
+      "bun": "bun install --frozen-lockfile --minimum-release-age 604800",
+      "pnpm": "pnpm install --frozen-lockfile --ignore-scripts",
+      "yarn": "yarn install --frozen-lockfile --ignore-scripts",
+      "npm": "npm ci --ignore-scripts"
+    }
+  },
+  "delegation": {
+    "default_layer": "native_subagents",
+    "delegate_by": "task_intent",
+    "delegate_by_not": "skill_name",
+    "max_implementation_specialists": 1,
+    "optional_auditor": true,
+    "one_subagent_per_skill": false,
+    "capability_clusters_only": true,
+    "main_agent_may_invoke_native_subagents_without_user_prompt": true,
+    "ai_bridge_explicit_only": true,
+    "ai_bridge_requires_named_target": true,
+    "ai_bridge_auto_routing": "explicit_user_request_only"
+  },
+  "subagent_routing": {
+    "default": "native_subagents_first",
+    "main_agent_final_synthesis": true,
+    "route_by_task_intent": {
+      "codebase_mapping": "cartographer",
+      "code_review": "code-reviewer",
+      "build_error_resolution": "build-error-resolver",
+      "typescript_review": "typescript-reviewer",
+      "swift_review": "swift-reviewer",
+      "database_review": "database-reviewer",
+      "e2e_testing": "e2e-runner",
+      "browser_research": "browser-researcher",
+      "backend": "backend-architect",
+      "frontend": "frontend-engineer",
+      "greenfield_ui": "design-engineer",
+      "redesign": "design-engineer",
+      "ui_audit": "ui-auditor",
+      "security_review": "security-auditor",
+      "compliance_or_seo": "compliance-seo-auditor",
+      "mobile": "mobile-engineer",
+      "game_creation": "game-creator",
+      "game_deployment": "game-deploy",
+      "game_qa": "game-qa-runner",
+      "game_review": "game-reviewer"
+    },
+    "when_to_use": [
+      "specialist_focus",
+      "parallel_independent_work",
+      "fresh_review",
+      "context_isolation",
+      "large_read_only_exploration",
+      "verification_after_implementation"
+    ],
+    "when_not_to_use": [
+      "tiny_single_step_tasks",
+      "tightly_coupled_edits_that_would_conflict",
+      "final_review_reserved_for_main_agent"
+    ]
+  },
+  "ai_bridge": {
+    "role": "backup_cross_tool_escape_hatch",
+    "entrypoints": [
+      "ai-delegate",
+      "ai-dispatch"
+    ],
+    "use_only_when_user_explicitly_requests_bridge": true,
+    "requires_named_target": true,
+    "allowed_targets": [
+      "codex",
+      "cursor",
+      "opencode",
+      "claude",
+      "goose",
+      "gemini",
+      "aider",
+      "amp",
+      "cline",
+      "droid"
+    ],
+    "auto_target_allowed": "only_when_user_explicitly_requests_auto_bridge_routing",
+    "native_subagents_first": true,
+    "if_target_missing": "ask_user_which_coding_tool_to_open"
+  },
+  "skill_loading_disclosure": {
+    "canonical_skills_root": "/Users/mikhail/.agents/skills",
+    "read_before_substantive_work": "Read SKILL.md for every skill in the active stack: default_stack, task_mapping additions, skill_triggers, and for subagents every SKILL.md path listed in that subagent file.",
+    "disclosure": {
+      "when": "first_substantive_message_in_thread_or_start_of_subagent_run",
+      "format": "list_skill_directory_names_only",
+      "must_include": "every_skill_whose_SKILL_md_was_read_for_this_turn_or_run"
+    },
+    "on_missing_skill_file": "name_the_path_then_fallback_to_AGENTS_md_and_this_policy",
+    "subagents": {
+      "must_read": "all_canonical_SKILL_md_paths_listed_in_that_subagent_before_substantive_output",
+      "must_disclose": "same_disclosure_rules_as_main_agent"
+    }
+  },
+  "output_economy": {
+    "default": "professional_concise",
+    "style": "normal_grammar_no_gimmick_voice",
+    "goal": "spend_output_tokens_on_code_decisions_risks_verification_and_useful_handoff_context",
+    "spend_tokens_on": [
+      "code",
+      "commands",
+      "decisions",
+      "risks",
+      "verification",
+      "useful_context",
+      "handoff_context"
+    ],
+    "avoid": [
+      "filler",
+      "praise",
+      "long_progress_narration",
+      "repeated_tool_output_without_synthesis",
+      "raw_output_dumps_unless_requested",
+      "forced_persona",
+      "caveman_talk",
+      "gimmick_voice",
+      "generic_closing_offers"
+    ],
+    "preserve_precision_for": [
+      "code",
+      "commands",
+      "file_paths",
+      "errors",
+      "api_names",
+      "test_results",
+      "public_interfaces"
+    ],
+    "progress_updates": {
+      "default": "only_when_useful_or_work_is_long_running",
+      "max_sentences": 2,
+      "must_include": [
+        "new_information",
+        "why_it_matters"
+      ]
+    },
+    "final_responses": {
+      "default": "concise",
+      "prefer": [
+        "changed_surfaces",
+        "behavioral_effect",
+        "tests_or_checks_run",
+        "known_blockers_or_residual_risk"
+      ],
+      "max_lines_guidance": "prefer_under_25_lines_for_routine_tasks_under_70_lines_for_complex_tasks"
+    },
+    "subagents": {
+      "inherit": true,
+      "final_output": "findings_changes_decisions_and_verification_only_no_process_narration"
+    }
+  },
+  "shared_skills": [
+    "ai-interaction-workflow",
+    "backend-architecture",
+    "cartographer",
+    "coding-standards",
+    "design-systems-reference",
+    "expo-docs",
+    "frontend-web-development",
+    "ios-app-store-compliance",
+    "ios-development",
+    "output-skill",
+    "design-md-gallery",
+    "redesign-skill",
+    "security-vulnerability-mitigation",
+    "soft-skill",
+    "taste-skill",
+    "technical-seo",
+    "testing-strategies",
+    "continuous-learning-v2",
+    "tdd-workflow",
+    "verification-loop",
+    "eval-harness",
+    "ai-regression-testing",
+    "search-first",
+    "documentation-lookup",
+    "strategic-compact",
+    "context-budget",
+    "gateguard",
+    "architecture-decision-records",
+    "skill-stocktake",
+    "vercel-composition-patterns",
+    "vercel-react-best-practices",
+    "vercel-react-native-skills",
+    "web-design-guidelines",
+    "website-compliance"
+  ],
+  "ambient_skills": [
+    "ai-interaction-workflow",
+    "coding-standards",
+    "testing-strategies",
+    "output-skill"
+  ],
+  "subagents": {
+    "enabled": true,
+    "directory": "agents",
+    "required": [
+      "backend-architect",
+      "browser-researcher",
+      "build-error-resolver",
+      "cartographer",
+      "code-reviewer",
+      "compliance-seo-auditor",
+      "database-reviewer",
+      "design-engineer",
+      "e2e-runner",
+      "frontend-engineer",
+      "mobile-engineer",
+      "security-auditor",
+      "swift-reviewer",
+      "typescript-reviewer",
+      "ui-auditor"
+    ],
+    "frontmatter_keys": [
+      "name",
+      "description"
+    ]
+  },
+  "capability_clusters": {
+    "backend-architect": {
+      "mode": "implementation",
+      "skills": [
+        "backend-architecture",
+        "security-vulnerability-mitigation",
+        "testing-strategies",
+        "coding-standards"
+      ]
+    },
+    "build-error-resolver": {
+      "mode": "implementation",
+      "skills": [
+        "coding-standards",
+        "testing-strategies",
+        "verification-loop",
+        "gateguard"
+      ]
+    },
+    "browser-researcher": {
+      "mode": "audit",
+      "skills": [
+        "documentation-lookup",
+        "search-first"
+      ]
+    },
+    "cartographer": {
+      "mode": "audit",
+      "skills": [
+        "cartographer"
+      ]
+    },
+    "code-reviewer": {
+      "mode": "audit",
+      "skills": [
+        "ai-interaction-workflow",
+        "coding-standards",
+        "testing-strategies"
+      ]
+    },
+    "compliance-seo-auditor": {
+      "mode": "audit",
+      "skills": [
+        "website-compliance",
+        "technical-seo",
+        "web-design-guidelines"
+      ]
+    },
+    "database-reviewer": {
+      "mode": "audit",
+      "skills": [
+        "backend-architecture",
+        "security-vulnerability-mitigation",
+        "testing-strategies",
+        "coding-standards"
+      ]
+    },
+    "design-engineer": {
+      "mode": "implementation",
+      "skills": [
+        "taste-skill",
+        "redesign-skill",
+        "design-systems-reference",
+        "soft-skill",
+        "frontend-web-development",
+        "web-design-guidelines"
+      ]
+    },
+    "e2e-runner": {
+      "mode": "implementation",
+      "skills": [
+        "testing-strategies",
+        "verification-loop",
+        "frontend-web-development",
+        "web-design-guidelines",
+        "coding-standards"
+      ]
+    },
+    "frontend-engineer": {
+      "mode": "implementation",
+      "skills": [
+        "frontend-web-development",
+        "design-systems-reference",
+        "vercel-react-best-practices",
+        "vercel-composition-patterns",
+        "web-design-guidelines",
+        "coding-standards",
+        "testing-strategies"
+      ]
+    },
+    "mobile-engineer": {
+      "mode": "implementation",
+      "skills": [
+        "ios-development",
+        "ios-app-store-compliance",
+        "vercel-react-native-skills",
+        "expo-docs",
+        "coding-standards",
+        "testing-strategies"
+      ]
+    },
+    "security-auditor": {
+      "mode": "audit",
+      "skills": [
+        "security-vulnerability-mitigation",
+        "backend-architecture",
+        "website-compliance"
+      ]
+    },
+    "swift-reviewer": {
+      "mode": "audit",
+      "skills": [
+        "ios-development",
+        "swiftui-pro",
+        "swift-concurrency-pro",
+        "swiftdata-pro",
+        "swift-testing-pro",
+        "ios-app-store-compliance",
+        "coding-standards"
+      ]
+    },
+    "typescript-reviewer": {
+      "mode": "audit",
+      "skills": [
+        "coding-standards",
+        "testing-strategies",
+        "frontend-web-development",
+        "backend-architecture",
+        "vercel-react-best-practices",
+        "security-vulnerability-mitigation"
+      ]
+    },
+    "ui-auditor": {
+      "mode": "audit",
+      "skills": [
+        "web-design-guidelines",
+        "frontend-web-development",
+        "coding-standards"
+      ]
+    }
+  },
+  "sync": {
+    "peer_roots": [
+      {
+        "name": "cursor",
+        "root": "/Users/mikhail/.cursor",
+        "skills_dir": "skills",
+        "subagents": {
+          "enabled": true,
+          "directory": ".cursor/agents"
+        }
+      },
+      {
+        "name": "opencode",
+        "root": "/Users/mikhail/.config/opencode",
+        "skills_dir": "skills",
+        "subagents": {
+          "enabled": true,
+          "directory": "agents"
+        }
+      },
+      {
+        "name": "codex",
+        "root": "/Users/mikhail/.codex",
+        "skills_dir": "skills",
+        "subagents": {
+          "enabled": true,
+          "directory": "agents"
+        }
+      },
+      {
+        "name": "antigravity",
+        "root": "/Users/mikhail/.gemini/antigravity",
+        "skills_dir": "skills",
+        "subagents": {
+          "enabled": true,
+          "directory": ".cursor/agents"
+        }
+      },
+      {
+        "name": "claude",
+        "root": "/Users/mikhail/.claude",
+        "skills_dir": "skills",
+        "subagents": {
+          "enabled": true,
+          "directory": "agents"
+        }
+      }
+    ]
+  },
+  "allow_list": [
+    "codex",
+    "opencode",
+    "cursor"
+  ]
+}

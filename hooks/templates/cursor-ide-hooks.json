@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": "GUARDRAIL_TOOL=cursor GUARDRAIL_EVENT=afterFileEdit /Users/mikhail/.agents/hooks/bin/secret-scan.sh"
+      },
+      {
+        "command": "GUARDRAIL_TOOL=cursor GUARDRAIL_EVENT=afterFileEdit /Users/mikhail/.agents/hooks/bin/security-code-scan.sh"
+      },
+      {
+        "command": "GUARDRAIL_TOOL=cursor GUARDRAIL_EVENT=afterFileEdit /Users/mikhail/.agents/hooks/bin/code-quality-scan.sh"
+      },
+      {
+        "command": "GUARDRAIL_TOOL=cursor GUARDRAIL_EVENT=afterFileEdit /Users/mikhail/.agents/hooks/bin/learning-observe.sh"
+      }
+    ],
+    "beforeMCPExecution": [
+      {
+        "command": "GUARDRAIL_TOOL=cursor GUARDRAIL_EVENT=beforeMCPExecution /Users/mikhail/.agents/hooks/bin/mcp-guard.sh"
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "command": "GUARDRAIL_TOOL=cursor GUARDRAIL_EVENT=UserPromptSubmit /Users/mikhail/.agents/hooks/bin/ai-flow-gate.sh"
+      },
+      {
+        "command": "GUARDRAIL_TOOL=cursor GUARDRAIL_EVENT=UserPromptSubmit /Users/mikhail/.agents/hooks/bin/prompt-skill-router.sh"
+      }
+    ],
+    "stop": [
+      {
+        "command": "GUARDRAIL_TOOL=cursor GUARDRAIL_EVENT=stop /Users/mikhail/.agents/hooks/bin/validator-gate.sh"
+      },
+      {
+        "command": "GUARDRAIL_TOOL=cursor GUARDRAIL_EVENT=stop /Users/mikhail/.agents/hooks/bin/tdd-gate.sh"
+      },
+      {
+        "command": "GUARDRAIL_TOOL=cursor GUARDRAIL_EVENT=stop /Users/mikhail/.agents/hooks/bin/repo-verify.sh"
+      }
+    ]
+  }
+}

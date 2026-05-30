@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+
+# Agent runtime state
+state/
+
+# Old agent-notes backup (not a real git repo)
+.git-agent-notes-backup/
+
+# Python artifacts
+__pycache__/
+*.pyc
+
+# Logs
+hooks/logs/
+
+# Vendored dependencies (reproducible from lockfiles)
+vendor/ai-peers/.venv/
+vendor/mobile-mcp/node_modules/
+**/vendor/ai-peers/.venv/**

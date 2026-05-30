@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mikhailspeaks.dev/schemas/learning-state.schema.json",
+  "title": "Learning State Record",
+  "type": "object",
+  "required": [
+    "timestamp",
+    "event",
+    "scope"
+  ],
+  "properties": {
+    "timestamp": {
+      "type": "string"
+    },
+    "event": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "string",
+      "enum": [
+        "project",
+        "global"
+      ]
+    },
+    "project_id": {
+      "type": "string"
+    },
+    "project_name": {
+      "type": "string"
+    },
+    "session_id": {
+      "type": "string"
+    },
+    "tool_name": {
+      "type": "string"
+    },
+    "prompt": {
+      "type": "string"
+    },
+    "tool_input": {},
+    "tool_output": {},
+    "is_explicit_preference": {
+      "type": "boolean"
+    },
+    "search_text": {
+      "type": "string"
+    },
+    "concepts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": true
+}

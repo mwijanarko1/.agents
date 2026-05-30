@@ -1,0 +1,207 @@
+{
+  "name": "ios-app-store-compliance",
+  "description": "Pre-submission compliance scanner for Apple App Store. Validates iOS, macOS, tvOS, watchOS, and visionOS apps for App Store rejection risks before submission.",
+  "version": "1.0.0",
+  "license": "MIT",
+  "source": "https://github.com/RevylAI/greenlight",
+  "author": "RevylAI",
+  "triggers": [
+    "app store submission",
+    "app store review",
+    "prepare for submission",
+    "ios compliance",
+    "app review guidelines",
+    "app store readiness",
+    "apple review",
+    "ios rejection",
+    "app store rejection",
+    "greenlight",
+    "compliance check",
+    "privacy manifest",
+    "info.plist",
+    "app store connect",
+    "swift app store",
+    "react native app store",
+    "expo app store"
+  ],
+  "tags": [
+    "ios",
+    "macos",
+    "tvos",
+    "watchos",
+    "visionos",
+    "app-store",
+    "compliance",
+    "review",
+    "swift",
+    "objective-c",
+    "react-native",
+    "expo",
+    "apple",
+    "validation",
+    "submission"
+  ],
+  "platforms": [
+    "iOS",
+    "macOS",
+    "tvOS",
+    "watchOS",
+    "visionOS"
+  ],
+  "frameworks": [
+    "Swift",
+    "Objective-C",
+    "React Native",
+    "Expo"
+  ],
+  "cli": {
+    "tool": "greenlight",
+    "install": {
+      "homebrew": "brew install revylai/tap/greenlight",
+      "go": "go install github.com/RevylAI/greenlight/cmd/greenlight@latest",
+      "source": "git clone https://github.com/RevylAI/greenlight.git && cd greenlight && make build"
+    },
+    "commands": {
+      "preflight": {
+        "description": "Run ALL checks in parallel",
+        "usage": "greenlight preflight [path] [--ipa path.ipa] [--format json] [--output file.json]",
+        "scanners": ["metadata", "codescan", "privacy", "ipa"]
+      },
+      "codescan": {
+        "description": "Code pattern scan for rejection risks",
+        "usage": "greenlight codescan [path] [--format json]",
+        "checks": [
+          "Private API usage (§2.5.1)",
+          "Hardcoded secrets/API keys (§1.6)",
+          "External payment violations (§3.1.1)",
+          "Dynamic code execution (§2.5.2)",
+          "Social login without Sign in with Apple (§4.8)",
+          "Missing Restore Purchases (§3.1.1)",
+          "Missing ATT for tracking SDKs (§5.1.2)",
+          "Account creation without deletion (§5.1.1)",
+          "Platform references (§2.3)",
+          "Placeholder content (§2.1)"
+        ]
+      },
+      "privacy": {
+        "description": "Privacy manifest validator",
+        "usage": "greenlight privacy [path] [--format json]",
+        "checks": [
+          "PrivacyInfo.xcprivacy presence",
+          "Required Reason API declarations",
+          "Tracking SDKs vs ATT implementation",
+          "Cross-reference validation"
+        ]
+      },
+      "ipa": {
+        "description": "Binary inspector",
+        "usage": "greenlight ipa <path.ipa> [--format json]",
+        "checks": [
+          "PrivacyInfo.xcprivacy in bundle",
+          "Info.plist completeness",
+          "App Transport Security",
+          "App icons and sizes",
+          "Launch storyboard",
+          "App size vs 200MB limit",
+          "Framework privacy manifests"
+        ]
+      },
+      "scan": {
+        "description": "App Store Connect API checks",
+        "usage": "greenlight scan --app-id <ID> [--format json|junit]",
+        "auth_required": true,
+        "tiers": [
+          "Tier 1: Metadata & completeness",
+          "Tier 2: Content analysis",
+          "Tier 3: Binary inspection",
+          "Tier 4: Historical pattern matching"
+        ]
+      },
+      "guidelines": {
+        "description": "Browse Apple Review Guidelines",
+        "usage": "greenlight guidelines [list|show <id>|search <query>]"
+      },
+      "auth": {
+        "description": "App Store Connect authentication",
+        "commands": {
+          "setup": "Configure API key authentication",
+          "login": "Sign in with Apple ID",
+          "status": "Show current auth state",
+          "logout": "Remove credentials"
+        }
+      }
+    }
+  },
+  "severity_levels": {
+    "CRITICAL": {
+      "description": "Will be rejected",
+      "action": "Must fix before submission",
+      "examples": ["Private API usage", "External payment violations", "Hardcoded secrets"]
+    },
+    "WARN": {
+      "description": "High rejection risk",
+      "action": "Should fix — strongly recommended",
+      "examples": ["Missing Sign in with Apple", "Vague purpose strings", "Missing Restore Purchases"]
+    },
+    "INFO": {
+      "description": "Best practice",
+      "action": "Consider fixing — improves approval odds",
+      "examples": ["Code style issues", "Minor metadata improvements"]
+    }
+  },
+  "output_formats": ["terminal", "json", "junit"],
+  "workflow": [
+    "Run greenlight preflight on project root",
+    "Read output and fix issues by severity (CRITICAL → WARN → INFO)",
+    "Re-run scan and repeat until GREENLIT status (zero CRITICAL)"
+  ],
+  "guideline_sections": {
+    "1.0": "Safety",
+    "2.0": "Performance",
+    "3.0": "Business",
+    "4.0": "Design",
+    "5.0": "Legal"
+  },
+  "common_rejection_patterns": {
+    "payment": {
+      "issue": "Using external payment for digital goods",
+      "guideline": "§3.1.1",
+      "fix": "Replace with StoreKit In-App Purchase"
+    },
+    "private_api": {
+      "issue": "Using undocumented iOS APIs",
+      "guideline": "§2.5.1",
+      "fix": "Remove private API usage"
+    },
+    "social_login": {
+      "issue": "Social login without Sign in with Apple",
+      "guideline": "§4.8",
+      "fix": "Add Sign in with Apple"
+    },
+    "secrets": {
+      "issue": "Hardcoded API keys or secrets",
+      "guideline": "§1.6",
+      "fix": "Move to environment variables or keychain"
+    },
+    "account_deletion": {
+      "issue": "Account creation without deletion option",
+      "guideline": "§5.1.1",
+      "fix": "Implement account deletion feature"
+    },
+    "att": {
+      "issue": "Missing App Tracking Transparency",
+      "guideline": "§5.1.2",
+      "fix": "Implement ATT if using tracking SDKs"
+    },
+    "placeholders": {
+      "issue": "Placeholder content or URLs",
+      "guideline": "§2.1",
+      "fix": "Replace with final content"
+    },
+    "platform_refs": {
+      "issue": "References to competing platforms",
+      "guideline": "§2.3",
+      "fix": "Remove Android, Windows, etc. references"
+    }
+  }
+}
