@@ -2,6 +2,14 @@
   "version": 1,
   "skills": [
     {
+      "name": "architecture-decision-records",
+      "path": "skills/architecture-decision-records/SKILL.md",
+      "origin": "ECC",
+      "source": "https://github.com/affaan-m/everything-claude-code",
+      "license": "MIT",
+      "adapted": true
+    },
+    {
       "name": "continuous-learning-v2",
       "path": "skills/continuous-learning-v2/SKILL.md",
       "origin": "ECC",
@@ -11,20 +19,22 @@
       "notes": "Paths adapted from ~/.claude to ~/.agents."
     },
     {
-      "name": "tdd-workflow",
-      "path": "skills/tdd-workflow/SKILL.md",
-      "origin": "ECC",
-      "source": "https://github.com/affaan-m/everything-claude-code",
+      "name": "decision-capture",
+      "path": "skills/decision-capture/SKILL.md",
+      "origin": "davidondrej/skills",
+      "source": "https://github.com/davidondrej/skills",
       "license": "MIT",
-      "adapted": true
+      "adapted": true,
+      "notes": "Adapted from brain-to-docs into generic README/docs/ADR capture workflow."
     },
     {
-      "name": "verification-loop",
-      "path": "skills/verification-loop/SKILL.md",
-      "origin": "ECC",
-      "source": "https://github.com/affaan-m/everything-claude-code",
+      "name": "effective-agent-skills",
+      "path": "skills/effective-agent-skills/SKILL.md",
+      "origin": "davidondrej/skills",
+      "source": "https://github.com/davidondrej/skills",
       "license": "MIT",
-      "adapted": true
+      "adapted": true,
+      "notes": "Condensed into a local skill authoring checklist."
     },
     {
       "name": "eval-harness",
@@ -35,12 +45,13 @@
       "adapted": true
     },
     {
-      "name": "ai-regression-testing",
-      "path": "skills/ai-regression-testing/SKILL.md",
-      "origin": "ECC",
-      "source": "https://github.com/affaan-m/everything-claude-code",
+      "name": "grill-me",
+      "path": "skills/grill-me/SKILL.md",
+      "origin": "davidondrej/skills",
+      "source": "https://github.com/davidondrej/skills",
       "license": "MIT",
-      "adapted": true
+      "adapted": true,
+      "notes": "Adapted into a generic pressure-test loop; removed user-specific wording."
     },
     {
       "name": "search-first",
@@ -51,11 +62,11 @@
       "adapted": true
     },
     {
-      "name": "documentation-lookup",
-      "path": "skills/documentation-lookup/SKILL.md",
-      "origin": "ECC",
-      "source": "https://github.com/affaan-m/everything-claude-code",
-      "license": "MIT",
+      "name": "shipswift-recipes",
+      "path": "skills/shipswift-recipes/SKILL.md",
+      "origin": "local",
+      "source": "shipswift.app recipes (opt-in)",
+      "license": "proprietary-opt-in",
       "adapted": true
     },
     {
@@ -67,59 +78,19 @@
       "adapted": true
     },
     {
-      "name": "context-budget",
-      "path": "skills/context-budget/SKILL.md",
-      "origin": "ECC",
-      "source": "https://github.com/affaan-m/everything-claude-code",
-      "license": "MIT",
-      "adapted": true
-    },
-    {
-      "name": "gateguard",
-      "path": "skills/gateguard/SKILL.md",
-      "origin": "ECC",
-      "source": "https://github.com/affaan-m/everything-claude-code",
-      "license": "MIT",
-      "adapted": true
-    },
-    {
-      "name": "architecture-decision-records",
-      "path": "skills/architecture-decision-records/SKILL.md",
-      "origin": "ECC",
-      "source": "https://github.com/affaan-m/everything-claude-code",
-      "license": "MIT",
-      "adapted": true
-    },
-    {
-      "name": "skill-stocktake",
-      "path": "skills/skill-stocktake/SKILL.md",
-      "origin": "ECC",
-      "source": "https://github.com/affaan-m/everything-claude-code",
-      "license": "MIT",
-      "adapted": true
-    },
-    {
-      "name": "thermos",
-      "path": "skills/thermos/SKILL.md",
-      "origin": "Cursor Thermos plugin",
-      "source": "https://github.com/cursor/plugins",
-      "license": "MIT",
+      "name": "t3mp3st",
+      "path": "skills/t3mp3st/SKILL.md",
+      "origin": "T3MP3ST",
+      "source": "https://github.com/elder-plinius/T3MP3ST",
+      "license": "AGPL-3.0-or-later",
       "adapted": true,
-      "notes": "Adapted from Cursor plugin cache into ~/.agents with Pi-compatible subagent orchestration notes."
+      "notes": "Routing skill only; upstream tool is not vendored into .agents."
     },
     {
-      "name": "thermo-nuclear-review",
-      "path": "skills/thermo-nuclear-review/SKILL.md",
-      "origin": "Cursor Thermos plugin",
-      "source": "https://github.com/cursor/plugins",
-      "license": "MIT",
-      "adapted": true
-    },
-    {
-      "name": "thermo-nuclear-code-quality-review",
-      "path": "skills/thermo-nuclear-code-quality-review/SKILL.md",
-      "origin": "Cursor Thermos plugin",
-      "source": "https://github.com/cursor/plugins",
+      "name": "verification-loop",
+      "path": "skills/verification-loop/SKILL.md",
+      "origin": "ECC",
+      "source": "https://github.com/affaan-m/everything-claude-code",
       "license": "MIT",
       "adapted": true
     }

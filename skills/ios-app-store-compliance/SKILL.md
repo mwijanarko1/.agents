@@ -1,11 +1,10 @@
 ---
 name: ios-app-store-compliance
 description: >
-  Pre-submission compliance scanner for Apple App Store. Use when reviewing
-  iOS, macOS, tvOS, watchOS, or visionOS app code (Swift, Objective-C, React Native, Expo)
-  to identify potential App Store rejection risks before submission. Triggers on tasks involving
-  app review preparation, compliance checking, App Store submission readiness, or when a user
-  asks about App Store guidelines.
+  Explicit App Store / TestFlight submission and compliance work only: preflight scans,
+  privacy manifests, entitlements, guideline rejection risks. Not general iOS feature
+  development. Use when the user asks for App Store review prep, GREENLIT/preflight, or
+  compliance fixes on Apple platform apps (Swift, ObjC, RN, Expo).
 license: MIT
 metadata:
   author: RevylAI
@@ -30,29 +29,29 @@ You are an expert at preparing iOS, macOS, tvOS, watchOS, and visionOS apps for 
 
 ## Triggers
 
-This skill activates when:
-- User asks about App Store submission or review preparation
-- User mentions "prepare for app store", "ios compliance", "app review"
-- Working with Swift, Objective-C, React Native, or Expo projects
-- User asks about Apple Review Guidelines
-- User needs to check for rejection risks before submission
+Activate only when the user explicitly wants submission/compliance work:
+- App Store / TestFlight preparation, review risk, GREENLIT/preflight
+- Privacy manifest, entitlements, or guideline rejection fixes before ship
 
-## Installation
+Do **not** use for ordinary feature coding; that is `ios-development` / RN skills.
 
-The `greenlight` CLI tool is required. Install it if not already available:
+## Tooling
+
+Prefer an already-installed `greenlight` on `PATH`.
+
+If missing, install with a **pinned** path only:
 
 ```bash
-# Homebrew (macOS) - RECOMMENDED
+# Homebrew (macOS) — preferred
 brew install revylai/tap/greenlight
 
-# Go install
-go install github.com/RevylAI/greenlight/cmd/greenlight@latest
-
-# Build from source
+# Or build from source (no @latest)
 git clone https://github.com/RevylAI/greenlight.git
 cd greenlight && make build
 # Binary at: build/greenlight
 ```
+
+Do **not** run `go install …@latest`, `npx`, or other floating tags.
 
 ## Step 1: Run the scan
 

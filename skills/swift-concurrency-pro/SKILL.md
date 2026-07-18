@@ -1,6 +1,6 @@
 ---
 name: swift-concurrency-pro
-description: "Review Swift concurrency code for correctness and modern async APIs."
+description: "Authoritative Swift concurrency specialist: async/await, actors, Task, MainActor, Sendable, structured concurrency, cancellation. Use for Swift 6 concurrency audits/fixes only—not general iOS architecture (ios-development)."
 license: MIT
 metadata:
   author: Paul Hudson

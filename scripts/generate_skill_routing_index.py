@@ -10,6 +10,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 
 ROOT = Path(__file__).resolve().parent.parent
 POLICY_PATH = ROOT / "agent-policy.json"
@@ -21,56 +23,36 @@ def load_policy() -> dict[str, Any]:
         return json.load(handle)
 
 
-def parse_scalar(value: str) -> Any:
-    cleaned = value.strip().strip("\"'")
-    if cleaned.startswith("[") and cleaned.endswith("]"):
-        inner = cleaned[1:-1].strip()
-        if not inner:
-            return []
-        return [item.strip().strip("\"'") for item in inner.split(",") if item.strip()]
-    if cleaned.lower() == "true":
-        return True
-    if cleaned.lower() == "false":
-        return False
-    return cleaned
-
-
 def parse_frontmatter(text: str) -> tuple[dict[str, Any], int]:
-    lines = text.splitlines()
-    if not lines or lines[0].strip() != "---":
+    """Parse YAML front matter, including block scalars, via PyYAML."""
+    if not text.startswith("---"):
+        return {}, 0
+    rest = text[3:]
+    if rest.startswith("\r\n"):
+        rest = rest[2:]
+    elif rest.startswith("\n"):
+        rest = rest[1:]
+    else:
         return {}, 0
 
-    frontmatter_lines: list[str] = []
-    for line in lines[1:]:
-        if line.strip() == "---":
+    # Find closing --- on its own line
+    end = None
+    for marker in ("\n---\n", "\n---\r\n", "\n---"):
+        idx = rest.find(marker)
+        if idx != -1:
+            end = idx
             break
-        frontmatter_lines.append(line)
+    if end is None:
+        return {}, 0
 
-    data: dict[str, Any] = {}
-    current_key: str | None = None
-    for raw_line in frontmatter_lines:
-        line = raw_line.rstrip()
-        stripped = line.strip()
-        if not stripped:
-            continue
-        if stripped.startswith("- ") and current_key:
-            current = data.setdefault(current_key, [])
-            if isinstance(current, list):
-                current.append(stripped[2:].strip().strip("\"'"))
-            continue
-        if ":" not in line:
-            continue
-        key, raw_value = line.split(":", 1)
-        key = key.strip()
-        raw_value = raw_value.strip()
-        current_key = key
-        if raw_value:
-            data[key] = parse_scalar(raw_value)
-        else:
-            data[key] = []
-
-    frontmatter_chars = len("\n".join(frontmatter_lines))
-    return data, frontmatter_chars
+    raw = rest[:end]
+    try:
+        data = yaml.safe_load(raw) or {}
+    except yaml.YAMLError:
+        data = {}
+    if not isinstance(data, dict):
+        data = {}
+    return data, len(raw)
 
 
 def collect_policy_skill_sets(policy: dict[str, Any]) -> dict[str, set[str]]:
@@ -118,16 +100,16 @@ def infer_category(name: str, policy: dict[str, Any]) -> str:
             values.update(secondary.keys())
         if name in values:
             return task_name
-    if name.startswith("game-") or name in {"phaser", "threejs-game", "make-game", "quick-game"}:
-        return "game"
-    if name.startswith("swift") or name.startswith("ios") or name in {"add-component", "build-feature", "explore-recipes"}:
+    if name.startswith("swift") or name.startswith("ios") or name in {"shipswift-recipes"}:
         return "mobile"
     if name in policy.get("skill_triggers", {}):
         return "triggered"
     return "utility"
 
 
-def infer_priority(name: str, skill_sets: dict[str, set[str]]) -> str:
+def infer_priority(name: str, skill_sets: dict[str, set[str]], never_auto: set[str] | None = None) -> str:
+    if never_auto and name in never_auto:
+        return "utility"
     if name in skill_sets["foundation"]:
         return "foundation"
     if name in skill_sets["secondary"]:
@@ -151,6 +133,8 @@ def build_index() -> dict[str, Any]:
     policy = load_policy()
     skills_root = Path(policy.get("skills_root", ROOT / "skills")).expanduser()
     skill_sets = collect_policy_skill_sets(policy)
+    never_auto = set(policy.get("never_auto_route", []) or [])
+    opt_in = set((policy.get("opt_in_skills") or {}).keys())
     skills = []
     latest_skill_mtime = 0.0
 
@@ -167,7 +151,7 @@ def build_index() -> dict[str, Any]:
             "path": f"skills/{skill_dir.name}/SKILL.md",
             "description": str(frontmatter.get("description") or "No description provided."),
             "category": str(frontmatter.get("category") or infer_category(name, policy)),
-            "priority": str(frontmatter.get("priority") or infer_priority(name, skill_sets)),
+            "priority": str(frontmatter.get("priority") or infer_priority(name, skill_sets, never_auto)),
             "tokens": {
                 "frontmatter_chars": frontmatter_chars,
                 "skill_chars": len(text),
@@ -179,6 +163,14 @@ def build_index() -> dict[str, Any]:
                 entry[key] = values
         if isinstance(frontmatter.get("never_alone"), bool):
             entry["never_alone"] = frontmatter["never_alone"]
+        # Policy-level auto-route exclusions remain discoverable by explicit name.
+        avoid = list(entry.get("avoid_when", []))
+        if name in never_auto and "auto_route" not in avoid:
+            avoid.append("auto_route")
+        if name in opt_in and "implicit_mobile" not in avoid:
+            avoid.append("implicit_mobile")
+        if avoid:
+            entry["avoid_when"] = avoid
         skills.append(entry)
 
     return {

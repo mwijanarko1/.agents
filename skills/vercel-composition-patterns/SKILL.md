@@ -1,84 +1,36 @@
 ---
 name: vercel-composition-patterns
-description: "Apply scalable React composition patterns and component APIs."
+description: Apply scalable React composition patterns and component APIs.
 license: MIT
 metadata:
   author: vercel
-  version: '1.0.0'
+  version: "1.0.0"
 ---
 
 # React Composition Patterns
 
-Composition patterns for building flexible, maintainable React components. Avoid
-boolean prop proliferation by using compound components, lifting state, and
-composing internals. These patterns make codebases easier for both humans and AI
-agents to work with as they scale.
+Use when designing reusable component APIs or refactoring boolean-prop soup.
 
-## When to Apply
+## Workflow
 
-Reference these guidelines when:
+1. Spot API smells: many booleans, mutually exclusive modes, render-prop sprawl.
+2. Open only the matching rule file under `rules/` (do not load all rules or `AGENTS.md` by default).
+3. Apply the smallest composition fix; keep call sites compiling.
+4. Verify with typecheck + the component's existing tests/story.
 
-- Refactoring components with many boolean props
-- Building reusable component libraries
-- Designing flexible component APIs
-- Reviewing component architecture
-- Working with compound components or context providers
+## Index (open `rules/<id>.md`)
 
-## Rule Categories by Priority
+| Priority | Prefix | Rules |
+|----------|--------|--------|
+| HIGH | `architecture-` | `avoid-boolean-props`, `compound-components` |
+| MEDIUM | `state-` | `decouple-implementation`, `context-interface`, `lift-state` |
+| MEDIUM | `patterns-` | `explicit-variants`, `children-over-render-props` |
+| MEDIUM (React 19+) | `react19-` | `no-forwardref` |
 
-| Priority | Category                | Impact | Prefix          |
-| -------- | ----------------------- | ------ | --------------- |
-| 1        | Component Architecture  | HIGH   | `architecture-` |
-| 2        | State Management        | MEDIUM | `state-`        |
-| 3        | Implementation Patterns | MEDIUM | `patterns-`     |
-| 4        | React 19 APIs           | MEDIUM | `react19-`      |
+Example path: `rules/architecture-compound-components.md`.
 
-## Quick Reference
+## Defaults
 
-### 1. Component Architecture (HIGH)
-
-- `architecture-avoid-boolean-props` - Don't add boolean props to customize
-  behavior; use composition
-- `architecture-compound-components` - Structure complex components with shared
-  context
-
-### 2. State Management (MEDIUM)
-
-- `state-decouple-implementation` - Provider is the only place that knows how
-  state is managed
-- `state-context-interface` - Define generic interface with state, actions, meta
-  for dependency injection
-- `state-lift-state` - Move state into provider components for sibling access
-
-### 3. Implementation Patterns (MEDIUM)
-
-- `patterns-explicit-variants` - Create explicit variant components instead of
-  boolean modes
-- `patterns-children-over-render-props` - Use children for composition instead
-  of renderX props
-
-### 4. React 19 APIs (MEDIUM)
-
-> **⚠️ React 19+ only.** Skip this section if using React 18 or earlier.
-
-- `react19-no-forwardref` - Don't use `forwardRef`; use `use()` instead of `useContext()`
-
-## How to Use
-
-Read individual rule files for detailed explanations and code examples:
-
-```
-rules/architecture-avoid-boolean-props.md
-rules/state-context-interface.md
-```
-
-Each rule file contains:
-
-- Brief explanation of why it matters
-- Incorrect code example with explanation
-- Correct code example with explanation
-- Additional context and references
-
-## Full Compiled Document
-
-For the complete guide with all rules expanded: `AGENTS.md`
+- Prefer compound components + context over `showX` / `isY` / `variantMode` booleans.
+- Provider owns state implementation; consumers depend on a stable interface.
+- Skip React 19 rules on React 18 projects.

@@ -1,92 +1,61 @@
 ---
 name: ios-development
-description: Mobile app development standards for Swift (iOS).
+description: >
+  Local-architecture-first Swift/iOS platform baseline for .swift and Xcode projects:
+  feature layout, MVVM/@Observable, DI, SPM, security defaults. Not a specialist audit.
+  Hand off concurrency, SwiftUI review, SwiftData, testing, and App Store work to specialists.
 ---
 
-# Mobile Development
+# iOS Development (platform baseline)
 
-## Swift Development Guidelines
+Default standards for native Swift/iOS app structure. Prefer the smallest change that fits the existing project layout.
 
-### Project Structure & Architecture
-- **Feature-First Organization:** Do not group by file type (Views, Models). Group by Feature.
-  ```text
-  Sources/
-  ├── App/                 # App entry point, Configuration
-  ├── Core/                # Shared extensions, Network layer, Design System
-  ├── Features/
-  │   ├── Auth/
-  │   │   ├── Views/
-  │   │   ├── ViewModels/
-  │   │   └── Services/
-  │   └── Dashboard/
-  ```
-- **Pattern:** Use **MVVM** (Model-View-ViewModel) for standard flows.
-  - **Views:** Declarative, dumb components. No business logic.
-  - **ViewModels:** `@Observable` classes. Handle state, user intents, and calls to services.
-  - **Services:** Stateless structs or actors. Handle networking and DB logic.
-- **Dependency Injection:** Use Protocol-based dependency injection. Avoid global Singletons (`.shared`) for Logic/Services to ensure testability.
+## Project structure
 
-### Modern Swift Syntax (Swift 6+)
-- **Concurrency:**
-  - **Strictly enforce `async`/`await`.** Do NOT use completion handlers (`@escaping (Result) -> Void`) or Combine for one-shot async tasks.
-  - **Actors:** Use `actor` for shared mutable state to prevent data races.
-  - **Main Thread:** Annotate UI-facing classes/functions with `@MainActor`.
-- **Observation:**
-  - Use the **`@Observable` macro** (Observation framework) over `ObservableObject`/`@Published`.
-  - Prefer `let` constants. Use `var` only when mutation is required.
-- **Value Types:** Default to `struct` and `enum`. Use `class` only for identity-based types (ViewModels, Database Managers).
-- **Optionals:**
-  - **Ban Force Unwrapping:** Never use `!` (except for `IBOutlets` or Unit Tests).
-  - Use `guard let` for early exits or `if let` for scope-specific access.
-  - Use `??` (nil coalescing) to provide default values.
+- **Feature-first**, not file-type folders:
 
-### SwiftUI Guidelines
-- **Views:**
-  - Keep `body` clean. Extract sub-views if a View exceeds ~150 lines.
-  - Use `@ViewBuilder` for conditional UI logic within the body.
-- **Previews:** Use the **`#Preview` macro** (Swift 5.9+). Do not use `PreviewProvider` structs.
-- **State Management:**
-  - `@State`: For private, ephemeral UI state (e.g., toggle isExpanded).
-  - `@Binding`: For passing write access to a child view.
-  - `@Environment`: For global dependencies (e.g., Theme, AuthState).
-- **Modifiers:**
-  - Create custom `ViewModifier`s for repetitive styling.
-  - Order matters: Apply layout modifiers (padding, frame) *before* background/border modifiers.
+```text
+Sources/
+├── App/                 # Entry, configuration
+├── Core/                # Shared extensions, network, design system
+└── Features/
+    └── Auth/
+        ├── Views/
+        ├── ViewModels/
+        └── Services/
+```
 
-### Performance Optimization (Swift)
-- **Lists:**
-  - Always use `LazyVStack` or `List` for collections.
-  - Ensure all data models conform to `Identifiable`. Never use `id: \.self` unless the data is truly static and unique.
-- **Images:** Use `AsyncImage` with caching, or third-party libraries (e.g., Nuke) if aggressive caching is needed.
-- **Computations:** Move heavy computations off the Main Actor using `Task.detached` or `nonisolated`.
+- **MVVM**: Views declarative (no business logic); ViewModels `@Observable`; Services stateless structs/actors for I/O.
+- **DI**: Protocol-based injection. Avoid `.shared` singletons for logic/services.
 
-### Testing (Swift Testing)
-- **Framework:** Use **Swift Testing** (`import Testing`) over XCTest for new code.
-- **Structure:**
-  - Use `@Test` macro.
-  - Use `#expect(...)` for assertions.
-- **Mocking:**
-  - Create `MockService` structs implementing the same Protocol as the real service.
-  - Inject mocks into ViewModels during initialization.
-- **Scope:**
-  - **Unit:** Test ViewModels (State changes) and Services (Parsing).
-  - **Snapshot:** Use `Point-Free SnapshotTesting` for complex UI layouts (optional).
+## Swift baseline
 
-### Dependency Management
-- **Standard:** Use **Swift Package Manager (SPM)** exclusively.
-- **Legacy:** Do not use CocoaPods or Carthage.
-- **Versioning:** Pin packages to specific versions or minor ranges (e.g., `from: "2.1.0"`).
+- Prefer `async`/`await` over completion handlers for one-shot async work; `@MainActor` for UI-facing types.
+- Prefer `@Observable` over `ObservableObject`/`@Published`.
+- Prefer `struct`/`enum`; `class` only for identity (ViewModels, store owners).
+- No force-unwrap outside IBOutlets/tests; use `guard let` / `if let` / `??`.
+- SPM only (no CocoaPods/Carthage). Pin versions or minor ranges.
+- Secrets in Keychain, not `UserDefaults`. Prefer `Logger`/`OSLog` over `print` in production paths.
 
-### Code Style & Formatting (Swift)
-- **Linter:** Enforce **SwiftLint** with strict rules.
-- **Naming:**
-  - **Generic Types:** `T`, `U` for simple generics; `Element`, `Response` for descriptive ones.
-  - **Protocol Naming:** Use `Service` suffix (e.g., `AuthService`) or `able` suffix (e.g., `Codable`).
-- **Extensions:**
-  - Use extensions to separate protocol conformance (`extension MyView: Equatable`).
-  - Use extensions to group standard library enhancements (`extension String`).
+## SwiftUI baseline (structure only)
 
-### Security (Swift)
-- **Storage:** NEVER store sensitive data (Tokens, Passwords) in `UserDefaults`. Use **Keychain** (via `Security` framework or a wrapper like `KeychainAccess`).
-- **Networking:** Implement SSL Pinning for high-security apps.
-- **Logs:** Strip sensitive data from console logs in Release builds. Use the `OSLog` framework (Logger), not `print()`.
+- Keep `body` small; extract subviews past ~150 lines.
+- `#Preview` macro (not `PreviewProvider`).
+- `@State` / `@Binding` / `@Environment` for local UI and ambient deps.
+- Lists: `List` / `LazyVStack`; models `Identifiable` (avoid `id: \.self` unless static unique data).
+
+## Specialist handoffs
+
+| Need | Skill |
+|------|--------|
+| SwiftUI audit, HIG, a11y, view correctness | `swiftui-pro` |
+| Actors, Sendable, Task, isolation | `swift-concurrency-pro` |
+| SwiftData / CloudKit | `swiftdata-pro` |
+| Swift Testing write/review | `swift-testing-pro` |
+| App Store / privacy / preflight | `ios-app-store-compliance` |
+| ShipSwift recipes (explicit opt-in) | `shipswift-recipes` |
+| App Intents / system surfaces | `ios-app-intents` |
+| Simulator debug (XcodeBuildMCP) | `ios-debugger-agent` |
+| Liquid Glass / UI patterns / view split | plugin SwiftUI skills |
+
+Do not load specialists by default; load when the task matches.

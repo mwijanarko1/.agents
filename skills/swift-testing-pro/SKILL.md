@@ -1,6 +1,6 @@
 ---
 name: swift-testing-pro
-description: "Write and review Swift Testing code with modern APIs."
+description: "Authoritative Swift Testing specialist: @Test, #expect, async tests, XCTest migration. Use when writing or reviewing Swift test suites—not general app architecture (ios-development)."
 license: MIT
 metadata:
   author: Paul Hudson

@@ -10,8 +10,9 @@ const context = [
   "- The user must name the target coding tool before bridge use: `codex`, `cursor`, `opencode`, `claude`, `goose`, or a configured adapter. If missing, ask which tool to open.",
   "- Do not use `ai-delegate --target auto` or difficulty-based bridge routing unless the user explicitly asks for automatic bridge routing.",
   "- If native subagents fail or return an incomplete result, handle the task yourself in this Codex session unless the user explicitly requested bridge escalation.",
-  "- Do not delegate code review. You are the reviewer.",
-  "After any subagent or bridge result, inspect the returned work critically before accepting it.",
+  "- Advisory review subagents (code-reviewer, thermos, and domain auditors) are allowed; you own final accept/reject.",
+  "- Single writer: at most one agent edits a cwd/worktree; parallel subagents are read-only or use isolated worktrees.",
+  "- After any subagent or bridge result, inspect the returned work critically before accepting it.",
   "</codex-orchestrator>",
 ].join("\n");
 

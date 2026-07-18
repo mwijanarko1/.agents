@@ -15,7 +15,8 @@
     "subagent_routing",
     "ai_bridge",
     "skill_loading_disclosure",
-    "output_economy"
+    "output_economy",
+    "context_economy"
   ],
   "properties": {
     "version": {
@@ -90,6 +91,40 @@
         },
         "subagents": {
           "type": "object"
+        }
+      }
+    },
+    "context_economy": {
+      "type": "object",
+      "required": [
+        "default",
+        "command_output_protection",
+        "raw_data_policy",
+        "scope_walls",
+        "handoff",
+        "compact_cadence"
+      ],
+      "properties": {
+        "default": {
+          "enum": [
+            "precompact_unknown_large_context"
+          ]
+        },
+        "command_output_protection": {
+          "type": "object"
+        },
+        "raw_data_policy": {
+          "type": "object"
+        },
+        "scope_walls": {
+          "type": "array",
+          "minItems": 1
+        },
+        "handoff": {
+          "type": "object"
+        },
+        "compact_cadence": {
+          "type": "string"
         }
       }
     },

@@ -68,25 +68,48 @@ const LONG_RUNNING_PATTERNS = [
 const SECRET_PATTERNS = [
   { name: "GitHub token", pattern: /\bgh[pousr]_[A-Za-z0-9]{20,}\b/g },
   { name: "OpenAI style key", pattern: /\bsk-[A-Za-z0-9_-]{16,}\b/g },
-  { name: "Bearer token", pattern: /\bBearer\s+[A-Za-z0-9._-]{20,}\b/g },
+  { name: "Bearer token", pattern: /\bBearer\s+[A-Za-z0-9._-]{20,}\b/gi },
   { name: "AWS access key", pattern: /\bAKIA[0-9A-Z]{16}\b/g },
   { name: "Private key block", pattern: /-----BEGIN [A-Z ]*PRIVATE KEY-----/g },
   { name: ".env assignment", pattern: /^(?:export\s+)?[A-Z0-9_]{2,}\s*=\s*.+$/gm },
 ];
 
-const MCP_WRITE_ACTION_PATTERNS = [
-  /\bmerge\b/i,
-  /\bclose\b/i,
-  /\breopen\b/i,
-  /\bdelete\b/i,
-  /\bcomment\b/i,
-  /\breview\b/i,
-  /\bassign(?:ee|ment)?\b/i,
-  /\blabel\b/i,
-  /\btransition\b/i,
-  /\bupdate\b/i,
-  /\bcreate\b/i,
-];
+const MCP_WRITE_ACTIONS = new Set([
+  "add",
+  "approve",
+  "archive",
+  "assign",
+  "assignee",
+  "assignment",
+  "close",
+  "comment",
+  "create",
+  "delete",
+  "edit",
+  "execute",
+  "label",
+  "merge",
+  "move",
+  "patch",
+  "publish",
+  "push",
+  "remove",
+  "request",
+  "reopen",
+  "review",
+  "send",
+  "submit",
+  "transition",
+  "update",
+  "upload",
+  "write",
+]);
+
+const MCP_READ_ACTIONS = new Set(["fetch", "find", "get", "list", "read", "search", "show"]);
+const MCP_AMBIGUOUS_WRITE_ACTIONS = new Set(["comment", "review"]);
+const MCP_HOST_IDENTIFIER_KEYS = ["tool", "tool_name", "type", "server", "server_name", "name"];
+const MCP_ACTION_IDENTIFIER_KEYS = ["tool", "tool_name", "action", "method", "operation", "command"];
+const MCP_WRITE_PAYLOAD_KEYS = ["content", "patch", "changes"];
 
 const TDD_TEST_COMMAND_PATTERNS = [
   /\bnpm\s+(?:run\s+)?test\b/i,
@@ -151,6 +174,42 @@ function trim(value) {
 
 function unique(values) {
   return [...new Set(values.filter(Boolean))];
+}
+
+function redactSecrets(value) {
+  return SECRET_PATTERNS.reduce(
+    (redacted, { name, pattern }) =>
+      name === ".env assignment" ? redacted : redacted.replace(pattern, `[REDACTED ${name}]`),
+    value,
+  );
+}
+
+function stringValues(value, keys) {
+  if (!value || typeof value !== "object") {
+    return [];
+  }
+  return keys.map((key) => value[key]).filter((item) => typeof item === "string");
+}
+
+function mcpHostIdentifiers(input) {
+  return [input, input?.tool_input, input?.arguments, input?.metadata]
+    .flatMap((value) => stringValues(value, MCP_HOST_IDENTIFIER_KEYS));
+}
+
+function mcpActionIdentifiers(input) {
+  return [input, input?.tool_input, input?.arguments, input?.metadata]
+    .flatMap((value) => stringValues(value, MCP_ACTION_IDENTIFIER_KEYS));
+}
+
+function identifierTokens(value) {
+  return value.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+}
+
+function identifierHasWrite(value) {
+  const tokens = identifierTokens(value);
+  const writes = tokens.filter((token) => MCP_WRITE_ACTIONS.has(token));
+  const hasRead = tokens.some((token) => MCP_READ_ACTIONS.has(token));
+  return writes.some((token) => !MCP_AMBIGUOUS_WRITE_ACTIONS.has(token)) || (writes.length > 0 && !hasRead);
 }
 
 export function normalizeInput(stdinText, env = process.env) {
@@ -493,6 +552,28 @@ function loadSkillRoutingIndex() {
   }
 }
 
+const IOS_ROUTING_SKILLS = [
+  "ios-development",
+  "swiftui-pro",
+  "swiftui-ui-patterns",
+  "swiftui-view-refactor",
+  "swift-concurrency-pro",
+  "swiftdata-pro",
+  "swift-testing-pro",
+  "ios-debugger-agent",
+  "ios-app-intents",
+  "ios-memgraph-leaks",
+  "ios-ettrace-performance",
+  "swiftui-performance-audit",
+  "swiftui-liquid-glass",
+  "ios-app-store-compliance",
+];
+const IOS_ROUTING_SKILL_SET = new Set(IOS_ROUTING_SKILLS);
+const DESIGN_ROUTING_SKILL = "frontend-design";
+const SWIFT_EDIT_PATTERN = /\.swift$|\.xcodeproj|\.xcworkspace|Package\.swift/;
+const UI_COMPONENT_EDIT_PATTERN = /(?:^|\/)(?:components|app|pages)\/.*\.(?:tsx|jsx|vue|svelte)$/i;
+const UI_STYLE_EDIT_PATTERN = /\.(?:css|scss)$/i;
+
 function stripCodeBlocks(text) {
   return text.replace(/```[\s\S]*?```/g, " ");
 }
@@ -577,11 +658,8 @@ function classifyPromptIntent(promptText, context) {
 }
 
 function selectFoundationSkills(intent) {
-  const skills = new Set(["ai-interaction-workflow"]);
-  if (["implementation", "review", "planning"].includes(intent.mode)) {
-    skills.add("coding-standards");
-  }
-  if (intent.mode === "review" || intent.behaviorChanging || intent.routing) {
+  const skills = new Set();
+  if (["implementation", "review", "planning"].includes(intent.mode) || intent.behaviorChanging || intent.routing) {
     skills.add("testing-strategies");
   }
   return skills;
@@ -696,22 +774,20 @@ function selectDomainSkills(intent, context) {
     subagents.add("mobile-engineer");
   }
 
-  if (intent.greenfieldDesign) {
-    tags.add("greenfield-design");
-    skills.add("taste-skill");
-    subagents.add("design-engineer");
-  }
-
-  if (intent.redesign) {
-    tags.add("redesign");
-    skills.add("redesign-skill");
+  if (intent.greenfieldDesign || intent.redesign) {
+    if (intent.greenfieldDesign) {
+      tags.add("greenfield-design");
+    }
+    if (intent.redesign) {
+      tags.add("redesign");
+    }
+    skills.add("frontend-design");
     subagents.add("design-engineer");
   }
 
   if (intent.designPolish) {
     tags.add("design-polish");
-    secondarySkills.add("soft-skill");
-    if (skills.has("taste-skill") || skills.has("redesign-skill")) {
+    if (skills.has("frontend-design")) {
       subagents.add("design-engineer");
     }
   }
@@ -719,7 +795,7 @@ function selectDomainSkills(intent, context) {
   if (intent.designReference) {
     tags.add("design-reference");
     secondarySkills.add("design-md-gallery");
-    if (skills.has("taste-skill") || skills.has("redesign-skill")) {
+    if (skills.has("frontend-design")) {
       subagents.add("design-engineer");
       notes.push("Use the DESIGN.md gallery only as a secondary reference layer after the primary design mode.");
     }
@@ -729,26 +805,17 @@ function selectDomainSkills(intent, context) {
 }
 
 function enforceSkillConstraints(selection, intent) {
-  const primaryDesignSkills = unique(["taste-skill", "redesign-skill"].filter((skill) => selection.skills.has(skill)));
-  if (primaryDesignSkills.length > 1) {
-    if (intent.redesign) {
-      selection.skills.delete("taste-skill");
-    } else {
-      selection.skills.delete("redesign-skill");
-    }
-  }
+  const hasPrimaryDesign = selection.skills.has("frontend-design");
 
-  if (!selection.skills.has("taste-skill") && !selection.skills.has("redesign-skill")) {
-    if (selection.secondarySkills.delete("soft-skill") || selection.secondarySkills.delete("design-md-gallery")) {
+  if (!hasPrimaryDesign) {
+    if (selection.secondarySkills.delete("design-md-gallery")) {
       selection.notes.push("Token-saving mode active: omitted weak secondary design matches without a primary design task.");
     }
-    if (!selection.skills.has("taste-skill") && !selection.skills.has("redesign-skill")) {
-      selection.subagents.delete("design-engineer");
-    }
+    selection.subagents.delete("design-engineer");
   }
 
   if (intent.mode === "advisory") {
-    const allowed = new Set(["ai-interaction-workflow", "cartographer"]);
+    const allowed = new Set(["cartographer", "search-first", "effective-agent-skills"]);
     for (const skill of [...selection.skills]) {
       if (!allowed.has(skill) && !intent.security && !intent.seo && !intent.compliance) {
         selection.skills.delete(skill);
@@ -805,6 +872,7 @@ function classifyPrompt(promptText, repoContext = null) {
         }
       : null,
     tags: unique([...selection.tags]),
+    domains: unique([...intent.domains]),
     skills: unique([...selection.skills]),
     secondarySkills: unique([...selection.secondarySkills]),
     subagents: unique([...selection.subagents]),
@@ -949,6 +1017,9 @@ function defaultAiFlowState() {
     brief: {},
     briefChecksum: "",
     funModeReason: "",
+    routedSkills: [],
+    routedSecondarySkills: [],
+    promptDomains: [],
   };
 }
 
@@ -964,6 +1035,9 @@ function readAiFlowState(repoRoot) {
       ? state.requiredBriefFields
       : AI_FLOW_REQUIRED_BRIEF_FIELDS,
     completedBriefFields: Array.isArray(state.completedBriefFields) ? state.completedBriefFields : [],
+    routedSkills: Array.isArray(state.routedSkills) ? state.routedSkills : [],
+    routedSecondarySkills: Array.isArray(state.routedSecondarySkills) ? state.routedSecondarySkills : [],
+    promptDomains: Array.isArray(state.promptDomains) ? state.promptDomains : [],
   };
 }
 
@@ -1238,6 +1312,26 @@ export function evaluateSupplyChainCommand(command, repoRoot = null) {
   if (state.mode === "fun" || state.dependencyWorkAllowed === true) {
     return { blocked: false };
   }
+
+  // Narrow allowlist for update-agents workflow — exact known-safe version-check commands.
+  // This ensures the update-agents skill can check versions without opening arbitrary npm view usage.
+  // Patterns match both bare commands and the documented update-agents snippets which wrap each
+  // npm view in echo "=== LABEL ===" && ... 2>/dev/null. The echo prefix and stderr redirect are
+  // harmless decorations; the core constraint (exact package + version subcommand, no chaining)
+  // is enforced by ^ and $ anchors and the literal package/version tokens.
+  //
+  // The echo label character class [A-Za-z0-9 =()\-_.]+ is intentionally restrictive:
+  // it excludes $, backticks, backslashes, ;, |, &, <>, {}, [], !, #, *, ? and other
+  // shell metacharacters to prevent command substitution injection via the echo prefix.
+  const UPDATE_AGENTS_ALLOWLIST = [
+    /^(?:echo\s+"[A-Za-z0-9 =()\-_.]+"\s*&&\s+)?npm\s+view\s+@earendil-works\/pi-coding-agent\s+version(?:\s+2>\/dev\/null)?$/i,
+    /^(?:echo\s+"[A-Za-z0-9 =()\-_.]+"\s*&&\s+)?npm\s+view\s+@openai\/codex\s+version(?:\s+2>\/dev\/null)?$/i,
+    /^(?:echo\s+"[A-Za-z0-9 =()\-_.]+"\s*&&\s+)?npm\s+view\s+command-code\s+version(?:\s+2>\/dev\/null)?$/i,
+  ];
+  if (UPDATE_AGENTS_ALLOWLIST.some((pattern) => pattern.test(command.trim()))) {
+    return { blocked: false };
+  }
+
   const patterns = [
     /\bnpx\b/i,
     /\bpnpm\s+dlx\b/i,
@@ -1273,7 +1367,11 @@ export function evaluateProtectedPath(filePath, repoRoot, manifest = null) {
   if (absoluteProtected.includes(path.resolve(filePath))) {
     return { blocked: true, reason: `Blocked protected config edit: ${filePath}` };
   }
-  if (matchesAnyGlob(relativeFile, protectedPatterns) || matchesAnyGlob(filePath, protectedPatterns)) {
+  if (
+    matchesAnyGlob(relativeFile, protectedPatterns) ||
+    matchesAnyGlob(filePath, protectedPatterns) ||
+    matchesAnyGlob(path.basename(filePath), protectedPatterns)
+  ) {
     return { blocked: true, reason: `Blocked protected file edit: ${relativeFile}` };
   }
   return { blocked: false };
@@ -1367,6 +1465,106 @@ export function scanSecurityCode(repoRoot, classification) {
     }
     if (/Access-Control-Allow-Origin["']?\s*[:=]\s*["']\*["']/.test(addedText) || /cors\([^)]*origin\s*:\s*["']\*["']/.test(addedText)) {
       findings.push(createFinding("advisory", relativeFile, "Suspicious broad CORS configuration added."));
+    }
+  }
+  return findings;
+}
+
+function resolveRelativeRepoFile(repoRoot, filePath) {
+  const trimmed = trim(filePath);
+  if (!trimmed) {
+    return "";
+  }
+  if (!repoRoot) {
+    return trimmed;
+  }
+  const absolute = path.isAbsolute(trimmed) ? trimmed : path.resolve(repoRoot, trimmed);
+  const relative = path.relative(repoRoot, absolute);
+  if (relative.startsWith("..")) {
+    return trimmed;
+  }
+  return relative.split(path.sep).join("/");
+}
+
+function collectEditedFilesForRouting(repoRoot, normalized, classification) {
+  const files = new Set(classification?.changedFiles || []);
+  const candidates = [
+    normalized.filePath,
+    normalized.raw.tool_input?.file_path,
+    normalized.raw.tool_input?.path,
+    normalized.raw.path,
+    normalized.raw.file,
+    normalized.raw.metadata?.filePath,
+    normalized.raw.metadata?.file,
+  ];
+  for (const candidate of candidates) {
+    const relative = resolveRelativeRepoFile(repoRoot, candidate);
+    if (relative) {
+      files.add(relative);
+    }
+  }
+  return [...files];
+}
+
+function hasLoadedRoutingSkill(routedSkills, allowedSkills) {
+  return routedSkills.some((skill) => allowedSkills.has(skill));
+}
+
+function isSwiftRelatedEdit(relativeFile) {
+  return SWIFT_EDIT_PATTERN.test(relativeFile);
+}
+
+function isUiRoutingEdit(relativeFile) {
+  return UI_COMPONENT_EDIT_PATTERN.test(relativeFile) || UI_STYLE_EDIT_PATTERN.test(relativeFile);
+}
+
+function persistPromptRouting(repoRoot, normalized, routing) {
+  if (!repoRoot || !routing) {
+    return;
+  }
+  const state = readAiFlowState(repoRoot);
+  const prompt = trim(normalized.raw.prompt || normalized.raw.message?.system || "");
+  writeAiFlowState(repoRoot, {
+    ...state,
+    sessionId: normalized.raw.session_id || state.sessionId || "",
+    updatedAt: new Date().toISOString(),
+    promptHash: prompt ? hashPrompt(prompt) : state.promptHash,
+    routedSkills: routing.skills || [],
+    routedSecondarySkills: routing.secondarySkills || [],
+    promptDomains: routing.domains || [],
+  });
+}
+
+function scanSkillRouting(repoRoot, normalized, classification) {
+  const findings = [];
+  if (!repoRoot) {
+    return findings;
+  }
+  const state = readAiFlowState(repoRoot);
+  const routedSkills = unique([
+    ...(state.routedSkills || []),
+    ...(state.routedSecondarySkills || []),
+  ]);
+  const designIntent = (state.promptDomains || []).includes("design");
+  const editedFiles = collectEditedFilesForRouting(repoRoot, normalized, classification);
+  for (const relativeFile of editedFiles) {
+    if (isSwiftRelatedEdit(relativeFile) && !hasLoadedRoutingSkill(routedSkills, IOS_ROUTING_SKILL_SET)) {
+      findings.push(createFinding(
+        "advisory",
+        relativeFile,
+        `skill-routing: edited .swift files without an iOS skill loaded (expected one of: ${IOS_ROUTING_SKILLS.join(", ")})`,
+      ));
+    }
+    if (
+      isUiRoutingEdit(relativeFile) &&
+      designIntent &&
+      !routedSkills.includes(DESIGN_ROUTING_SKILL)
+    ) {
+      findings.push(createFinding(
+        "advisory",
+        relativeFile,
+        "skill-routing: edited UI file during design task without frontend-design skill loaded",
+      ));
     }
   }
   return findings;
@@ -1479,16 +1677,17 @@ export function evaluatePrGate(repoRoot, command, manifest = null) {
 }
 
 export function evaluateMcpMutation(input, repoRoot) {
-  const actionText = JSON.stringify(input);
-  const isMcpTool =
-    /mcp/i.test(input.tool || "") ||
-    /github|linear|jira/i.test(actionText);
-  if (!isMcpTool) {
+  if (!mcpHostIdentifiers(input).some((value) => /mcp|github|linear|jira/i.test(value))) {
     return { blocked: false };
   }
-  const isMutation = MCP_WRITE_ACTION_PATTERNS.some((pattern) => pattern.test(actionText));
-  if (!isMutation) {
+  const hasExplicitWrite = mcpActionIdentifiers(input).some(identifierHasWrite);
+  const hasWritePayload = [input?.tool_input, input?.arguments]
+    .some((value) => value && typeof value === "object" && MCP_WRITE_PAYLOAD_KEYS.some((key) => key in value));
+  if (!hasExplicitWrite && !hasWritePayload) {
     return { blocked: false };
+  }
+  if (!repoRoot) {
+    return { blocked: true, reason: "State-changing MCP action requires a repository-scoped MCP Approval note." };
   }
   const notes = readNotes(repoRoot);
   const sections = parseSections(notes.changeNoteText);
@@ -1870,7 +2069,7 @@ export function runAction(action, stdinText, env = process.env) {
         tool: env.GUARDRAIL_TOOL || normalized.tool || "unknown",
         event: env.GUARDRAIL_EVENT || normalized.event || "unknown",
         cwd: normalized.cwd,
-        command: normalized.command,
+        command: redactSecrets(normalized.command),
       });
       const logPath = path.join(os.homedir(), ".agents", "hooks", "logs", "commands.log");
       fs.mkdirSync(path.dirname(logPath), { recursive: true });
@@ -1906,7 +2105,8 @@ export function runAction(action, stdinText, env = process.env) {
       };
       const findings = repoRoot ? scanCodeQuality(repoRoot, classification) : [];
       const fastChecks = repoRoot ? scanAgentsFastQuality(repoRoot, classification) : [];
-      const combined = [...findings, ...fastChecks];
+      const skillRoutingFindings = repoRoot ? scanSkillRouting(repoRoot, normalized, classification) : [];
+      const combined = [...findings, ...fastChecks, ...skillRoutingFindings];
       return { blocked: combined.some((item) => item.level === "block"), findings: combined, summary: formatFindings(combined) };
     }
     case "mcp-guard":
@@ -1922,6 +2122,7 @@ export function runAction(action, stdinText, env = process.env) {
         detectRepoContext(normalized.cwd),
       );
       const result = classifyPrompt(prompt, context);
+      persistPromptRouting(repoRoot, normalized, result);
       return {
         blocked: false,
         routing: result,

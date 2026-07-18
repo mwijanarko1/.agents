@@ -57,6 +57,7 @@ def validate_schema(policy: dict) -> list[str]:
         "ai_bridge",
         "skill_loading_disclosure",
         "output_economy",
+        "context_economy",
     ]
     for key in required:
         if key not in policy:
@@ -216,6 +217,56 @@ def validate_output_economy(policy: dict) -> list[str]:
     return errors
 
 
+def validate_context_economy(policy: dict) -> list[str]:
+    errors: list[str] = []
+    contract = policy.get("context_economy")
+    if not isinstance(contract, dict):
+        return ["context_economy must be an object"]
+
+    if contract.get("default") != "precompact_unknown_large_context":
+        errors.append("context_economy.default must be precompact_unknown_large_context")
+
+    protection = contract.get("command_output_protection", {})
+    if not isinstance(protection, dict):
+        errors.append("context_economy.command_output_protection must be an object")
+    else:
+        cap = protection.get("default_byte_cap")
+        if not isinstance(cap, int) or cap <= 0 or cap > 20000:
+            errors.append("context_economy.command_output_protection.default_byte_cap must be an integer from 1 to 20000")
+        patterns = protection.get("preferred_patterns")
+        if not isinstance(patterns, list) or not patterns:
+            errors.append("context_economy.command_output_protection.preferred_patterns must be a non-empty list")
+
+    raw_data = contract.get("raw_data_policy", {})
+    if not isinstance(raw_data, dict):
+        errors.append("context_economy.raw_data_policy must be an object")
+    else:
+        helpers = raw_data.get("precompact_first_with")
+        if not isinstance(helpers, list) or not helpers:
+            errors.append("context_economy.raw_data_policy.precompact_first_with must be a non-empty list")
+
+    for key in ["scope_walls"]:
+        value = contract.get(key)
+        if not isinstance(value, list) or not value:
+            errors.append(f"context_economy.{key} must be a non-empty list")
+
+    handoff = contract.get("handoff", {})
+    if not isinstance(handoff, dict):
+        errors.append("context_economy.handoff must be an object")
+    else:
+        target = handoff.get("target_size_tokens")
+        if not isinstance(target, int) or target <= 0 or target > 2000:
+            errors.append("context_economy.handoff.target_size_tokens must be an integer from 1 to 2000")
+        keep = handoff.get("keep")
+        if not isinstance(keep, list) or not keep:
+            errors.append("context_economy.handoff.keep must be a non-empty list")
+
+    if not contract.get("compact_cadence"):
+        errors.append("context_economy.compact_cadence must be set")
+
+    return errors
+
+
 def validate_skills_exist(policy: dict, skills_root: Path) -> list[str]:
     errors = []
     base = skills_root if skills_root.exists() else Path(policy.get("root", ".")) / policy.get("skills_dir", "skills")
@@ -237,6 +288,12 @@ def validate_skills_exist(policy: dict, skills_root: Path) -> list[str]:
         add_skill(skill)
     for skill in policy.get("shared_skills", []):
         add_skill(skill)
+    for skill in policy.get("never_auto_route", []) or []:
+        add_skill(skill)
+    for skill in (policy.get("opt_in_skills") or {}):
+        add_skill(skill)
+    for skill in policy.get("skill_triggers", {}):
+        add_skill(skill)
     for cluster in policy.get("capability_clusters", {}).values():
         for skill in cluster.get("skills", []):
             add_skill(skill)
@@ -250,6 +307,26 @@ def validate_skills_exist(policy: dict, skills_root: Path) -> list[str]:
                 add_skill(skill)
             for skill in task.get("add_when", {}):
                 add_skill(skill)
+            for skill in task.get("ios_bundle", []) or []:
+                add_skill(skill)
+
+    never_auto = set(policy.get("never_auto_route", []) or [])
+    if never_auto:
+        for skill in policy.get("default_stack", {}).get("always", []):
+            if skill in never_auto:
+                errors.append(f"never_auto_route skill in default_stack: {skill}")
+        for skill in policy.get("ambient_skills", []):
+            if skill in never_auto:
+                errors.append(f"never_auto_route skill in ambient_skills: {skill}")
+        for task_name, task in policy.get("task_mapping", {}).items():
+            if not isinstance(task, dict):
+                continue
+            for skill in (task.get("add_when") or {}):
+                if skill in never_auto:
+                    errors.append(f"never_auto_route skill in task_mapping.{task_name}.add_when: {skill}")
+            for skill in task.get("required", []) or []:
+                if skill in never_auto:
+                    errors.append(f"never_auto_route skill in task_mapping.{task_name}.required: {skill}")
 
     return errors
 
@@ -505,6 +582,7 @@ def main() -> None:
     all_errors.extend(validate_ai_bridge_policy(policy))
     all_errors.extend(validate_skill_loading_disclosure(policy, skills_root))
     all_errors.extend(validate_output_economy(policy))
+    all_errors.extend(validate_context_economy(policy))
     all_errors.extend(validate_skills_exist(policy, skills_root))
     subagent_errors, canonical_subagent_dir = validate_canonical_subagents(root, policy)
     all_errors.extend(subagent_errors)

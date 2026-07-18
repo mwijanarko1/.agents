@@ -7,6 +7,11 @@ sync_peer_roots() {
   python3 "/Users/mikhail/.agents/scripts/sync_peer_roots.py" >/dev/null
 }
 
+run_synced_guardrail() {
+  sync_peer_roots
+  run_guardrail "$1"
+}
+
 run_guardrail() {
   local action="$1"
   node "$HOOKS_ROOT/lib/guardrails-cli.mjs" "$action"

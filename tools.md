@@ -7,6 +7,18 @@ read_when: "When choosing a helper command, validating .agents, syncing peer roo
 
 Use this catalog when the task depends on local `.agents` helper commands. Do not load it for routine edits unless tool discovery matters.
 
+## Context economy and needle maps
+
+```bash
+python3 ~/.agents/scripts/context_needle.py repo-map .
+python3 ~/.agents/scripts/context_needle.py file-summary PATH --lines 80 --chars 6000
+python3 ~/.agents/scripts/context_needle.py json-summary PATH --chars 6000
+python3 ~/.agents/scripts/context_needle.py csv-summary PATH --scan-rows 500 --sample-rows 5
+python3 ~/.agents/scripts/context_needle.py log-filter PATH --pattern 'ERROR|WARN|Traceback' --limit 40
+```
+
+- `context_needle.py`: creates bounded repo/file/log/JSON/CSV summaries before agent inspection. Use this instead of feeding raw large data or unknown repo output into context.
+
 ## Policy and validation
 
 ```bash
@@ -64,14 +76,14 @@ python3 ~/.agents/scripts/sync_peer_roots.py
 - Keeps Cursor, Codex, OpenCode, Antigravity, and Claude peer roots pointed at canonical `.agents` files.
 - Prefer `--check` before mutating peer roots.
 
-## AI bridge
+## AI bridge (legacy escape hatch)
 
 ```bash
 ai-delegate --target <codex|cursor|opencode|claude|goose> --prompt "<task>"
 ai-dispatch --target <codex|cursor|opencode|claude|goose> --prompt "<task>"
 ```
 
-- Backup cross-tool delegation path.
+- Legacy cross-tool escape hatch. Native subagents are the default for normal specialist work.
 - Use only when the user explicitly asks for bridge delegation and names the target tool.
 
 ## Downstream AGENTS template

@@ -1,6 +1,6 @@
 ---
 name: swiftdata-pro
-description: "Write and review SwiftData code with modern APIs."
+description: "Authoritative SwiftData specialist: @Model, predicates, ModelContext, persistence, CloudKit. Use for SwiftData/storage work only—not general iOS architecture (ios-development)."
 license: MIT
 metadata:
   author: Paul Hudson

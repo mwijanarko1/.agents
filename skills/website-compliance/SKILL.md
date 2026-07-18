@@ -1,104 +1,53 @@
 ---
 name: website-compliance
-description:
-  Global website compliance best practices covering privacy, accessibility, security,
-  and consumer protection. Use when auditing or building websites with user data collection,
-  e-commerce features, or international traffic.
-license: MIT
-metadata:
-  author: open-source
-  version: '1.0.0'
+description: Global website compliance best practices covering privacy, accessibility, security, and consumer protection. Use when auditing or building websites with user data collection, e-commerce features, or international traffic.
 ---
 
-# Website Compliance Skills
+# Website Compliance
 
-Comprehensive best practices for global website compliance. Contains rules across
-multiple categories covering privacy, data protection, accessibility (WCAG),
-security, and consumer rights.
+Audit/build checklist for privacy, accessibility, security basics, and consumer-facing sites. Not legal advice — flag gaps for human counsel when unsure.
 
-## When to Apply
+## Workflow
 
-Reference these guidelines when:
+1. **Scope** — regions, data collected, payments, cookies/trackers, user-generated content.
+2. **Inventory** — forms, analytics, third parties, auth, stored PII.
+3. **Audit** against the gates below.
+4. **Fix** product-owned gaps; document intentional deferrals.
+5. **Verify** with page checks + network/cookie inspection when relevant.
 
-- Building or auditing websites with global traffic
-- Implementing data collection forms or user accounts
-- Setting up e-commerce flows and checkout processes
-- Configuring cookie banners and tracking scripts
-- Ensuring accessibility compliance (WCAG 2.1 AA)
-- Handling sensitive or children's data
+## Privacy
 
-## Rule Categories by Priority
+- Clear privacy notice linked from footer and collection points.
+- Lawful basis / purpose stated before collection where required.
+- Cookie/consent banner when non-essential trackers run; honor reject.
+- Data subject paths: access, delete, export — document or implement.
+- Minimize PII; retention limits; no surprise third-party sharing.
 
-| Priority | Category            | Impact   | Prefix                  |
-| -------- | ------------------- | -------- | ----------------------- |
-| 1        | Privacy & Data      | CRITICAL | `privacy-`              |
-| 2        | Cookies & Tracking  | CRITICAL | `cookies-`              |
-| 3        | Security            | HIGH     | `security-`             |
-| 4        | Accessibility       | HIGH     | `a11y-`                 |
-| 5        | Consumer Protection | MEDIUM   | `consumer-`             |
-| 6        | Governance          | LOW      | `governance-`           |
+## Accessibility (baseline)
 
-## Quick Reference
+- Keyboard reachability for interactive controls; visible focus.
+- Labels on inputs; alt text for meaningful images.
+- Color contrast AA for text; do not rely on color alone.
+- Landmarks/headings in order; live regions for async errors when needed.
 
-### 1. Privacy & Data (CRITICAL)
+## Security (site surface)
 
-- `privacy-policy-link` - Accessible privacy policy link in footer
-- `privacy-data-collection` - Transparent data collection disclosure
-- `privacy-ccpa-do-not-sell` - CCPA "Do Not Sell" mechanism for US traffic
-- `privacy-gdpr-rights` - User rights workflow (access, delete, portability)
-- `privacy-children-coppa` - COPPA compliance for under-13 users
+- HTTPS everywhere; secure cookies (`Secure`, `HttpOnly`, `SameSite` as appropriate).
+- CSRF protection for cookie-auth mutations.
+- No secrets in client bundles; CSP where feasible.
+- File upload type/size limits and auth checks.
 
-### 2. Cookies & Tracking (CRITICAL)
+## Consumer / e-commerce
 
-- `cookies-consent-banner` - Granular consent banner (no forced acceptance)
-- `cookies-categorization` - Categorize cookies (necessary, analytics, marketing)
-- `cookies-reject-button` - Easy "Reject All" option
-- `cookies-policy-table` - Detailed cookie table with durations and providers
+- Accurate pricing, shipping, refund surfaces before payment.
+- Clear identity of the business operator.
+- Age gates only when product/law requires.
 
-### 3. Security (HIGH)
-
-- `security-https-everywhere` - Enforce HTTPS and HSTS
-- `security-headers` - Implement CSP, X-Frame-Options, X-Content-Type-Options
-- `security-admin-protection` - Protect admin areas with 2FA and IP allowlists
-- `security-sensitive-data` - Encrypt sensitive data (PII, health, religion)
-
-### 4. Accessibility (HIGH)
-
-- `a11y-color-contrast` - Ensure WCAG 2.1 AA contrast ratio (≥ 4.5:1)
-- `a11y-keyboard-nav` - Full keyboard navigability (no traps)
-- `a11y-alt-text` - Descriptive alt text for all images
-- `a11y-form-labels` - Explicit labels and error messages for forms
-- `a11y-semantic-html` - Use semantic headings and ARIA landmarks
-
-### 5. Consumer Protection (MEDIUM)
-
-- `consumer-company-info` - Clear legal name, address, and contact info
-- `consumer-pricing-transparency` - Clear pricing, taxes, and currency
-- `consumer-refund-policy` - Explicit refund and return policy details
-- `consumer-terms-link` - Accessible Terms & Conditions link
-
-### 6. Governance (LOW)
-
-- `governance-jurisdiction-map` - Map target jurisdictions to legal requirements
-- `governance-vendor-contracts` - Ensure vendor DPAs are signed
-- `governance-staff-training` - Regular privacy and compliance training
-
-## How to Use
-
-Read individual rule files for detailed explanations and code examples:
+## Output
 
 ```
-rules/privacy-policy-link.md
-rules/cookies-consent-banner.md
+[critical|major|minor] area — location
+  gap / required fix
 ```
 
-Each rule file contains:
-
-- Brief explanation of why it matters
-- Incorrect code example with explanation
-- Correct code example with explanation
-- Additional context and references
-
-## Full Compiled Document
-
-For the complete guide with all rules expanded: `AGENTS.md`
+Pair with `technical-seo` for crawl/index and `security-vulnerability-mitigation` for deep vuln work.

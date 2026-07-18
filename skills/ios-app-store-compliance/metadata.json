@@ -58,8 +58,8 @@
     "tool": "greenlight",
     "install": {
       "homebrew": "brew install revylai/tap/greenlight",
-      "go": "go install github.com/RevylAI/greenlight/cmd/greenlight@latest",
-      "source": "git clone https://github.com/RevylAI/greenlight.git && cd greenlight && make build"
+      "source": "git clone https://github.com/RevylAI/greenlight.git && cd greenlight && make build",
+      "notes": "Prefer PATH greenlight. Do not use go install @latest or other floating tags."
     },
     "commands": {
       "preflight": {

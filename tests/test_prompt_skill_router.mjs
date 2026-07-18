@@ -20,17 +20,17 @@ function assertExcludes(items, value, label) {
   const result = route("Okay, implement the routing algorithm. I want to make sure that we don't waste tokens.");
   assertIncludes(result.tags, "agent-policy", "tags");
   assertIncludes(result.tags, "routing", "tags");
-  assertIncludes(result.skills, "ai-interaction-workflow", "skills");
-  assertIncludes(result.skills, "coding-standards", "skills");
   assertIncludes(result.skills, "testing-strategies", "skills");
+  assertExcludes(result.skills, "ai-interaction-workflow", "skills");
+  assertExcludes(result.skills, "coding-standards", "skills");
   assertExcludes(result.tags, "greenfield-design", "tags");
-  assertExcludes(result.skills, "taste-skill", "skills");
+  assertExcludes(result.skills, "frontend-design", "skills");
   assertExcludes(result.subagents, "design-engineer", "subagents");
 }
 
 {
   const result = route("What do you think about adding a YAML file for skills?");
-  assertIncludes(result.skills, "ai-interaction-workflow", "skills");
+  assertExcludes(result.skills, "ai-interaction-workflow", "skills");
   assertExcludes(result.skills, "coding-standards", "skills");
   assertExcludes(result.skills, "testing-strategies", "skills");
 }
@@ -54,22 +54,33 @@ function assertExcludes(items, value, label) {
 {
   const result = route("Create a polished landing page hero for a SaaS website");
   assertIncludes(result.skills, "frontend-web-development", "skills");
-  assertIncludes(result.skills, "taste-skill", "skills");
+  assertIncludes(result.skills, "frontend-design", "skills");
   assertIncludes(result.subagents, "design-engineer", "subagents");
 }
 
 {
   const result = route("Redesign the existing dashboard UI");
-  assertIncludes(result.skills, "redesign-skill", "skills");
+  assertIncludes(result.skills, "frontend-design", "skills");
   assertExcludes(result.skills, "taste-skill", "skills");
+  assertExcludes(result.skills, "redesign-skill", "skills");
+  assertExcludes(result.skills, "soft-skill", "skills");
+  assertExcludes(result.skills, "shipswift-recipes", "skills");
+  assertExcludes(result.skills, "ios-simulator-browser", "skills");
+}
+
+{
+  const result = route("Build a SwiftUI settings screen in Xcode");
+  assertIncludes(result.skills, "ios-development", "skills");
+  assertExcludes(result.skills, "shipswift-recipes", "skills");
+  assertExcludes(result.skills, "add-component", "skills");
+  assertExcludes(result.skills, "ios-simulator-browser", "skills");
 }
 
 {
   const result = route("Make this look like Linear");
   assert.ok(
     !result.secondarySkills.includes("design-md-gallery") ||
-      result.skills.includes("taste-skill") ||
-      result.skills.includes("redesign-skill"),
+      result.skills.includes("frontend-design"),
     `design-md-gallery must not be emitted alone; got skills=${result.skills.join(", ")} secondary=${result.secondarySkills.join(", ")}`,
   );
 }

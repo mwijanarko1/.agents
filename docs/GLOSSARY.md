@@ -27,6 +27,22 @@ Add terms in this format:
 - **Related Code**: `agent-policy.json` `output_economy`; `scripts/validate_agent_policy.py`
 - **Related Tests**: `tests/test_agent_validators.py`
 
+### Context Economy
+
+- **Meaning**: The policy that unknown large inputs and command outputs should be summarized, capped, or range-inspected before they enter agent context.
+- **Use When**: Reading large logs/data/repos, writing helper commands, maintaining handoffs, or deciding whether to compact a session.
+- **Avoid**: Using it to hide necessary evidence; preserve exact errors, code snippets, commands, and verification when they matter.
+- **Related Code**: `AGENTS.md`; `agent-policy.json` `context_economy`; `scripts/context_needle.py`; `scripts/validate_agent_policy.py`
+- **Related Tests**: `tests/test_agent_validators.py`
+
+### Needle Map
+
+- **Meaning**: A small, bounded summary of a larger source that identifies relevant files, rows, fields, errors, or ranges before deeper inspection.
+- **Use When**: Working with large files, logs, JSON/CSV data, or unknown repositories.
+- **Avoid**: Treating it as a replacement for exact source inspection when correctness depends on precise code or data.
+- **Related Code**: `scripts/context_needle.py`; `docs/CONTEXT_ECONOMY.md`
+- **Related Tests**: `tests/test_agent_validators.py`
+
 ### Useful Context
 
 - **Meaning**: Information that changes what the user or next agent can decide, verify, debug, or implement.

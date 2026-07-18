@@ -428,7 +428,7 @@ def validate_skill_routing_index(root: Path, index_path: Path) -> list[str]:
 
     canonical_names = {skill_dir.name for skill_dir in iter_skill_dirs(root / "skills")}
     indexed_names: set[str] = set()
-    secondary_only = {"design-md-gallery", "design-systems-reference", "soft-skill"}
+    secondary_only = {"design-md-gallery", "design-systems-reference"}
 
     for entry in skills:
         if not isinstance(entry, dict):

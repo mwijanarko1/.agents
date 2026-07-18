@@ -1,0 +1,8 @@
+interface:
+  display_name: "Dead Code Detector"
+  short_description: "Scan codebases for dead/unused code with language-aware heuristics, confidence levels, and safe non-destructive reporting."
+  brand_color: "#6C5CE7"
+  default_prompt: "Scan this project for dead code and generate a report."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,6 +1,6 @@
 ---
 name: swiftui-pro
-description: "Review SwiftUI code for correctness, maintainability, and performance."
+description: "Authoritative SwiftUI specialist: review/audit .swift views for correctness, modifiers, data flow, navigation, accessibility, HIG, and performance. Not the general iOS architecture baseline (use ios-development). Not ShipSwift recipes."
 license: MIT
 metadata:
   author: Paul Hudson

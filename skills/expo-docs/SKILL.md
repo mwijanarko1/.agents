@@ -1,9 +1,9 @@
 ---
 name: expo-docs
 description: >-
-  Search and consult official Expo documentation via their LLM-optimized endpoints.
-  Use when working on Expo projects, EAS configuration, React Native modules,
-  or when the user mentions Expo documentation.
+  Expo documentation lookup via docs.expo.dev LLM text endpoints (llms.txt family).
+  Use for Expo SDK/EAS/Router API facts only. For RN/Expo implementation patterns
+  use vercel-react-native-skills; for native Swift/iOS use ios-development.
 ---
 
 # Expo Docs

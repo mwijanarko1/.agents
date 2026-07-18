@@ -20,6 +20,7 @@ The important policy and execution files are concentrated in a small set of root
 - `scripts/session_store.py`: SQLite learning/session store with FTS5 search and LIKE fallback
 - `scripts/agent_memory.py`: curated `USER.md` / `MEMORY.md` store with injection scanning and fenced context rendering
 - `scripts/agent_doctor.py`: read-only health check that runs policy validation, tests, routing-index freshness, and map coverage
+- `scripts/context_needle.py`: bounded repo/file/log/JSON/CSV summary generator for context economy workflows
 - `scripts/docs_list.py`: lists and validates documentation `summary` / `read_when` routing metadata
 - `tools.md`: lazy-loaded catalog of local `.agents` helper commands
 - `docs/DOWNSTREAM_AGENTS_TEMPLATE.md`: pointer-style template for repo-local `AGENTS.md` files
@@ -34,7 +35,7 @@ The important policy and execution files are concentrated in a small set of root
 - `state/memory/`: curated memory files used for compact cross-session context
 - `docs/`: local architecture inventory for the shared root
 
-The shared policy also includes `output_economy`, the machine-readable contract for concise professional output. It keeps agent communication short without adopting gimmick voices or sacrificing precision for code, commands, errors, APIs, and verification.
+The shared policy includes `output_economy`, the machine-readable contract for concise professional output, and `context_economy`, the contract for pre-compacting large inputs, byte-capping unknown command output, and maintaining small handoffs. Together they reduce token burn without sacrificing precision for code, commands, errors, APIs, and verification.
 
 Peer roots such as `~/.cursor`, `~/.config/opencode`, and `~/.codex` symlink back to this root for their shared policy surface.
 
@@ -51,6 +52,7 @@ Peer roots such as `~/.cursor`, `~/.config/opencode`, and `~/.codex` symlink bac
 | [scripts/session_store.py](/Users/mikhail/.agents/scripts/session_store.py) | Stores searchable sessions and observations in SQLite |
 | [scripts/agent_memory.py](/Users/mikhail/.agents/scripts/agent_memory.py) | Manages curated local memory and fenced context blocks |
 | [scripts/agent_doctor.py](/Users/mikhail/.agents/scripts/agent_doctor.py) | Runs read-only shared-root health checks |
+| [scripts/context_needle.py](/Users/mikhail/.agents/scripts/context_needle.py) | Creates bounded needle maps for repos, files, logs, JSON, and CSV |
 | [scripts/docs_list.py](/Users/mikhail/.agents/scripts/docs_list.py) | Lists and validates docs routing metadata |
 | [tools.md](/Users/mikhail/.agents/tools.md) | Lazy-loaded helper command catalog |
 | [docs/DOWNSTREAM_AGENTS_TEMPLATE.md](/Users/mikhail/.agents/docs/DOWNSTREAM_AGENTS_TEMPLATE.md) | Pointer-style downstream `AGENTS.md` template |
@@ -60,7 +62,8 @@ Peer roots such as `~/.cursor`, `~/.config/opencode`, and `~/.codex` symlink bac
 | [schemas](/Users/mikhail/.agents/schemas) | JSON schemas for policy/manifests/learning records |
 | [manifests](/Users/mikhail/.agents/manifests) | Manifest metadata for sync, imported skill provenance, and generated skill routing |
 | [docs/CODEBASE_MAP.md](/Users/mikhail/.agents/docs/CODEBASE_MAP.md) | Shared-root architecture map |
-| [docs/GLOSSARY.md](/Users/mikhail/.agents/docs/GLOSSARY.md) | Shared terminology, including output economy terms |
+| [docs/GLOSSARY.md](/Users/mikhail/.agents/docs/GLOSSARY.md) | Shared terminology, including output/context economy terms |
+| [docs/CONTEXT_ECONOMY.md](/Users/mikhail/.agents/docs/CONTEXT_ECONOMY.md) | Token-saving context intake patterns, byte caps, and handoff template |
 
 ## Key Workflows
 
@@ -71,6 +74,7 @@ Peer roots such as `~/.cursor`, `~/.config/opencode`, and `~/.codex` symlink bac
 5. Edit canonical shared files in `~/.agents` first when the peer roots are symlinked.
 6. Re-run the validator after policy-surface changes.
 7. Preserve output economy rules when editing communication instructions: concise professional output, no gimmick voice, exact technical terms.
+8. Preserve context economy rules when editing tool workflows: pre-compact large inputs, byte-cap unknown command output, and keep handoffs tight.
 
 ## Known Risks
 

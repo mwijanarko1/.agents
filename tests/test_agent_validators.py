@@ -160,9 +160,9 @@ class AgentValidatorsTests(unittest.TestCase):
     def test_skill_routing_index_rejects_secondary_as_primary(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             root = Path(tmpdir)
-            skill_dir = root / "skills" / "soft-skill"
+            skill_dir = root / "skills" / "design-md-gallery"
             skill_dir.mkdir(parents=True, exist_ok=True)
-            (skill_dir / "SKILL.md").write_text("---\nname: soft-skill\ndescription: Polish\n---\n", encoding="utf-8")
+            (skill_dir / "SKILL.md").write_text("---\nname: design-md-gallery\ndescription: Gallery\n---\n", encoding="utf-8")
             manifests_dir = root / "manifests"
             manifests_dir.mkdir(parents=True, exist_ok=True)
             index_path = manifests_dir / "skill-routing-index.json"
@@ -174,9 +174,9 @@ class AgentValidatorsTests(unittest.TestCase):
                         "source_root": str(root / "skills"),
                         "skills": [
                             {
-                                "name": "soft-skill",
-                                "path": "skills/soft-skill/SKILL.md",
-                                "description": "Polish",
+                                "name": "design-md-gallery",
+                                "path": "skills/design-md-gallery/SKILL.md",
+                                "description": "Gallery",
                                 "category": "design",
                                 "priority": "primary",
                                 "tokens": {"frontmatter_chars": 10, "skill_chars": 10},

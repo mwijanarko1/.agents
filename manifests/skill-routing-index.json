@@ -1,63 +1,8 @@
 {
   "version": 1,
-  "generated_at": "2026-05-28T20:25:44Z",
+  "generated_at": "2026-07-17T23:13:16Z",
   "source_root": "/Users/mikhail/.agents/skills",
   "skills": [
-    {
-      "name": "add-3d-assets",
-      "path": "skills/add-3d-assets/SKILL.md",
-      "description": "Replace primitive 3D shapes with GLB models for Three.js games.",
-      "category": "utility",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 242,
-        "skill_chars": 8667
-      }
-    },
-    {
-      "name": "add-assets",
-      "path": "skills/add-assets/SKILL.md",
-      "description": "Replace geometric game shapes with pixel art sprites.",
-      "category": "utility",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 239,
-        "skill_chars": 5009
-      }
-    },
-    {
-      "name": "add-audio",
-      "path": "skills/add-audio/SKILL.md",
-      "description": "Add procedural music and sound effects to browser games.",
-      "category": "utility",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 231,
-        "skill_chars": 4006
-      }
-    },
-    {
-      "name": "add-component",
-      "path": "skills/add-component/SKILL.md",
-      "description": ">",
-      "category": "mobile",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 221,
-        "skill_chars": 2947
-      }
-    },
-    {
-      "name": "add-feature",
-      "path": "skills/add-feature/SKILL.md",
-      "description": "Add a gameplay mechanic to an existing browser game.",
-      "category": "utility",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 241,
-        "skill_chars": 4004
-      }
-    },
     {
       "name": "agent-delegation",
       "path": "skills/agent-delegation/SKILL.md",
@@ -66,29 +11,7 @@
       "priority": "utility",
       "tokens": {
         "frontmatter_chars": 98,
-        "skill_chars": 4788
-      }
-    },
-    {
-      "name": "ai-interaction-workflow",
-      "path": "skills/ai-interaction-workflow/SKILL.md",
-      "description": "Foundation workflow for execution discipline, reviews, and version control.",
-      "category": "foundation",
-      "priority": "foundation",
-      "tokens": {
-        "frontmatter_chars": 120,
-        "skill_chars": 6627
-      }
-    },
-    {
-      "name": "ai-regression-testing",
-      "path": "skills/ai-regression-testing/SKILL.md",
-      "description": "Regression testing strategies for AI-assisted development.",
-      "category": "utility",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 113,
-        "skill_chars": 11215
+        "skill_chars": 1199
       }
     },
     {
@@ -98,8 +21,8 @@
       "category": "utility",
       "priority": "utility",
       "tokens": {
-        "frontmatter_chars": 121,
-        "skill_chars": 6826
+        "frontmatter_chars": 119,
+        "skill_chars": 1472
       }
     },
     {
@@ -110,18 +33,7 @@
       "priority": "primary",
       "tokens": {
         "frontmatter_chars": 119,
-        "skill_chars": 5340
-      }
-    },
-    {
-      "name": "build-feature",
-      "path": "skills/build-feature/SKILL.md",
-      "description": ">",
-      "category": "mobile",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 205,
-        "skill_chars": 2526
+        "skill_chars": 1861
       }
     },
     {
@@ -136,80 +48,102 @@
       }
     },
     {
-      "name": "coding-standards",
-      "path": "skills/coding-standards/SKILL.md",
-      "description": "Universal engineering standards for naming, code style, documentation, and modularity.",
-      "category": "foundation",
-      "priority": "foundation",
-      "tokens": {
-        "frontmatter_chars": 122,
-        "skill_chars": 3055
-      }
-    },
-    {
-      "name": "context-budget",
-      "path": "skills/context-budget/SKILL.md",
-      "description": "Audit agent context consumption and recommend token savings.",
-      "category": "utility",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 108,
-        "skill_chars": 5175
-      }
-    },
-    {
       "name": "continuous-learning-v2",
       "path": "skills/continuous-learning-v2/SKILL.md",
       "description": "Maintain project-scoped learning observations, instincts, and memory.",
       "category": "utility",
       "priority": "utility",
       "tokens": {
-        "frontmatter_chars": 140,
-        "skill_chars": 12464
+        "frontmatter_chars": 138,
+        "skill_chars": 1747
       }
     },
     {
-      "name": "design-game",
-      "path": "skills/design-game/SKILL.md",
-      "description": "Improve visual polish and player experience for existing games.",
+      "name": "create-mwhs-khutbah",
+      "path": "skills/create-mwhs-khutbah/SKILL.md",
+      "description": "Create and manage khutbahs on the MWHS (mwhs.org.uk) admin dashboard using a macOS native dialog for credentials and the admin API via session cookie.",
       "category": "utility",
       "priority": "utility",
       "tokens": {
-        "frontmatter_chars": 245,
-        "skill_chars": 3296
+        "frontmatter_chars": 232,
+        "skill_chars": 2177
+      }
+    },
+    {
+      "name": "create-pi-package",
+      "path": "skills/create-pi-package/SKILL.md",
+      "description": "Create, test, and optionally publish Pi packages containing extensions, skills, prompt templates, or themes. Use when the user says make a Pi package, bundle Pi resources, publish to pi.dev/packages, or invokes /skill:create-pi-package.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 273,
+        "skill_chars": 2042
+      }
+    },
+    {
+      "name": "dead-code-detector",
+      "path": "skills/dead-code-detector/SKILL.md",
+      "description": "Scan codebases for dead/unused code \u2014 functions, types, imports, variables, exports, files \u2014 with language-aware heuristics, confidence levels, and safe reporting. No deletion without explicit approval.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 377,
+        "skill_chars": 1623
+      }
+    },
+    {
+      "name": "decision-capture",
+      "path": "skills/decision-capture/SKILL.md",
+      "description": "Extract project vision, preferences, constraints, and decisions from the user into README, docs, or ADRs through a short Q&A loop. Use when the user says brain-to-docs, extract the vision, document this project, capture decisions, or build out the docs.",
+      "category": "thinking",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 350,
+        "skill_chars": 1561
       }
     },
     {
       "name": "design-md-gallery",
       "path": "skills/design-md-gallery/SKILL.md",
-      "description": "Reference known product visual languages after a primary design skill.",
+      "description": "Secondary product visual-language reference only after frontend-design: match or borrow from known brands in the DESIGN.md gallery. Do not use alone; pair after frontend-design for greenfield or redesign polish.",
       "category": "design",
       "priority": "secondary",
       "tokens": {
-        "frontmatter_chars": 109,
-        "skill_chars": 2992
+        "frontmatter_chars": 250,
+        "skill_chars": 1301
       }
     },
     {
       "name": "design-systems-reference",
       "path": "skills/design-systems-reference/SKILL.md",
-      "description": "Reference design systems, accessibility guidance, and component docs.",
+      "description": "Secondary design reference only after frontend-design: design system tokens, component APIs, accessibility patterns, and licensing. Do not use alone for new UI; load for component libraries, docs, and a11y checks after frontend-design.",
       "category": "design",
       "priority": "secondary",
       "tokens": {
-        "frontmatter_chars": 115,
-        "skill_chars": 4012
+        "frontmatter_chars": 281,
+        "skill_chars": 1426
       }
     },
     {
-      "name": "documentation-lookup",
-      "path": "skills/documentation-lookup/SKILL.md",
-      "description": "Look up current library and framework documentation before implementation.",
+      "name": "ditto-clone",
+      "path": "skills/ditto-clone/SKILL.md",
+      "description": "Full-clone a public website into a runnable app via local Ditto. Use when the user asks to clone a site, recreate a page with near-parity code, or produce a Ditto app from a URL. Different from extract-design-md because this emits a runnable app, not only DESIGN.md.",
       "category": "utility",
       "priority": "utility",
       "tokens": {
-        "frontmatter_chars": 128,
-        "skill_chars": 4764
+        "frontmatter_chars": 297,
+        "skill_chars": 1619
+      }
+    },
+    {
+      "name": "effective-agent-skills",
+      "path": "skills/effective-agent-skills/SKILL.md",
+      "description": "Create, edit, review, or audit agent skills. Use for new/update skill work, SKILL.md review, skill not triggering, or skill stocktake/audit.",
+      "category": "triggered",
+      "priority": "reference",
+      "tokens": {
+        "frontmatter_chars": 184,
+        "skill_chars": 2044
       }
     },
     {
@@ -220,51 +154,62 @@
       "priority": "utility",
       "tokens": {
         "frontmatter_chars": 336,
-        "skill_chars": 10306
+        "skill_chars": 2302
       }
     },
     {
       "name": "eval-harness",
       "path": "skills/eval-harness/SKILL.md",
-      "description": "Formal evaluation framework for Claude Code sessions implementing eval-driven development (EDD) principles",
+      "description": "Local eval-driven development for agent behavior using deterministic project tests and hook fixtures.",
       "category": "utility",
       "priority": "utility",
       "tokens": {
-        "frontmatter_chars": 193,
-        "skill_chars": 6494
-      }
-    },
-    {
-      "name": "explore-recipes",
-      "path": "skills/explore-recipes/SKILL.md",
-      "description": "Browse available ShipSwift components and feature recipes.",
-      "category": "mobile",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 95,
-        "skill_chars": 2362
+        "frontmatter_chars": 145,
+        "skill_chars": 1675
       }
     },
     {
       "name": "expo-docs",
       "path": "skills/expo-docs/SKILL.md",
-      "description": ">-",
+      "description": "Expo documentation lookup via docs.expo.dev LLM text endpoints (llms.txt family). Use for Expo SDK/EAS/Router API facts only. For RN/Expo implementation patterns use vercel-react-native-skills; for native Swift/iOS use ios-development.",
       "category": "mobile",
       "priority": "primary",
       "tokens": {
-        "frontmatter_chars": 241,
-        "skill_chars": 2476
+        "frontmatter_chars": 273,
+        "skill_chars": 2508
+      }
+    },
+    {
+      "name": "extract-design-md",
+      "path": "skills/extract-design-md/SKILL.md",
+      "description": "Extract a Stitch-compatible DESIGN.md from a public website via Ditto. Use when the user asks to extract DESIGN.md, design tokens, or an agent-readable design doc from a URL. Different from cloning because it writes only the design-system brief, not a runnable app.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 302,
+        "skill_chars": 1275
+      }
+    },
+    {
+      "name": "extract-mosque-pdf-vision",
+      "path": "skills/extract-mosque-pdf-vision/SKILL.md",
+      "description": "Extract mosque prayer timetable JSON files from a user-provided PDF using a vision model. Use when the source is a PDF/image timetable and the user wants vision extraction instead of pdftotext/OCR.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 295,
+        "skill_chars": 1522
       }
     },
     {
       "name": "extract-mosque-prayer-times",
       "path": "skills/extract-mosque-prayer-times/SKILL.md",
-      "description": "Extract full-year structured prayer times (adhan + iqamah) from a mosque website and seed to Convex dev AND production databases. Data must come from pure API/endpoints only \u2014 no HTML scraping, no OCR, no computed/calculated times.",
+      "description": "Extract full-year structured prayer times (adhan + iqamah) from a mosque website and seed to Convex dev AND production databases. Sources: APIs/endpoints, CSV, and parseable HTML/DOM only \u2014 no PDF/image OCR and no computed/calculated times.",
       "category": "utility",
       "priority": "utility",
       "tokens": {
-        "frontmatter_chars": 310,
-        "skill_chars": 6511
+        "frontmatter_chars": 319,
+        "skill_chars": 2664
       }
     },
     {
@@ -275,7 +220,7 @@
       "priority": "utility",
       "tokens": {
         "frontmatter_chars": 237,
-        "skill_chars": 2756
+        "skill_chars": 975
       }
     },
     {
@@ -285,8 +230,19 @@
       "category": "utility",
       "priority": "utility",
       "tokens": {
-        "frontmatter_chars": 94,
-        "skill_chars": 5190
+        "frontmatter_chars": 92,
+        "skill_chars": 1148
+      }
+    },
+    {
+      "name": "frontend-design",
+      "path": "skills/frontend-design/SKILL.md",
+      "description": "Primary web frontend design skill for UI design, visual redesign, landing pages, typography, color, layout, motion, and polish. Use for greenfield screens, redesigns, anti-AI-slop audits, and reference-DNA studies. Pair with frontend-web-development for implementation.",
+      "category": "design",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 306,
+        "skill_chars": 1924
       }
     },
     {
@@ -296,261 +252,154 @@
       "category": "web",
       "priority": "primary",
       "tokens": {
-        "frontmatter_chars": 90,
-        "skill_chars": 14210
+        "frontmatter_chars": 88,
+        "skill_chars": 1686
       }
     },
     {
-      "name": "game-3d-assets",
-      "path": "skills/game-3d-assets/SKILL.md",
-      "description": "Find, download, and integrate GLB/GLTF assets into Three.js games.",
-      "category": "game",
+      "name": "grill-me",
+      "path": "skills/grill-me/SKILL.md",
+      "description": "Pressure-test a plan or design by asking one sharp question at a time, recommending an answer, and inspecting the code instead of asking when the code can answer. Use when the user says grill me, stress-test this, challenge this plan, or pressure-test my design.",
+      "category": "thinking",
       "priority": "utility",
       "tokens": {
-        "frontmatter_chars": 259,
-        "skill_chars": 20617
+        "frontmatter_chars": 351,
+        "skill_chars": 1237
       }
     },
     {
-      "name": "game-architecture",
-      "path": "skills/game-architecture/SKILL.md",
-      "description": "Design browser game systems and module architecture.",
-      "category": "game",
-      "priority": "utility",
+      "name": "ios-app-intents",
+      "path": "skills/ios-app-intents/SKILL.md",
+      "description": "Design App Intents, app entities, and App Shortcuts for iOS system surfaces. Use when exposing app actions or content to Shortcuts, Siri, Spotlight, widgets, or controls.",
+      "category": "mobile",
+      "priority": "primary",
       "tokens": {
-        "frontmatter_chars": 255,
-        "skill_chars": 6210
-      }
-    },
-    {
-      "name": "game-assets",
-      "path": "skills/game-assets/SKILL.md",
-      "description": "Create pixel art sprites and animated visual entities for browser games.",
-      "category": "game",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 252,
-        "skill_chars": 10845
-      }
-    },
-    {
-      "name": "game-audio",
-      "path": "skills/game-audio/SKILL.md",
-      "description": "Add procedural music and SFX to browser games with Web Audio API.",
-      "category": "game",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 239,
-        "skill_chars": 6584
-      }
-    },
-    {
-      "name": "game-deploy",
-      "path": "skills/game-deploy/SKILL.md",
-      "description": "Deploy browser games to here.now, GitHub Pages, or similar hosting.",
-      "category": "game",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 349,
-        "skill_chars": 7528
-      }
-    },
-    {
-      "name": "game-designer",
-      "path": "skills/game-designer/SKILL.md",
-      "description": "Improve game UI, atmosphere, juice, animation, and visual polish.",
-      "category": "game",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 249,
-        "skill_chars": 15536
-      }
-    },
-    {
-      "name": "game-qa",
-      "path": "skills/game-qa/SKILL.md",
-      "description": "Test browser games with Playwright for visuals, gameplay, and performance.",
-      "category": "game",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 310,
-        "skill_chars": 8291
-      }
-    },
-    {
-      "name": "gateguard",
-      "path": "skills/gateguard/SKILL.md",
-      "description": "Force concrete investigation before risky edits or commands.",
-      "category": "triggered",
-      "priority": "reference",
-      "tokens": {
-        "frontmatter_chars": 109,
-        "skill_chars": 4523
-      }
-    },
-    {
-      "name": "improve-game",
-      "path": "skills/improve-game/SKILL.md",
-      "description": "Analyze and implement the highest-impact improvement for an existing game.",
-      "category": "utility",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 248,
-        "skill_chars": 9702
+        "frontmatter_chars": 205,
+        "skill_chars": 4613
       }
     },
     {
       "name": "ios-app-store-compliance",
       "path": "skills/ios-app-store-compliance/SKILL.md",
-      "description": ">",
+      "description": "Explicit App Store / TestFlight submission and compliance work only: preflight scans, privacy manifests, entitlements, guideline rejection risks. Not general iOS feature development. Use when the user asks for App Store review prep, GREENLIT/preflight, or compliance fixes on Apple platform apps (Swift, ObjC, RN, Expo).\n",
       "category": "mobile",
       "priority": "primary",
       "tokens": {
-        "frontmatter_chars": 695,
-        "skill_chars": 11054
+        "frontmatter_chars": 631,
+        "skill_chars": 10992
+      }
+    },
+    {
+      "name": "ios-debugger-agent",
+      "path": "skills/ios-debugger-agent/SKILL.md",
+      "description": "Build, run, and debug iOS apps on Simulator with XcodeBuildMCP. Use when launching an app, inspecting simulator UI or logs, or diagnosing runtime behavior.",
+      "category": "mobile",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 193,
+        "skill_chars": 2643
       }
     },
     {
       "name": "ios-development",
       "path": "skills/ios-development/SKILL.md",
-      "description": "Mobile app development standards for Swift (iOS).",
+      "description": "Local-architecture-first Swift/iOS platform baseline for .swift and Xcode projects: feature layout, MVVM/@Observable, DI, SPM, security defaults. Not a specialist audit. Hand off concurrency, SwiftUI review, SwiftData, testing, and App Store work to specialists.",
       "category": "mobile",
       "priority": "primary",
       "tokens": {
-        "frontmatter_chars": 84,
-        "skill_chars": 4640
+        "frontmatter_chars": 305,
+        "skill_chars": 2460
       }
     },
     {
-      "name": "make-game",
-      "path": "skills/make-game/SKILL.md",
-      "description": "Build a complete browser game from concept through deploy pipeline.",
-      "category": "game",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 283,
-        "skill_chars": 21726
-      }
-    },
-    {
-      "name": "meshyai",
-      "path": "skills/meshyai/SKILL.md",
-      "description": "Generate custom 3D models with Meshy AI for Three.js games.",
-      "category": "utility",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 367,
-        "skill_chars": 13097
-      }
-    },
-    {
-      "name": "monetize-game",
-      "path": "skills/monetize-game/SKILL.md",
-      "description": "Register a browser game on Play.fun and integrate monetization rewards.",
-      "category": "utility",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 379,
-        "skill_chars": 12689
-      }
-    },
-    {
-      "name": "output-skill",
-      "path": "skills/output-skill/SKILL.md",
-      "description": "Generate complete unabridged outputs and avoid placeholder code.",
-      "category": "utility",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 98,
-        "skill_chars": 2434
-      }
-    },
-    {
-      "name": "phaser",
-      "path": "skills/phaser/SKILL.md",
-      "description": ">",
-      "category": "game",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 397,
-        "skill_chars": 17612
-      }
-    },
-    {
-      "name": "promo-video",
-      "path": "skills/promo-video/SKILL.md",
-      "description": ">",
-      "category": "utility",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 440,
-        "skill_chars": 12948
-      }
-    },
-    {
-      "name": "qa-game",
-      "path": "skills/qa-game/SKILL.md",
-      "description": "Add Playwright QA tests for browser games.",
-      "category": "utility",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 225,
-        "skill_chars": 6212
-      }
-    },
-    {
-      "name": "quick-game",
-      "path": "skills/quick-game/SKILL.md",
-      "description": "Rapidly scaffold a playable browser game prototype.",
-      "category": "game",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 240,
-        "skill_chars": 5738
-      }
-    },
-    {
-      "name": "record-promo",
-      "path": "skills/record-promo/SKILL.md",
-      "description": "Record autonomous high-FPS gameplay footage for promotion.",
-      "category": "utility",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 247,
-        "skill_chars": 2783
-      }
-    },
-    {
-      "name": "redesign-skill",
-      "path": "skills/redesign-skill/SKILL.md",
-      "description": "Redesign an existing interface without rewriting the product.",
-      "category": "design",
+      "name": "ios-ettrace-performance",
+      "path": "skills/ios-ettrace-performance/SKILL.md",
+      "description": "Capture and interpret iOS Simulator ETTrace profiles. Use when profiling launch or runtime latency, comparing traces, or finding CPU-heavy stacks.",
+      "category": "mobile",
       "priority": "primary",
       "tokens": {
-        "frontmatter_chars": 97,
-        "skill_chars": 15380
+        "frontmatter_chars": 189,
+        "skill_chars": 8832
       }
     },
     {
-      "name": "review-game",
-      "path": "skills/review-game/SKILL.md",
-      "description": "Review browser game code for architecture, performance, and best practices.",
+      "name": "ios-memgraph-leaks",
+      "path": "skills/ios-memgraph-leaks/SKILL.md",
+      "description": "Capture and inspect iOS leaks and memgraphs. Use when debugging leaked objects, retain cycles, memory growth, or before/after leak evidence.",
+      "category": "mobile",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 178,
+        "skill_chars": 3953
+      }
+    },
+    {
+      "name": "ios-simulator-browser",
+      "path": "skills/ios-simulator-browser/SKILL.md",
+      "description": "DISABLED. Do not use. iOS Simulator browser mirroring is disabled until serve-sim is version-pinned. Refuse all serve-sim / npx @latest execution. Use ios-debugger-agent for simulator build/run/UI instead.",
+      "category": "mobile",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 254,
+        "skill_chars": 1095
+      },
+      "avoid_when": [
+        "auto_route"
+      ]
+    },
+    {
+      "name": "islam-wiki",
+      "path": "skills/islam-wiki/SKILL.md",
+      "description": "Islamic research routing for hadith grading, ICMA, and turath/shamela text retrieval. Use when checking isnad reliability, grading hadith, doing isnad-cum-matn analysis, or searching/citing classical Arabic heritage texts. Load the matching subskill only.",
       "category": "utility",
       "priority": "utility",
       "tokens": {
-        "frontmatter_chars": 270,
-        "skill_chars": 3964
+        "frontmatter_chars": 285,
+        "skill_chars": 809
+      }
+    },
+    {
+      "name": "job-apply",
+      "path": "skills/job-apply/SKILL.md",
+      "description": "Search public job APIs from ~/Documents/CV/cv-data.json, persist targets to SQLite, tailor a one-page CV via Cursor agent in ~/Documents/CV, find hiring contacts, and cold-outreach by email via Himalaya (not job-board or ATS form apply). Use when the user says job-apply, find jobs, cold outreach, email hiring manager, tailor my CV, find hiring manager, log application, or job search from my CV.\n",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 511,
+        "skill_chars": 8079
+      }
+    },
+    {
+      "name": "playwright-browser",
+      "path": "skills/playwright-browser/SKILL.md",
+      "description": "Drive a real browser with Playwright using Helium as the Chromium binary. Use when the user wants Playwright browser automation, open/search a site, YouTube search, click-through flows, or headed browser control. Different from agent_browser because this uses Playwright + Helium, not the pi-agent-browser-native tool.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 545,
+        "skill_chars": 1683
+      }
+    },
+    {
+      "name": "quran-revision",
+      "path": "skills/quran-revision/SKILL.md",
+      "description": "Quran revision / muraja'ah sessions via the local Al Muraja'ah CLI. Use when the user says Quran revision, murajaah, muraja'ah, hifz review, cold test, revise from memory, revision session, or asks what is due today for Quran revision. Different from islam-wiki because this operates personal revision data through the CLI, not hadith/text research.",
+      "category": "utility",
+      "priority": "utility",
+      "tokens": {
+        "frontmatter_chars": 395,
+        "skill_chars": 4148
       }
     },
     {
       "name": "search-first",
       "path": "skills/search-first/SKILL.md",
-      "description": "Research existing tools, libraries, and patterns before custom code.",
+      "description": "Research existing tools, patterns, and current library docs before writing custom code.",
       "category": "triggered",
       "priority": "reference",
       "tokens": {
-        "frontmatter_chars": 114,
-        "skill_chars": 5597
+        "frontmatter_chars": 121,
+        "skill_chars": 1653
       }
     },
     {
@@ -561,106 +410,131 @@
       "priority": "reference",
       "tokens": {
         "frontmatter_chars": 153,
-        "skill_chars": 2792
+        "skill_chars": 1839
       }
     },
     {
-      "name": "skill-stocktake",
-      "path": "skills/skill-stocktake/SKILL.md",
-      "description": "Audit Claude skills and commands for quality.",
-      "category": "utility",
-      "priority": "utility",
+      "name": "shipswift-recipes",
+      "path": "skills/shipswift-recipes/SKILL.md",
+      "description": "Opt-in ShipSwift recipe workflow only. Use when the user explicitly asks for ShipSwift, recipe browsing, or names a ShipSwift component/feature. Modes: browse, add-component, build-feature. Not for general iOS/SwiftUI work.",
+      "category": "mobile",
+      "priority": "reference",
       "tokens": {
-        "frontmatter_chars": 94,
-        "skill_chars": 7655
-      }
-    },
-    {
-      "name": "soft-skill",
-      "path": "skills/soft-skill/SKILL.md",
-      "description": "Add premium visual polish after a primary design skill.",
-      "category": "design",
-      "priority": "secondary",
-      "tokens": {
-        "frontmatter_chars": 87,
-        "skill_chars": 10713
-      }
+        "frontmatter_chars": 268,
+        "skill_chars": 2381
+      },
+      "avoid_when": [
+        "implicit_mobile"
+      ]
     },
     {
       "name": "strategic-compact",
       "path": "skills/strategic-compact/SKILL.md",
-      "description": "Suggest context compaction at logical task phase boundaries.",
-      "category": "utility",
-      "priority": "utility",
+      "description": "Compact context at phase boundaries, write handoffs, and audit context budget.",
+      "category": "triggered",
+      "priority": "reference",
       "tokens": {
-        "frontmatter_chars": 111,
-        "skill_chars": 5151
+        "frontmatter_chars": 117,
+        "skill_chars": 1899
       }
     },
     {
       "name": "swift-concurrency-pro",
       "path": "skills/swift-concurrency-pro/SKILL.md",
-      "description": "Review Swift concurrency code for correctness and modern async APIs.",
+      "description": "Authoritative Swift concurrency specialist: async/await, actors, Task, MainActor, Sendable, structured concurrency, cancellation. Use for Swift 6 concurrency audits/fixes only\u2014not general iOS architecture (ios-development).",
       "category": "mobile",
-      "priority": "utility",
+      "priority": "primary",
       "tokens": {
-        "frontmatter_chars": 173,
-        "skill_chars": 5397
+        "frontmatter_chars": 328,
+        "skill_chars": 5552
       }
     },
     {
       "name": "swift-testing-pro",
       "path": "skills/swift-testing-pro/SKILL.md",
-      "description": "Write and review Swift Testing code with modern APIs.",
+      "description": "Authoritative Swift Testing specialist: @Test, #expect, async tests, XCTest migration. Use when writing or reviewing Swift test suites\u2014not general app architecture (ios-development).",
       "category": "mobile",
-      "priority": "utility",
+      "priority": "primary",
       "tokens": {
-        "frontmatter_chars": 154,
-        "skill_chars": 4194
+        "frontmatter_chars": 283,
+        "skill_chars": 4323
       }
     },
     {
       "name": "swiftdata-pro",
       "path": "skills/swiftdata-pro/SKILL.md",
-      "description": "Write and review SwiftData code with modern APIs.",
+      "description": "Authoritative SwiftData specialist: @Model, predicates, ModelContext, persistence, CloudKit. Use for SwiftData/storage work only\u2014not general iOS architecture (ios-development).",
       "category": "mobile",
-      "priority": "utility",
+      "priority": "primary",
       "tokens": {
-        "frontmatter_chars": 146,
-        "skill_chars": 3618
+        "frontmatter_chars": 273,
+        "skill_chars": 3745
+      }
+    },
+    {
+      "name": "swiftui-liquid-glass",
+      "path": "skills/swiftui-liquid-glass/SKILL.md",
+      "description": "Implement and review iOS 26+ SwiftUI Liquid Glass UI. Use when adopting Liquid Glass or checking its correctness, performance, and design fit.",
+      "category": "mobile",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 182,
+        "skill_chars": 3745
+      }
+    },
+    {
+      "name": "swiftui-performance-audit",
+      "path": "skills/swiftui-performance-audit/SKILL.md",
+      "description": "Audit SwiftUI runtime performance from code first. Use when diagnosing slow rendering, janky scrolling, expensive updates, or profiling needs.",
+      "category": "mobile",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 187,
+        "skill_chars": 5012
       }
     },
     {
       "name": "swiftui-pro",
       "path": "skills/swiftui-pro/SKILL.md",
-      "description": "Review SwiftUI code for correctness, maintainability, and performance.",
+      "description": "Authoritative SwiftUI specialist: review/audit .swift views for correctness, modifiers, data flow, navigation, accessibility, HIG, and performance. Not the general iOS architecture baseline (use ios-development). Not ShipSwift recipes.",
       "category": "mobile",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 165,
-        "skill_chars": 4050
-      }
-    },
-    {
-      "name": "taste-skill",
-      "path": "skills/taste-skill/SKILL.md",
-      "description": "Create premium greenfield frontend UI and landing pages.",
-      "category": "design",
       "priority": "primary",
       "tokens": {
-        "frontmatter_chars": 89,
-        "skill_chars": 21682
+        "frontmatter_chars": 330,
+        "skill_chars": 4215
       }
     },
     {
-      "name": "tdd-workflow",
-      "path": "skills/tdd-workflow/SKILL.md",
-      "description": "Apply test-driven development for features, fixes, and refactors.",
+      "name": "swiftui-ui-patterns",
+      "path": "skills/swiftui-ui-patterns/SKILL.md",
+      "description": "Build and refactor SwiftUI UI with component patterns and examples. Use when shaping navigation, state, layouts, controls, or screen composition.",
+      "category": "mobile",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 184,
+        "skill_chars": 7325
+      }
+    },
+    {
+      "name": "swiftui-view-refactor",
+      "path": "skills/swiftui-view-refactor/SKILL.md",
+      "description": "Refactor SwiftUI view files into stable, testable structure. Use when splitting large views, tightening data flow, or cleaning Observation ownership.",
+      "category": "mobile",
+      "priority": "primary",
+      "tokens": {
+        "frontmatter_chars": 190,
+        "skill_chars": 7880
+      }
+    },
+    {
+      "name": "t3mp3st",
+      "path": "skills/t3mp3st/SKILL.md",
+      "description": "Use T3MP3ST for authorized, evidence-first security research workflows, local lab demos, and safe setup guidance. Different from security-vulnerability-mitigation because it wraps an external offensive-security framework rather than general secure-coding advice.",
       "category": "triggered",
       "priority": "reference",
       "tokens": {
-        "frontmatter_chars": 111,
-        "skill_chars": 12830
+        "frontmatter_chars": 289,
+        "skill_chars": 1853
       }
     },
     {
@@ -670,96 +544,30 @@
       "category": "review_audit",
       "priority": "primary",
       "tokens": {
-        "frontmatter_chars": 93,
-        "skill_chars": 10538
+        "frontmatter_chars": 91,
+        "skill_chars": 1740
       }
     },
     {
       "name": "testing-strategies",
       "path": "skills/testing-strategies/SKILL.md",
-      "description": "Testing philosophy and implementation details for Unit, Integration, and E2E testing.",
+      "description": "Unit, integration, and E2E testing plus TDD and AI-regression guards for behavior changes.",
       "category": "foundation",
       "priority": "foundation",
       "tokens": {
-        "frontmatter_chars": 123,
-        "skill_chars": 2663
-      }
-    },
-    {
-      "name": "thermo-nuclear-code-quality-review",
-      "path": "skills/thermo-nuclear-code-quality-review/SKILL.md",
-      "description": "Run an extremely strict maintainability review for abstraction quality, giant files, and spaghetti-condition growth. Use for a thermo-nuclear code quality review, thermonuclear review, deep code quality audit, or especially harsh maintainability review.",
-      "category": "utility",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 437,
-        "skill_chars": 12536
-      }
-    },
-    {
-      "name": "thermo-nuclear-review",
-      "path": "skills/thermo-nuclear-review/SKILL.md",
-      "description": "Comprehensive security and correctness audit of a branch's changes. Use for thermo nuclear, thermonuclear, or deep review requests, or branch/PR diff audits focused on bugs, breaking changes, security issues, devex regressions, and feature-gate leaks.",
-      "category": "utility",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 422,
-        "skill_chars": 4642
-      }
-    },
-    {
-      "name": "thermos",
-      "path": "skills/thermos/SKILL.md",
-      "description": "Launch both thermo-nuclear review subagents in parallel, then synthesize their findings. Use for thermos, double thermo review, or combined bug/security and code-quality branch audits.",
-      "category": "utility",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 343,
-        "skill_chars": 2150
-      }
-    },
-    {
-      "name": "threejs-game",
-      "path": "skills/threejs-game/SKILL.md",
-      "description": "Build 3D browser games with Three.js architecture patterns.",
-      "category": "game",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 239,
-        "skill_chars": 13896
-      }
-    },
-    {
-      "name": "turath-research",
-      "path": "skills/turath-research/SKILL.md",
-      "description": "Search and cite Islamic and Arabic heritage texts with turath-sdk.",
-      "category": "utility",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 103,
-        "skill_chars": 9003
+        "frontmatter_chars": 130,
+        "skill_chars": 2429
       }
     },
     {
       "name": "update-agents",
       "path": "skills/update-agents/SKILL.md",
-      "description": "Check and update pi, cmd (VS Code CLI), and codex coding agents. Saves and restores npmrc guardrails around the update. Run /skill:update-agents to execute.",
+      "description": "Check and update pi, cmd (VS Code CLI), codex, hermes, devin, and claude (Claude Code) coding agents. Saves and restores npmrc guardrails around the update. Run /skill:update-agents to execute.",
       "category": "utility",
       "priority": "utility",
       "tokens": {
-        "frontmatter_chars": 189,
-        "skill_chars": 1503
-      }
-    },
-    {
-      "name": "use-template",
-      "path": "skills/use-template/SKILL.md",
-      "description": "Clone a browser game template as a starting point.",
-      "category": "utility",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 244,
-        "skill_chars": 4556
+        "frontmatter_chars": 226,
+        "skill_chars": 3016
       }
     },
     {
@@ -769,8 +577,8 @@
       "category": "web",
       "priority": "primary",
       "tokens": {
-        "frontmatter_chars": 169,
-        "skill_chars": 2625
+        "frontmatter_chars": 167,
+        "skill_chars": 1279
       }
     },
     {
@@ -780,19 +588,19 @@
       "category": "web",
       "priority": "primary",
       "tokens": {
-        "frontmatter_chars": 168,
-        "skill_chars": 5898
+        "frontmatter_chars": 166,
+        "skill_chars": 1537
       }
     },
     {
       "name": "vercel-react-native-skills",
       "path": "skills/vercel-react-native-skills/SKILL.md",
-      "description": "No description provided.",
+      "description": "Authoritative React Native/Expo implementation rules (lists, animation, navigation, UI, monorepo). Use for RN/Expo app code only\u2014not native Swift/iOS (ios-development) and not Expo docs lookup alone (expo-docs).\n",
       "category": "mobile",
       "priority": "primary",
       "tokens": {
-        "frontmatter_chars": 408,
-        "skill_chars": 4556
+        "frontmatter_chars": 324,
+        "skill_chars": 4472
       }
     },
     {
@@ -802,8 +610,8 @@
       "category": "triggered",
       "priority": "reference",
       "tokens": {
-        "frontmatter_chars": 112,
-        "skill_chars": 2665
+        "frontmatter_chars": 110,
+        "skill_chars": 1253
       }
     },
     {
@@ -813,30 +621,19 @@
       "category": "review_audit",
       "priority": "primary",
       "tokens": {
-        "frontmatter_chars": 186,
-        "skill_chars": 1111
+        "frontmatter_chars": 184,
+        "skill_chars": 1448
       }
     },
     {
       "name": "website-compliance",
       "path": "skills/website-compliance/SKILL.md",
-      "description": "No description provided.",
+      "description": "Global website compliance best practices covering privacy, accessibility, security, and consumer protection. Use when auditing or building websites with user data collection, e-commerce features, or international traffic.",
       "category": "review_audit",
       "priority": "primary",
       "tokens": {
-        "frontmatter_chars": 329,
-        "skill_chars": 3906
-      }
-    },
-    {
-      "name": "worldlabs",
-      "path": "skills/worldlabs/SKILL.md",
-      "description": "Generate photorealistic 3D worlds with World Labs Marble API.",
-      "category": "utility",
-      "priority": "utility",
-      "tokens": {
-        "frontmatter_chars": 375,
-        "skill_chars": 13586
+        "frontmatter_chars": 259,
+        "skill_chars": 2046
       }
     }
   ]
