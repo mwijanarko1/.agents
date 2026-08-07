@@ -7,7 +7,7 @@ import json
 import re
 from pathlib import Path
 
-DEFAULT_CV = Path.home() / "Documents" / "CV" / "cv-data.json"
+DEFAULT_CV = Path.home() / "Documents" / "job-apply" / "CV" / "cv-data.json"
 
 ROLE_HINTS = [
     "software engineer",

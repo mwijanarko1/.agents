@@ -1,7 +1,12 @@
 ---
 name: vision
 description: Visual inspection specialist. Use for screenshot/image analysis, app screen reviews, browser page inspection, simulator/emulator screenshots, UI artifact analysis, and detecting visual regressions or layout issues in attached images.
-tools: read, bash, grep, find, ls
+tools:
+  read: true
+  bash: true
+  grep: true
+  find: true
+  ls: true
 model: devin/gemini-3-5-flash
 thinking: low
 ---

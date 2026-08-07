@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Search free public job APIs. No LinkedIn apply automation."""
+"""Search free public job APIs. Attach apply_channel for routing (email|web|linkedin)."""
 from __future__ import annotations
 
 import argparse
@@ -17,6 +17,8 @@ from pathlib import Path
 # Local import: same scripts/ dir
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from db import DEFAULT_DB, record_search  # noqa: E402
+from detect_apply_channel import detect_apply_channel  # noqa: E402
+from scoring_lib import JOB_APPLY_ROOT, load_yaml, score_job  # noqa: E402
 
 UA = "job-apply-skill/1.0 (+local personal use)"
 
@@ -56,28 +58,6 @@ def norm(
         "salary": salary or "",
         "remote": remote,
     }
-
-
-def score(job: dict, terms: list[str]) -> float:
-    title = (job.get("title") or "").lower()
-    loc = (job.get("location") or "").lower()
-    desc = (job.get("description") or "").lower()
-    blob = f"{title} {job.get('company','')} {loc} {desc}".lower()
-    if not terms:
-        base = 0.0
-    else:
-        # Title hits count 3x description hits
-        title_hits = sum(1 for t in terms if t.lower() in title)
-        other_hits = sum(1 for t in terms if t.lower() in blob and t.lower() not in title)
-        base = (3 * title_hits + other_hits) / max(len(terms), 1)
-    # Soft boosts for junior/grad; soft penalty for clearly senior-only titles
-    if any(k in title for k in ("junior", "graduate", "grad ", "entry", "intern")):
-        base += 0.35
-    if any(k in title for k in ("senior", "staff", "principal", "director", "lead ")):
-        base -= 0.25
-    if any(k in loc for k in ("united kingdom", "uk", "london", "remote", "europe", "emea")):
-        base += 0.1
-    return max(base, 0.0)
 
 
 def search_remoteok(query: str) -> list[dict]:
@@ -259,17 +239,31 @@ def main() -> int:
     p.add_argument("--country", default="gb", help="Adzuna country code (gb, us, ...)")
     p.add_argument("--location", default="United Kingdom")
     p.add_argument("--limit", type=int, default=25)
-    p.add_argument("--terms", default="", help="Comma terms for ranking (from CV skills)")
+    p.add_argument("--terms", default="", help="Comma terms for ranking (override scoring.yaml stack_terms)")
+    p.add_argument(
+        "--scoring",
+        type=Path,
+        default=JOB_APPLY_ROOT / "config" / "scoring.yaml",
+        help="Path to scoring.yaml",
+    )
     p.add_argument("--out", type=Path, help="Write JSON results")
     p.add_argument("--json", action="store_true", help="Print JSON to stdout")
     p.add_argument("--db", type=Path, default=DEFAULT_DB, help="SQLite path")
     p.add_argument("--no-db", action="store_true", help="Skip SQLite write")
     p.add_argument("--run-dir", default="", help="Optional run folder to store on search row")
+    p.add_argument(
+        "--include-skipped",
+        action="store_true",
+        help="Keep hard-excluded / below-threshold jobs in results (still scored)",
+    )
     args = p.parse_args()
 
     queries = args.query or ["software engineer typescript react"]
     sources = [s.strip() for s in args.sources.split(",") if s.strip()]
+    cfg = load_yaml(args.scoring) if args.scoring else load_yaml()
     rank_terms = [t.strip() for t in args.terms.split(",") if t.strip()]
+    if not rank_terms:
+        rank_terms = list(cfg.get("stack_terms") or [])
     if not rank_terms:
         rank_terms = re.split(r"\s+", " ".join(queries))
 
@@ -296,8 +290,29 @@ def main() -> int:
                 jobs.append(j)
 
     jobs = dedupe(jobs)
+    scored: list[dict] = []
     for j in jobs:
-        j["score"] = round(score(j, rank_terms), 3)
+        result = score_job(j, terms=rank_terms, cfg=cfg)
+        j["score"] = result["score"]
+        j["action"] = result["action"]
+        j["signals"] = result["signals"]
+        j["excluded"] = result["excluded"]
+        ch = detect_apply_channel(
+            url=j.get("url") or "",
+            description=j.get("description") or "",
+            title=j.get("title") or "",
+            source=j.get("source") or "",
+        )
+        j["apply_channel"] = ch["channel"]
+        j["apply_channel_confidence"] = ch["confidence"]
+        j["apply_channel_reason"] = ch["reason"]
+        j["apply_channel_signals"] = ch.get("signals") or []
+        if ch.get("apply_email"):
+            j["apply_email"] = ch["apply_email"]
+        if not args.include_skipped and result["action"] == "skip":
+            continue
+        scored.append(j)
+    jobs = scored
     jobs.sort(key=lambda j: (-j["score"], j["company"].lower(), j["title"].lower()))
     jobs = jobs[: args.limit]
 
@@ -312,6 +327,8 @@ def main() -> int:
         "location": args.location,
         "country": args.country,
         "terms": ",".join(rank_terms),
+        "scoring": str(args.scoring),
+        "thresholds": (cfg.get("thresholds") if cfg else None),
         "count": len(jobs),
         "errors": errors,
         "jobs": jobs,

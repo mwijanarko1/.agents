@@ -31,7 +31,11 @@ Ashby:      https://api.ashbyhq.com/posting-api/job-board/{name}
 
 These list that company's open roles only — not a global search.
 
-## Not available
+## Apply channel (not an API)
+
+Search attaches `apply_channel` via `detect_apply_channel.py` (URL host + listing text). Apply itself is email (Himalaya) or browser form (`apply-flow.md`), not a LinkedIn/Indeed public apply API.
+
+## Not available as public APIs
 
 - LinkedIn jobseeker search/apply API
 - Indeed public jobseeker API

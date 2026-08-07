@@ -9,9 +9,9 @@ Parent skill. Load one subskill, not both by default.
 
 | Need | Load |
 |---|---|
-| Narrator reliability, isnad grading | `hadith-grading/SKILL.md` |
-| ICMA / transmission complex / common link / dating circulation | `icma/SKILL.md` |
-| Search/cite turath/shamela texts via nusus | `turath-research/SKILL.md` |
+| Narrator reliability, isnad grading — **Shamela-first** jarh/taʿdīl (`shamela.ws/narrator/{ID}`); then Sahih Mikhail if ≥3 Companions **each** ≥90% | `hadith-grading/SKILL.md` |
+| ICMA / transmission complex / common link / dating circulation (**requires** per-chain grading; then Sahih Mikhail check) | `icma/SKILL.md` |
+| Search/cite turath texts via nusus CLI/SDK | `turath-research/SKILL.md` |
 
 Paths are under this folder:
 

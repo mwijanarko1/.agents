@@ -1,132 +1,156 @@
 ---
 name: turath-research
-description: "Search and cite Islamic and Arabic heritage texts from turath/shamela with nusus sdk."
+description: "Search and cite Islamic and Arabic heritage texts from turath/shamela with nusus (CLI + SDK)."
 ---
 
 # Turath Research
 
-Use this skill when the user asks an islamic question (fiqh, tafsir, hadith, biography, book, citation, or classical-source research question and wants sourced retrieval from Turath.
+Use this skill when the user asks an Islamic, Arabic heritage, fiqh, tafsir, hadith, biography, book, citation, or classical-source research question and wants sourced retrieval from Turath.
 
-Primary library: [`nusus`](https://github.com/mwijanarko1/nusus), a TypeScript SDK for citable context from classical Islamic texts via `https://api.turath.io/`. Requires Node.js `>=20`.
+Primary library: [`nusus`](https://www.npmjs.com/package/nusus) (`^0.4.1`) — TypeScript **SDK + agent CLI** for citable context via `https://api.turath.io/`. Requires Node.js `>=20`. Same package for both surfaces.
 
-## Pre-Installed Search Script
+Prefer the **CLI** for agent tool calls. Use the **SDK** for application code, bulk extract, or anything outside the CLI command set.
 
-Located at `~/Desktop/nusus/scripts/search.mjs`:
+## Agent CLI
+
+From this repo (after `npm install`), or globally (`npm i -g nusus`):
 
 ```bash
-# Basic search
-node ~/Desktop/nusus/scripts/search.mjs "<Arabic query>" 3
+npx nusus --help
+npx nusus --version
 
-# Madhhab-specific (4-tier search: "عند المذهب", "في مذهب", madhhab name, top-5 books, broad fallback)
-node ~/Desktop/nusus/scripts/search.mjs --madhhab hanafi "<topic>" 3
-node ~/Desktop/nusus/scripts/search.mjs --madhhab maliki "<topic>" 3
-node ~/Desktop/nusus/scripts/search.mjs --madhhab shafii "<topic>" 3
-node ~/Desktop/nusus/scripts/search.mjs --madhhab hanbali "<topic>" 3
+# Discover (offline catalog)
+npx nusus find-books "الأربعون النووية" --limit 5
+npx nusus find-books --author-id 44 --limit 10
+npx nusus find-authors "النووي" --limit 5
+npx nusus list-categories
+npx nusus catalog
 
-# Specific books by title keyword
-node ~/Desktop/nusus/scripts/search.mjs --books "بدائع الصنائع,الهداية" "<query>" 3
+# Search / retrieve (live)
+npx nusus search "إنما الأعمال بالنيات" --book-id 147927
+npx nusus retrieve "النية في الصلاة" --max-passages 5 --max-chars 2000
 
-# Restrict search to one Turath book ID (real upstream filter, no false positives)
-node ~/Desktop/nusus/scripts/search.mjs --book-id 147927 "<query>" 3
-
-# Fetch one page with surrounding context (page_id = INTERNAL page)
-node ~/Desktop/nusus/scripts/search.mjs --page 147927 5
+# Page / context / metadata (live)
+npx nusus get-page --book-id 147927 --page-id 5
+npx nusus get-context --book-id 147927 --page-id 5 --pages-before 1 --pages-after 1
+npx nusus get-book 147927
+npx nusus get-author 44
 ```
 
-Output is JSON-per-line with `book_id`, `title`, `author`, `volume`, `page_id`, `printed_page`, `headings`, `citation` (ready-made Arabic citation), `url` (direct reader link), `snippet` (highlighted match), `text`, and prev/next page context.
+Equivalent local bin path: `node ~/islam-wiki/node_modules/nusus/scripts/search.mjs …`
+
+Default stdout is **JSONL** (one object/line, camelCase, every line has `type`). Use `--format text` for compact human lines. Errors are JSON on **stderr** only. Unknown or command-inapplicable flags are rejected.
+
+| Record `type` | Commands |
+| --- | --- |
+| `meta` | First line of `find-books`, `find-authors`, `search`, `retrieve` |
+| `book` / `author` / `category` / `catalog` | Discovery + `get-book` / `get-author` |
+| `passage` | `search`, `retrieve`, `get-page`, `get-context` |
+
+Exit codes: `0` success (including zero hits), `1` usage/invalid, `2` not found, `3` rate limit/HTTP/invalid response/timeout/internal.
+
+`page-id` is Turath internal page (`location.internalPage`), not printed page. `search`/`retrieve` accept at most one `--book-id`, one `--author-id`, and one `--category-id` (filters may be combined). Offline `find-books` may omit the title query when author/category filters are set (those offline filters are repeatable). `--timeout 0` means no timeout (max 600000).
+
+There is **no** `--madhhab` flag or multi-book fanout. For madhhab-scoped work: resolve books with `find-books` / `list-categories`, then pass a concrete `--book-id` or `--category-id`, or add madhhab Arabic phrases to the query yourself (e.g. `عند المالكية`).
 
 ## SDK Direct Use
 
-For ad-hoc scripts, import nusus directly:
+For application code, extract scripts, or CLI gaps:
 
 ```js
 import { createTurathClient } from "nusus/turath";
 
 const turath = createTurathClient({ timeout: 15_000 });
 
-// One-call agent retrieval: bounded passages, each with citation + URL
 const context = await turath.retrieve("النية في الصلاة", {
   maxPassages: 5,
   maxCharsPerPassage: 2000,
 });
-for (const p of context.passages) console.log(p.citation, p.url, p.text.slice(0, 200));
+for (const p of context.passages) {
+  console.log(p.citation, p.locator, p.url, p.text.slice(0, 200));
+}
 
-// Or step by step
 const books = turath.findBooks("الأربعون النووية", { limit: 5 });
+const byAuthor = turath.findBooks("", { authorIds: ["44"], limit: 10 });
+const authors = turath.findAuthors("النووي", { limit: 5 });
 const categories = turath.listCategories();
+const catalog = turath.getCatalogMetadata();
 const results = await turath.search("<query>", { bookIds: [books[0].id] });
 const page = await turath.getPage(147927, 5);
 const withContext = await turath.getContext(results.items[0], { pagesBefore: 1, pagesAfter: 1 });
-const book = await turath.getBook(147927);   // metadata + indexes/headings (TOC)
+const book = await turath.getBook(147927);   // metadata + TOC
 const author = await turath.getAuthor(44);
 ```
 
 All methods accept `AbortSignal`; failures throw typed `NususError` (`NOT_FOUND`, `RATE_LIMITED`, `INVALID_RESPONSE`, `ABORTED`, …) — never string-match error messages.
 
+SDK-only surface (not in CLI): `searchAll`, `getPages({ from, to })`, custom loops / file writes.
+
 ## API Gotchas
 
-- `getPage(bookId, pageId)` — `pageId` is the INTERNAL `page_id` (`location.internalPage`), NOT the printed page (`location.printedPage`).
-- Search filters (`bookIds`, `authorIds`, `categoryIds`) accept ONE ID each — the upstream API supports only one; nusus rejects multiples with `INVALID_ARGUMENT` rather than faking it.
-- Turath has no verified catalog endpoint, so `findBooks()` and `listCategories()` use Nusus's bundled March 2026 snapshot (8,124 books). It may omit later upstream changes. Author-name discovery is not yet available.
-- Empty upstream responses (`200 {}`) surface as `NususError` code `NOT_FOUND`.
+- `getPage(bookId, pageId)` — `pageId` is INTERNAL (`location.internalPage`), NOT printed (`location.printedPage`).
+- Search filters accept **ONE** ID each of `bookIds` / `authorIds` / `categoryIds`; different filter types may be combined. Multiples of the same filter → `INVALID_ARGUMENT`.
+- Catalog is a bundled March 2026 snapshot (~8,124 books / ~3,037 authors). May omit later upstream changes.
+- Empty upstream responses (`200 {}`) → `NususError` `NOT_FOUND`.
 
 ## Search Pitfalls
 
-1. **Book titles can be ambiguous** — `--books` resolves each title through the bundled catalog and filters by the best matching book ID. Prefer `--book-id` when several editions have similar titles.
-2. **Search indexing coverage varies** — some foundational texts (Mudawwanah book_id=587, Muwatta' book_id=1699) may not appear for topic queries. Verify negative results via `getBook(id)` `indexes`/headings.
-3. **Printed page vs page_id is book-dependent** — non-linear per-PDF mapping; never derive one from the other. Nusus keeps both (`printed_page`, `page_id`) plus `volume` separately.
+1. **Ambiguous titles** — resolve with `find-books`, then lock `--book-id`.
+2. **Uneven indexing** — Mudawwanah `587`, Muwatta' `1699` often miss topic search; verify via `get-book` TOC.
+3. **Printed vs internal page** — never derive one from the other.
+
+## Mudawwanah (Book ID 587)
+
+1. Topic search often fails — use `npx nusus get-book 587` for TOC.
+2. Covers disputed مسائل, not recommended acts; for Ashura/Arafah-style topics prefer Muwatta' or Risala.
+3. Fallback: Muwatta', wiki raw collections, Risala commentaries.
 
 ## Core Principle
 
-Treat Turath as a **retrieval layer**, not a final authority. Always distinguish:
-
-1. What the retrieved source says.
-2. What can be concluded from it.
-3. Where scholarly interpretation, madhhab differences, or hadith grading are uncertain.
-
-Avoid issuing definitive fatwas.
+Treat Turath as a **retrieval layer**, not a final authority. Distinguish: (1) what the source says, (2) what follows from it, (3) where madhhab/hadith uncertainty remains. Avoid definitive fatwas.
 
 ## Retrieval Workflow
 
-1. **Plan the search** — extract Arabic keywords, prefer Arabic terms, include variant spellings.
-2. **Run Turath search** — use the script for madhhab-specific searches, or `turath.search()`/`turath.retrieve()` for ad-hoc queries.
-3. **Retrieve primary context** — the script already includes page text and prev/next context; use `--page` or `getContext()` for more.
-4. **Assess relevance** — prefer direct mentions, primary sources within the relevant madhhab, chapter headings, and stated legal context.
-5. **Synthesize cautiously** — quote Arabic when useful, explain uncertainty, never pretend consensus.
+1. **Plan** — Arabic keywords + variants.
+2. **Discover** — `find-books` / `find-authors` / `list-categories` → lock IDs.
+3. **Search** — `search` or `retrieve` with optional single-ID filters.
+4. **Context** — `get-page` / `get-context` / `get-book` as needed.
+5. **Assess** — prefer direct mentions, primary sources, headings.
+6. **Synthesize** — quote Arabic when useful; never pretend consensus.
 
 ## Chain Grading via Turath
 
-When Turath returns a narration with an *isnad*:
+When Turath returns a narration with an *isnad*, **do not grade from Turath hits alone**. Load `../hadith-grading/SKILL.md` and:
 
-1. **Parse the chain** — identify each narrator from the Arabic isnad text.
-2. **Identify narrators via Turath** — search biographical works (Tarikh Baghdad, Tahdhib al-Kamal, Lisan al-Mizan, etc.).
-3. **Collect reliability assessments** — death dates, jarh/ta'dil statements, narration context.
-4. **Apply grading methodology** — score 0-10 per narrator, Sahabah 10/10, chain probability = product × geography/chronology penalties. Sahih ≥90%, Hasan ≥80%.
-5. **Check for parallel/shāhid chains** — Turath often surfaces multiple routes for the same narration.
-6. **Be transparent about unknowns** — when a narrator cannot be identified, say so.
+1. Parse the chain (student → Companion).
+2. Look up narrators on Shamela (`site:shamela.ws/narrator`) — Turath bios are fallback.
+3. Score with `queries/grading-criteria.md`; probability via `python3 queries/grade-calc.py -s …`.
+4. Check parallel/shāhid chains; be transparent about unknowns.
+
+Nusus does not grade narrations.
 
 ## Citation Requirements
 
-Every substantive claim based on retrieval should cite book title, author when available, Turath book ID, page number or index location, and quoted text or concise paraphrase.
+Cite book title, author when available, Turath book ID, page/locator, and quote or paraphrase.
 
-Nusus returns a ready-made citation on every passage (`citation` field) plus a direct URL. Default format:
+Prefer the passage `citation` + `url` / `locator` fields. Default:
 
 > Author, *Book Title*, Turath book `BOOK_ID`, p. `PAGE`: "quoted Arabic text…"
 
-Never invent missing volume, edition, publisher, or hadith numbers — nusus omits fields it doesn't have; keep them omitted.
+Never invent missing volume, edition, publisher, or hadith numbers.
 
 ## Answer Format
 
-1. **Short answer** — concise response or direct finding.
-2. **Sources found** — bullets with book/author/book ID/page and quote/paraphrase.
-3. **Analysis** — how the sources answer the question, including madhhab/hadith grading context.
-4. **Caveats** — uncertainty, missing metadata, disputed issues, or need for qualified scholarly advice.
+1. **Short answer**
+2. **Sources found** — book/author/ID/page + quote/paraphrase
+3. **Analysis**
+4. **Caveats**
 
 ## Guardrails
 
-- Do not fabricate citations, book IDs, page numbers, hadith numbers, or Arabic text.
-- Do not rely only on memory when the user asked for sourced retrieval.
-- Do not conflate Turath search hits with authenticated hadith grading.
-- Do not present one madhhab's position as universal when the question is disputed.
+- Do not fabricate citations, book IDs, pages, hadith numbers, or Arabic text.
+- Do not rely only on memory when sourced retrieval was requested.
+- Do not conflate Turath hits with authenticated hadith grading.
+- Do not present one madhhab as universal when disputed.
 - Do not give high-stakes personal legal/religious rulings as final authority.
-- If retrieval fails, say what searches were attempted and suggest next search terms or source constraints.
+- If retrieval fails, say what was tried and suggest next terms or filters.
