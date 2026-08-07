@@ -17,13 +17,13 @@ Audit and, when implementation access exists, fix the technical foundations that
 
 - A website URL, repository, or both; use the repository when checking implementation details.
 - Optional: representative URLs by template and Google Search Console data (Indexing, Sitemaps, and Core Web Vitals).
-- When Core Web Vitals or live-site performance are in scope, use `pagespeed` rather than duplicating its workflow.
+- When Core Web Vitals or live-site performance are in scope, use [pagespeed](../pagespeed/SKILL.md) rather than duplicating its workflow.
 
 ## Workflow
 
 1. Inventory representative templates and URLs: home, listing, detail, docs, search, pagination, and app shells.
 2. Audit the checks below, separating site-wide, template-wide, and URL-specific findings.
-3. For deployed sites with performance in scope, run `pagespeed` on representative production URLs—mobile first, adding desktop when useful.
+3. For deployed sites with performance in scope, run [pagespeed](../pagespeed/SKILL.md) on representative production URLs—mobile first, adding desktop when useful.
 4. Fix or recommend the highest-impact crawl/index blockers first; batch fixes by template.
 5. Verify with fetched response headers, source HTML, rendered output when needed, `robots.txt`, and XML sitemaps—not only the rendered marketing claim.
 6. After deployment, re-crawl and re-check Search Console when access is available.
