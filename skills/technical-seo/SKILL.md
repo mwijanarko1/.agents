@@ -17,15 +17,16 @@ Audit and, when implementation access exists, fix the technical foundations that
 
 - A website URL, repository, or both; use the repository when checking implementation details.
 - Optional: representative URLs by template and Google Search Console data (Indexing, Sitemaps, and Core Web Vitals).
-- If a dependency-specific performance audit is needed, use `pagespeed` rather than duplicating its workflow.
+- When Core Web Vitals or live-site performance are in scope, use `pagespeed` rather than duplicating its workflow.
 
 ## Workflow
 
 1. Inventory representative templates and URLs: home, listing, detail, docs, search, pagination, and app shells.
 2. Audit the checks below, separating site-wide, template-wide, and URL-specific findings.
-3. Fix or recommend the highest-impact crawl/index blockers first; batch fixes by template.
-4. Verify with fetched response headers, source HTML, rendered output when needed, `robots.txt`, and XML sitemaps—not only the rendered marketing claim.
-5. After deployment, re-crawl and re-check Search Console when access is available.
+3. For deployed sites with performance in scope, run `pagespeed` on representative production URLs—mobile first, adding desktop when useful.
+4. Fix or recommend the highest-impact crawl/index blockers first; batch fixes by template.
+5. Verify with fetched response headers, source HTML, rendered output when needed, `robots.txt`, and XML sitemaps—not only the rendered marketing claim.
+6. After deployment, re-crawl and re-check Search Console when access is available.
 
 ## Crawlability and indexation
 
@@ -54,7 +55,8 @@ Audit and, when implementation access exists, fix the technical foundations that
 ## Performance
 
 - Check Core Web Vitals (LCP, INP, CLS) for important templates when data is available, and trace each failure to a direct cause such as render-blocking resources, oversized media, long tasks, or layout shifts.
-- Treat performance as a technical SEO finding only when it affects crawl/rendering or meaningful user experience; do not substitute a generic performance score for evidence.
+- Report CrUX field data separately from Lighthouse lab data; note that lab results can vary between runs.
+- Treat performance as a technical SEO finding only when it affects crawl/rendering or meaningful user experience; diagnose metric causes rather than using a generic performance score as the finding.
 
 ## Structured data and machine surfaces
 
