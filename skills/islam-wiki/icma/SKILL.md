@@ -1,6 +1,6 @@
 ---
 name: icma-analysis
-description: 'Apply Isnād-cum-Matn Analysis (ICMA) to hadith transmission complexes, and grade each principal chain with the hadith-grading skill. Use alongside hadith-grading (required, not optional). Triggers on: "do icma", "icma analysis", "analyze transmission", "bundle analysis", "tradition complex", "common link", "date circulation".'
+description: 'Apply Isnād-cum-Matn Analysis (ICMA) to hadith transmission complexes, and grade each principal chain with the hadith-grading skill. Required ʿilal corpus search via nusus. Use alongside hadith-grading (required, not optional). Triggers on: "do icma", "icma analysis", "analyze transmission", "bundle analysis", "tradition complex", "common link", "date circulation".'
 ---
 
 # ICMA Analysis: Isnād-cum-Matn Analysis in Hadith Studies
@@ -23,15 +23,16 @@ description: 'Apply Isnād-cum-Matn Analysis (ICMA) to hadith transmission compl
 | 2 | Collect ALL accessible variants | `icma-analyze.py` or manual search |
 | 3 | Write a witness dossier per family | Full Arabic isnād (verbs) + Arabic/English matn |
 | 4 | Normalize the isnads | Manual — resolve name variations, kunyahs, nisbahs |
-| 5 | **Grade each principal chain** | Load `../hadith-grading/SKILL.md`; score every narrator; weakest-link + penalties |
-| 6 | Build the isnad bundle | `icma-analyze.py --bundle-only` or manual diagram |
-| 7 | Identify key figures (CL, PCLs, dives, spiders) | Manual analysis of bundle |
-| 8 | Synoptic matn comparison | Clause/motif table across families |
-| 9 | Test isnad-matn correlation | Does text cluster by branch? Score only if reproducible |
-| 10 | Check for contamination | Unexpected cross-branch textual agreements |
-| 11 | Date circulation | TPQ (CL's active period) + TAQ (earliest PCL death) |
-| 12 | State uncertainty explicitly | Strong / Moderate / Tentative / Inconclusive |
-| 13 | **Sahih Mikhail check** | If **≥3 Companions** each have a **≥90%** route for the same matn → add to `hadith/sahih-mikhail.md` |
+| 5 | **Grade each principal chain** | Load `../hadith-grading/SKILL.md`; score every narrator; weakest-link + penalties; per-chain ʿilal step |
+| 6 | **ʿIlal corpus search** (required) | Same Turath ʿilal book IDs + `nusus` method as hadith-grading. Once for the matn nucleus. Hits inform preferred recension, shadow chains, attribution wars, ghayr maḥfūẓ branches |
+| 7 | Build the isnad bundle | `icma-analyze.py --bundle-only` or manual diagram |
+| 8 | Identify key figures (CL, PCLs, dives, spiders) | Manual analysis of bundle |
+| 9 | Synoptic matn comparison | Clause/motif table across families |
+| 10 | Test isnad-matn correlation | Does text cluster by branch? Score only if reproducible |
+| 11 | Check for contamination | Unexpected cross-branch textual agreements |
+| 12 | Date circulation | TPQ (CL's active period) + TAQ (earliest PCL death) |
+| 13 | State uncertainty explicitly | Strong / Moderate / Tentative / Inconclusive |
+| 14 | **Sahih Mikhail check** | If **≥3 Companions** each have a **≥90%** route for the same matn → add to `hadith/sahih-mikhail.md` |
 
 ---
 
@@ -132,7 +133,7 @@ For every major family (A1, A2, B… or Bundle A / C1…), write a readable prim
 4. **Transmission note** calling out where the chain switches from explicit hearing (`حدثنا` / `أخبرنا` / `حدثني`) to **ʿanʿanah** (`عن`)
 5. **Full Arabic matn**
 6. **English translation** of that matn
-7. **Critical assessment** — classical grades, marfūʿ/mawqūf disputes, tadlīs, competing attributions, dependence between books
+7. **Critical assessment** — classical grades, marfūʿ/mawqūf disputes, tadlīs, competing attributions, dependence between books, ʿilal hits (preferred recension / ghayr maḥfūẓ)
 
 **Arabic isnād template:**
 
@@ -305,6 +306,38 @@ Later transmitters sometimes attempted to broaden a hadith's Companion base (alt
 
 Include classical preference notes (e.g. a collector calling one recension الصواب and the other خطأ) as ICMA-relevant negative evidence, not only as grading color.
 
+Confirm those preferences through the required ʿilal corpus search (same Turath book IDs and `nusus` method as hadith-grading). Hits here are evidence that a branch is ghayr maḥfūẓ or a shadow chain.
+
+---
+
+## ʿIlal corpus search (required)
+
+Required after collecting variants and alongside grading, before locking dating confidence.
+
+Use the **same Turath ʿilal book pass** as `../hadith-grading/SKILL.md` (same locked IDs, same `nusus` one-`--book-id`-at-a-time method). Load hadith-grading's ʿilal step when grading each principal chain. A **complex-level survey is still required once** for the matn nucleus.
+
+ICMA uses ʿilal hits as evidence for preferred recension, shadow chains, attribution wars, and whether a branch is غير محفوظ (ghayr maḥfūẓ).
+
+**Locked primary book IDs** (do not invent others as required):
+
+| Turath ID | Work |
+|-----------|------|
+| 9082 | علل الدارقطني (العلل الواردة في الأحاديث النبوية) |
+| 1350 | العلل لابن أبي حاتم |
+| 13131 | العلل الكبير للترمذي |
+| 6038 | العلل لابن المديني |
+| 2331 | العلل ومعرفة الرجال لأحمد رواية ابنه عبد الله |
+| 6044 | العلل ومعرفة الرجال لأحمد رواية المروذي وغيره |
+
+Optional secondary if time: 20868 الجامع لعلوم الإمام أحمد (علل الحديث); 6049 علل الأحاديث في صحيح مسلم.
+
+```bash
+npx nusus search "MATN_NUCLEUS_OR_NARRATOR" --book-id 9082
+npx nusus retrieve "MATN_NUCLEUS_OR_NARRATOR" --book-id 1350
+```
+
+Query strategy: matn nucleus keywords and/or key narrator Arabic names from the chain. Record an **ʿIlal survey** in `hadith/icma-analyses/{topic}.md`: books searched, hit/miss, classical preference (محفوظ / غير محفوظ / خطأ / مقلوب / معلول …) with citation (book, author, Turath ID, locator). Never fabricate hits. Miss is fine: `ʿilal survey: no relevant notice found in [list]`.
+
 ---
 
 ## 7. Output Format
@@ -324,8 +357,9 @@ Save to `hadith/icma-analyses/{topic}.md` (named by **topic/theme**, not collect
 7. **Contamination Analysis** — real contamination, false positives, attribution wars
 8. **Dating & Circulation** — TPQ, TAQ, regional strands, confidence level
 9. **Shadow Chains** (if any) — rejected / preferred alternative routes
-10. **Summary** — key findings table (CL, matn families, correlation, dating confidence, ICMA assessment, **per-family grades**)
-11. **Chain grading** — full file at `hadith/graded-chains/{topic}.md` (required, not optional)
+10. **ʿIlal survey** — books searched, hit/miss, classical preference (محفوظ / غير محفوظ / خطأ / مقلوب / معلول …) with citation (book, author, Turath ID, locator). Never fabricate hits. Miss: `ʿilal survey: no relevant notice found in [list]`
+11. **Summary** — key findings table (CL, matn families, correlation, dating confidence, ICMA assessment, **per-family grades**)
+12. **Chain grading** — full file at `hadith/graded-chains/{topic}.md` (required, not optional)
 
 **Quality bar:** A report that only has short chain sketches and motif ticks is incomplete. A report that only has rich takhrīj without CL/PCL dating and correlation is also incomplete. A report with ICMA dating but **no per-chain grades** is incomplete. Ship ICMA + grading together.
 
@@ -344,6 +378,8 @@ Load `../hadith-grading/SKILL.md` and apply `queries/grading-criteria.md`:
 5. Save detail to `hadith/graded-chains/{topic}.md` (include `shamela.ws/narrator/{ID}` links).
 6. In each witness dossier’s critical assessment (or a grade line under it), state the chain’s grade briefly and link the full grading file.
 7. In the ICMA summary table, include a **Grading** column or row per family.
+
+When grading each principal chain, load hadith-grading's ʿilal step. A complex-level ʿilal survey is still required once for the matn nucleus (do not skip it because per-chain grading already ran).
 
 Cross-refs:
 - `icma-analyses/{topic}.md` → links to `graded-chains/{topic}.md`
