@@ -1,0 +1,77 @@
+# Local Fallbacks
+
+Shared ~/.agents policy reference. Read it when the core policy trigger applies.
+
+
+- For multiline Python or complex quoting, write a temporary `.py` file and run it. Simple `python3 -c` commands are fine when supported by the active harness; follow the Pi-specific restrictions in `~/.pi/agent/APPEND_SYSTEM.md` when running in Pi.
+- macOS has no GNU `timeout`. Use `python3 -c 'import subprocess,sys; subprocess.run(sys.argv[1:], timeout=20)' cmd...` or a background process plus a bounded wait. Do not call `timeout`; `gtimeout` (coreutils) is not installed either. In Claude Code use the Bash tool's `timeout` parameter.
+- macOS `rsync` has no `--info=progress2`. Use `--progress` or `--stats`.
+- BSD `grep` rejects `-A`/`-B`/`-C` above 255.
+- `find ... -exec` with nested quotes fails. Print paths, then `ls` them in a second command.
+- Check `swapon --help` before `--output=`. Flags differ by util-linux vs BusyBox.
+- Transfer a script and give one short `sudo` command. Long one-liners wrap in the VPS terminal.
+- Probe systemd sandbox properties one at a time with `systemd-run` before applying them to a user service. Batching unsupported `CapabilityBoundingSet` values causes a restart loop.
+- `curl` for Cloudflare Worker smoke checks. Python urllib often gets 403. Helper: `python3 ~/Documents/llm-wiki/scripts/http-assert.py URL --contains "..." --absent "..."`.
+- `open -a Helium url1 url2` in one invocation. Two `open` commands in one shell call are misparsed as local files.
+- Do not use Helium `--headless --print-to-pdf` (hangs with no completion). Use `pinchtab pdf`.
+- `git worktree list` before `git switch`. Occupied branches fail with exit 128.
+- Do not run bare `git` from `~/Documents/second-brain`. Parent `~/` is a Git repository, so status walks the home directory. Use `git -C ~/Documents/llm-wiki`.
+- `wrangler whoami` rejects `--profile`. Use `wrangler deployments list --profile <name>`.
+- Playwright MCP eval tool is `browser_run_code_unsafe`. Write screenshots under `/tmp/playwright-mcp`, not the repo root.
+- `node_modules/next/dist/docs` from generated Next.js agent rules is often absent. Discover or skip.
+- Secret scan: `scripts/wiki-privacy-scan.sh`, not a nested `rg` character class. Word count: `wc -w file.md`.
+- Run process-group stop and the expected-empty `lsof` check as separate commands so a clean shutdown is not exit 1.
+- Next.js 16: preview at `http://localhost:<port>`, not `http://127.0.0.1:<port>`. HMR from 127.0.0.1 looks like a dead non-hydrated page unless `allowedDevOrigins` includes it.
+- `wrangler` is often not global. Use `bunx wrangler` from the project that lists it. `wrangler whoami` still rejects `--profile`.
+- Before `git ls-remote`, commit, or push: `gh api user --jq .login` vs the remote owner, then `gh auth switch --user <owner>` when they differ. `paretoeducation` cannot push `mwijanarko1/Sheffield-Masjids`. `~/.zshrc` no longer exports `GITHUB_TOKEN` (only the `opencode` wrapper sets it). If a long-lived shell still has it, prefix `env -u GITHUB_TOKEN` to `gh auth status`, `gh auth switch`, and `git push`; otherwise it pins one account and hides the others (`ihsaan-fosis/*` needs `ihsaan-fosis`).
+- `ffprobe` accepts one input file per call. Homebrew ffmpeg has no `drawtext`; use `python3 ~/.agents/scripts/contact-sheet.py`. `astats` `reset=` counts frames, not samples; for windowed loudness run `ffmpeg -i f -af ebur128 -f null -` and read the `S` (short-term) column. Brace shell vars inside filter strings (`${OFF}`): zsh reads `$OFF:l` as a history modifier.
+- After `replace_all`, grep for remaining matches. The edit tool can report replace_all while changing only the first occurrence.
+- Inspect file length before a near-end Read offset. Stale line estimates 404.
+- Vitest: a custom `test.exclude` replaces defaults and will run `node_modules`. Prefer an `include` glob under `src`.
+- `bun run test extra/path` still runs the package script's full suite when the script already passes `./tests`. Use `bun test path` for a scoped run.
+- Coordinated npm publishes: the 7-day age gate blocks `bun install` of a package published today. Verify with `file:..` or `npm pack` tarball. Do not leave `minimumReleaseAge = 0`. `hyperframes upgrade --project .` pins registry latest, which the age gate then rejects (ETARGET); check `npx hyperframes --version` and pin that instead.
+- `convex codegen` uploads. If `CLERK_JWT_ISSUER_DOMAIN` is unset it can fail after a partial remote write. Local types: repo `tsc`. Seed after schema change: `bunx convex dev --once` first.
+- Pi `pi-subagents` async workers need `@earendil-works/pi-coding-agent/dist/experimental/server.js`. Pi 0.85.1 does not ship it. Use in-session work or Pi's built-in `subagent` extension. Do not retry async child launch.
+- Intercom: if send says multiple sessions connected, `list` once and pass `--to`. Do not auto-contact new peers. `list-cwd` "Operation aborted": retry `intercom list`. Never pass `--stderr-file /dev/null` to papercuts (must be a regular file).
+- Command Code lives in `~/.commandcode`, not `~/.cmd`. Never print `settings.json` permission values (saved allow rules can contain credentials).
+- Himalaya: never `cat` `~/.config/himalaya/config.toml`. Passwords are Keychain `security find-generic-password`, not `echo`.
+- Himalaya v2: **never** attach via MML `<#part filename=...>` + `message send` (tags go as plain text; file not attached). Incident SG-2026-001 2026-09-22. Always `python3 ~/.agents/scripts/himalaya-send.py ... --attach FILE --require-attach` (dry-run MIME gate then send). Plain body-only mail may use `message compose --send`.
+- Cursor Agent CLI (`agent -p`) requires owner login. Skip smoke runs when unauthenticated; do not attempt login. Interactive `agent` is a zsh alias to `cursor-agent`. Grok Build CLI is `grok` only. If a Grok update recreates `~/.grok/bin/agent`, delete that symlink; do not let it shadow Cursor.
+- Discover harness paths before assuming them. No `~/.cursor/rules`. Grok rules are `~/.grok/AGENTS.md` → `~/.agents/AGENTS.md`. Skip dangling `playwright-browser` / `ego-browser` skill links.
+- Check listener cwd before starting another Next/dev server on a free port. Same worktree already running is a dead end.
+- Playwright MCP artifacts: `/tmp/playwright-mcp`, not the repo root. Exact discovered file paths only; do not guess component subdirectories.
+- ImageMagick is not assumed. Pillow for RGBA conversion.
+- Subagent workers can ignore a read-only task and write the parent's worktree. Verify unexpected writes before trusting async child output.
+- ACE/doctor: re-read a file after write before running tests. Bound or skip `ace doctor` model discovery so local verification stays under 30s.
+- Pi bash has no cwd parameter. Use `git -C` and absolute paths. Parent `~/` is a Git repo.
+- Shell verification of search: `scripts/search.sh` / `scripts/wiki-search.sh` as documented; do not invent `rg` character classes for secret scan.
+- Android/mobile QA: run `python3 ~/.agents/scripts/android_preflight.py` before `android_screen_state` or mobile-mcp. Homebrew `adb` can exist while the Seagate SDK volume is unmounted; that still means zero devices and no emulator. Do not retry screen-state when preflight fails.
+- `no_unicode_dashes.py <file>` flags added Git hunks only (plus whole untracked files). Pre-existing dashes on unchanged lines are ignored. Use `--whole-file` to scan entire files.
+- Pi bash/safe_bash caps at about 30s regardless of timeout. `Operation aborted` with exit ~0 is a harness abort, not success. Do not sleep-poll. Launch long work in the background with a log file, then return.
+- Grok `run_terminal_command` auto-backgrounds after about 15s. Continue messages can abort in-flight parallel commands. If a Jest run already printed PASS, do not rerun it.
+
+
+- Android: `~/.zshrc` uses the Seagate `AndroidDev` SDK/Gradle home only when the current process can list it (TCC can deny reads while `test -e` passes), else `~/Library/Android/sdk` and `~/.gradle`. A repo `local.properties` `sdk.dir` overrides `ANDROID_HOME`; point it at `~/Library/Android/sdk`. In an already-open shell: `GRADLE_USER_HOME=~/.gradle ANDROID_HOME=~/Library/Android/sdk ./gradlew ...`.
+- Python helpers: Pillow and ReportLab live in `/opt/homebrew/bin/python3`, not `/usr/bin/python3` or project venvs. `contact-sheet.py` re-execs there itself; its args are positional: `contact-sheet.py out.png a.png b.png [--columns N --cell WxH]`. Skill `quick_validate.py` runs without PyYAML.
+- Search: never `find ~` or glob `~/**`; it hangs. Use `mdfind -name <file>` or `ls -lt ~/Downloads ~/Desktop`. macOS `grep` has no `-P`; use `rg` (Arabic: `rg -n '[\x{0600}-\x{06FF}]' file`). Dash-leading `rg` patterns need `rg -e '--x'`.
+- Shell: single-quote awk programs so `$1` is not expanded by the shell. `status` is read-only in zsh; name it `http_status`. Quote pathspecs with parentheses: `git diff -- 'src/app/(cert)/layout.tsx'`. Run `git status --short -- <paths>` before `git diff` on paths that may be deleted. Paths with spaces: `grep -rlZ ... | xargs -0 ...` or `find ... -print0`, never plain `xargs`. Shell `read` is the builtin that reads stdin into variables; read files with the Read tool, `sed -n`, or `head`.
+- hypa (`~/.local/bin/hypa`) breaks `cd /path && bun -e '...'` with "An error occurred trying to start process ... with working directory". Run bun/node with an absolute script path instead of `cd &&` plus inline `-e`.
+- Before a large download or export, `df -h <dest>` and confirm it is on the requested volume. The SSD is `/Volumes/Mikhail Seagate 2TB SSD/...`; repo-relative dirs like `.asc/` land on the internal disk.
+- Patches: one file per `apply_patch`, with context unique to that file. Multi-file patches can apply file 1 then fail on file 2; `git diff --stat` shows what landed.
+- Pi tools: `ask_user_question` headers max 16 chars. `bash` timeout is integer ms. `write_stdin` "unknown process id" means the exec session is gone; rerun the command in the background with a log file instead of resuming. A command cut off by a new message printed nothing reliable; rerun it alone.
+- Intercom: `replyTo` only works for a pending ask; answer broker-injected messages with a plain `send --to`. After an ask times out with delivery `injected`, the peer has it: wait for the reply, do not resend.
+- Command Code: `cmd --resume` needs a TTY. Read the transcript directly: `~/.commandcode/projects/<cwd-slug>/<session-id>.jsonl`. opencode: `opencode service restart/stop` from inside opencode kills the agent's own shell; ask the user to run it.
+- Web fetch: 404 or empty extraction means search for the current canonical URL first. Apple docs are JS-rendered; fetch `https://developer.apple.com/tutorials/data/documentation/<path>.json` instead.
+- Cursor store paths `/cursor/stores/<id>/...` are not mounted locally; write to `~/Library/Application Support/Cursor/AgentStores/cursor_agent_stores/<id>/files/...`.
+- `skills` CLI (npm) needs Node 20+ (`node:util` `styleText`); upgrade Node on the VPS before `npx skills`. `skills remove --agent '*'` is rejected; pass each agent name.
+- `pi install npm:<pkg>` can pick a version newer than the 7-day age gate; pin `@<version>` published more than 7 days ago.
+- Vercel: `vercel env add NAME preview` cannot target all preview branches non-interactively; use REST `POST /v10/projects/<project>/env` with `"target":["preview"]`. `vercel --prod` stuck on Building usually means `readyState BLOCKED` (commit author not on the team); check `GET /v13/deployments/<id>` `readyStateReason` instead of waiting.
+- Wrangler: use the project's pinned `bunx wrangler`, not `@latest` (temp installs miss esbuild) and not old pins (4.38 lacks `--profile`). Headless secrets need `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` in env when profile OAuth is unavailable. `secret list --format json` (no `--json`). `tail --env production` without the positional worker name (it appends `-production`). After a rollback, `secret put` refuses; deploy a new version or use `wrangler versions secret put`. `wrangler docs <multi word>` searches badly; open developers.cloudflare.com directly.
+- Stripe CLI: `brew install stripe/stripe-cli/stripe` fails with old Command Line Tools; download the darwin arm64 tarball from GitHub releases into `~/.local/bin`.
+- Convex: "no access to selected project" on seed means `.env.local` `CONVEX_DEPLOYMENT` belongs to another team/login; run `bunx convex dev --once` to reselect before seeding.
+- iOS device QA: `idevicescreenshot` fails with Invalid service on iOS 17+, and QuickTime AppleScript needs Automation permission (-1743). No permission-free CLI screenshot exists; use the simulator for visual QA or ask the user for a device screenshot. `devicectl device process launch` fails while the phone is locked; ask the user to unlock.
+- xcodebuild: list destinations (`xcrun simctl list devices available`) before naming a simulator. `-only-testing` with Swift Testing can report TEST SUCCEEDED with 0 tests; use `Target/Suite/func()` and check the xcresult test count. Run long builds with `nohup ... > log 2>&1 &` so the harness cannot kill them; if XcodeBuildMCP times out, check for a live `xcodebuild` before retrying. Archive failing in `actool` with "No available simulator runtimes" while `simctl list runtimes` says Ready: check the runtime mount path (`xcrun simctl runtime list`) before retrying.
+- asc: `asc xcode archive` needs `--xcodebuild-flag=-destination --xcodebuild-flag=generic/platform=iOS` ("Found no destinations" otherwise). `asc build-localizations list` fails on a fresh build not yet attached to an App Store version; check the attachment and use version metadata until then.
+- `launchctl procinfo` needs root; label process attribution approximate instead. LaunchServices -10664 opening an app on the Seagate volume means the volume is not readable by that process; use CLI tools (`xcodebuild`) or ask the user.
+- jsdom probes: bind `globalThis.getComputedStyle = window.getComputedStyle` (and `ResizeObserver` stub) when setting browser globals by hand.
+- Gitignored `docs/` is absent in git worktrees; read it read-only from the canonical checkout.

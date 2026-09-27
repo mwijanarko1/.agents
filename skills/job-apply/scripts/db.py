@@ -458,12 +458,14 @@ def upsert_application(
 
         ts = now()
         applied_at = ts if (applied or status == "applied") else None
-        existing = conn.execute("SELECT id FROM applications WHERE job_id=?", (job_id,)).fetchone()
+        existing = conn.execute(
+            "SELECT id, applied_at FROM applications WHERE job_id=?", (job_id,)
+        ).fetchone()
         if existing:
             conn.execute(
                 """UPDATE applications SET
                      status=?,
-                     applied_at=COALESCE(?, applied_at),
+                     applied_at=COALESCE(applied_at, ?),
                      notes=COALESCE(?, notes),
                      cv_pdf_path=COALESCE(?, cv_pdf_path),
                      cv_tex_path=COALESCE(?, cv_tex_path),
@@ -544,6 +546,12 @@ def upsert_application(
             "SELECT company FROM jobs WHERE id=?", (job_id,)
         ).fetchone()
         co = (job_row["company"] if job_row else None) or company
+        has_sent_outcome = bool(
+            conn.execute(
+                "SELECT 1 FROM outcomes WHERE application_id=? AND outcome='sent' LIMIT 1",
+                (app_id,),
+            ).fetchone()
+        )
         conn.commit()
 
         result = {
@@ -556,7 +564,7 @@ def upsert_application(
     finally:
         conn.close()
 
-    if log_sent_outcome and (applied or status == "applied"):
+    if log_sent_outcome and (applied or status == "applied") and not has_sent_outcome:
         default_reason = {
             "email": "Cold email sent via Himalaya",
             "web": "Web/ATS application submitted after approval",

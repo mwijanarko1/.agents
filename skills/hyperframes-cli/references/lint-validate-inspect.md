@@ -9,7 +9,7 @@ When the composition is animation-driven, run the checks before you reach for `p
 - Run `lint` after the first HTML pass for early feedback. It is an iteration aid, not a separate final gate.
 - Run `check --snapshots` at the first full pass: the overview frames and per-finding crops show you what the auditor saw.
 - Look at the PNGs before tuning automated warnings: your eye catches what the auditor misses, and the auditor catches what your eye misses.
-- Treat layout errors as defects unless a snapshot proves the layering is intentional, in which case mark it with `data-layout-allow-overflow` / `data-layout-allow-overlap` / `data-layout-allow-occlusion`.
+- Treat layout errors as defects unless a snapshot proves the layering is intentional, in which case mark it with `data-layout-allow-overflow` / `data-layout-allow-overlap` / `data-layout-allow-occlusion` / `data-layout-allow-caption-zone` (caption band only).
 - State motion intent in a `*.motion.json` sidecar so `check` verifies it automatically (entrances firing under seek, stagger order, in-frame, liveness). This is the closest automated proxy for "watch the MP4" and catches render-vs-preview bugs the eye misses (see **Motion verification** below).
 
 ## lint
@@ -30,13 +30,13 @@ Lints `index.html` and all files in `compositions/`. Reports errors (must fix), 
 ```bash
 npx hyperframes check                    # current directory: the full browser gate
 npx hyperframes check ./my-project       # specific project
-npx hyperframes check --json             # agent-readable envelope {ok, lint, runtime, layout, motion, contrast, snapshots}
+npx hyperframes check --json             # agent-readable envelope {ok, lint, runtime, layout, motion, contrast, hdr, snapshots}
 npx hyperframes check --snapshots        # also write overview frames (annotated) + per-finding crops
 npx hyperframes check --samples 15       # denser timeline sweep (default 9)
 npx hyperframes check --at 1.5,4,7.25    # explicit hero-frame timestamps
 npx hyperframes check --at-transitions   # also sample every tween start/end boundary
 npx hyperframes check --tolerance 4      # allowed overflow px before reporting (default 2)
-npx hyperframes check --timeout 5000     # ms for the initial settle (default 3000)
+npx hyperframes check --timeout 30000    # initial render-ready + navigation minimum in ms (defaults: 3000 / 10000)
 npx hyperframes check --no-contrast      # skip the WCAG audit while iterating
 npx hyperframes check --strict           # exit non-zero on warnings too (default: only errors)
 ```
@@ -50,13 +50,14 @@ One command, one Chrome boot. `check` runs the linter first and skips the browse
 
 Every finding carries a selector, the element's `data-*` identity, the composition source file, a bbox, and the sample time: jump straight from the JSON to the HTML you must edit and re-run.
 
-**Severity is persistence-aware.** A dynamic issue observed at a single grid sample (an entrance/exit transient) demotes to info and never gates. Issues held across samples gate the exit code, a held `content_overlap` is an error, and a held, partially-visible `canvas_overflow` breaching ≥5% of the canvas promotes to warning. Coordinate-frame findings (`escaped_container`, `panel_out_of_canvas`, `connector_detached`) flag geometry computed in one frame but rendered in another — an element far outside its offset parent, a painted panel stuck across the canvas edge, a connector line detached from every node. If a 3s+ composition shows zero geometry change across every sample, `check` fails with `sweep_static`: a frozen timeline makes every green verdict unreliable, so it refuses to pass. The fingerprint includes per-element opacity, so opacity-only reveals (code typing, staggered fades) count as motion — but only while they're still in flight at the sampled times. The classic trap is a reveal that completes early and then holds a static frame for the rest of the duration: every sample lands on the settled state and the run fails. Spread the reveal across the timeline or keep one continuously animated element alive (a blinking caret is idiomatic for code typing) — don't bolt on a slow position drift just to appease the check.
+**Severity is persistence-aware.** A dynamic issue observed at a single grid sample (an entrance/exit transient) demotes to info and never gates. Issues held across samples gate the exit code, a held `content_overlap` is an error, and a held, partially-visible `canvas_overflow` breaching ≥5% of the canvas promotes to warning. Coordinate-frame findings (`escaped_container`, `panel_out_of_canvas`, `connector_detached`) flag geometry computed in one frame but rendered in another — an element far outside its offset parent, a painted panel stuck across the canvas edge, a connector line detached from every node. Text drawn into a `<canvas>` has no DOM box, so `canvas_overflow` cannot see it; `canvas_content_at_edge` warns when a canvas's pixels show sharp content (drawn text, hard shapes) along the frame edge — mark intentional full-bleed art (particles, photos) with `data-layout-allow-overflow`. If a 3s+ composition shows zero geometry change across every sample, `check` fails with `sweep_static`: a frozen timeline makes every green verdict unreliable, so it refuses to pass. The fingerprint includes per-element opacity, so opacity-only reveals (code typing, staggered fades) count as motion — but only while they're still in flight at the sampled times. The classic trap is a reveal that completes early and then holds a static frame for the rest of the duration: every sample lands on the settled state and the run fails. Spread the reveal across the timeline or keep one continuously animated element alive (a blinking caret is idiomatic for code typing) — don't bolt on a slow position drift just to appease the check.
 
 **Escape hatches** (mark intent in the HTML, then re-run):
 
 - `data-layout-allow-overflow` — overflow is intentional (entrance/exit travel).
-- `data-layout-allow-overlap` — deliberate text layering (e.g. a demo cursor label over a heading).
+- `data-layout-allow-overlap` — deliberate text layering (e.g. a demo cursor label over a heading). Applies only to the marked text block; it is not inherited. Mark the specific layering participant, never a scene/root wrapper, so unrelated descendant collisions remain auditable.
 - `data-layout-allow-occlusion` — an element is meant to cover text.
+- `data-layout-allow-caption-zone` — intentional lower-third / caption-band copy under `--caption-zone`. Applies to the marked element and every descendant (`closest`); silences only `caption_zone_collision` (not overflow/overlap/occlusion). Prefer the narrowest wrapper that owns the intentional band copy.
 - `data-layout-ignore` — decorative element that should never be audited.
 
 **Opt-in pipeline gates** (used by orchestrators; off by default):
@@ -66,7 +67,7 @@ npx hyperframes check --caption-zone "x0=0;y0=.82;x1=1;y1=1;severity=error;seek=
 npx hyperframes check --frame-check     # media (img/svg/video/canvas) out-of-frame detection
 ```
 
-`--caption-zone` takes fractional band geometry (`x0/y0/x1/y1` required, 0-1 fractions of the composition's own canvas, portrait included) with optional `severity` and comma-separated `seek` fractions; it flags content whose center sits inside the band. `--frame-check` reports media elements breaching the canvas beyond `max(120px, 6% of the min canvas dimension)`.
+`--caption-zone` takes fractional band geometry (`x0/y0/x1/y1` required, 0-1 fractions of the composition's own canvas, portrait included) with optional `severity` and comma-separated `seek` fractions; it flags a text element's DOM box (`getBoundingClientRect`) that overlaps the band. Waive intentional lower-third copy with `data-layout-allow-caption-zone` on the element or its nearest wrapper (see Escape hatches). `--frame-check` reports media elements breaching the canvas beyond `max(120px, 6% of the min canvas dimension)`.
 
 **Fixing contrast errors** — thresholds are 4.5:1 for normal text, 3:1 for large text (24px+, or 19px+ bold). The finding's `suggestedColor` already picks the nearest compliant color in the right direction (brighten on dark backgrounds, darken on light); apply it or adjust within the palette family, then re-run `check`.
 

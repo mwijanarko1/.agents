@@ -1,30 +1,33 @@
 ---
 name: extract-design-md
-description: Extract a Stitch-compatible DESIGN.md from a public website via Ditto. Use when the user asks to extract DESIGN.md, design tokens, or an agent-readable design doc from a URL. Different from cloning because it writes only the design-system brief, not a runnable app.
+description: Extract a Stitch-compatible DESIGN.md from a public website. Use Ditto only when the installed CLI supports design-only extraction; otherwise inspect the live page and write the design brief directly. Use when the user asks to extract DESIGN.md, design tokens, or an agent-readable design doc from a URL. Different from cloning because it writes only the design-system brief, not a runnable app.
 ---
 
 # Extract DESIGN.md
 
-Use a local Ditto checkout to extract design docs from a public URL (not a full clone app).
+Produce a design brief, not a runnable clone.
 
 ## Workflow
 
-1. Use `$DITTO_ROOT` if set, else a local Ditto checkout the user points at (commonly a `ditto.site` clone).
-2. Extract without publishing:
+1. If `$DITTO_ROOT` points to a local Ditto checkout, check capability before running it:
 
 ```bash
 cd "$DITTO_ROOT"
-npm run clone -- https://example.com/ --design-md
-# or explicit path:
-npm run clone -- https://example.com/ --design-md=./designs/example.md
+npm run clone -- --help 2>&1 | grep -q -- '--design-md'
 ```
 
-Default output is under Ditto's `compiler/output/<site>/DESIGN.md`.
+2. Only when that check succeeds, extract without publishing:
 
-3. Verify the file has YAML front matter (`---`), token sections when detected (`colors`, `typography`, `spacing`, `rounded`), and ordered sections: Overview, Colors, Typography, Layout, Elevation & Depth, Shapes, Components, Do's and Don'ts.
+```bash
+npm run clone -- https://example.com/ --mode=single --design-md=./designs/example.md
+```
+
+3. If the check fails, do not pass the unknown flag. The current local Ditto CLI silently ignores unknown options and performs a full clone. Instead use `pinchtab` to capture a full-page screenshot plus page text, inspect linked CSS or source HTML with `fetch_content` or `curl`, and write `DESIGN.md` directly from observed evidence. Do not invent tokens that cannot be observed.
+
+4. Verify YAML front matter and this section order: Overview, Colors, Typography, Layout, Elevation & Depth, Shapes, Components, Do's and Don'ts. Include `colors`, `typography`, `spacing`, and `rounded` tokens only when detected.
 
 ## Boundaries
 
 - Public, browser-accessible pages only.
-- Prefer `--mode=single`; multi-page DESIGN.md extraction is not supported by this CLI option yet.
-- Full runnable clones → `ditto-clone`, not this skill.
+- Single-page extraction only.
+- Full runnable clones use `ditto-clone`.

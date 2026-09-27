@@ -12,7 +12,7 @@
 | `contacts` | Public contact research per company/job |
 | `applications` | Tailor / apply state (1:1 with job) + `channel` + play/tier/latest outcome |
 | `outcomes` | Append-only market outcomes (sent, reply, no_reply, interview, …) |
-| `events` | Append-only audit log |
+| `events` | Append-only audit log: `id`, `created_at`, `kind`, `job_id`, `search_id`, `payload_json` |
 
 ## Job / application status
 
@@ -64,7 +64,7 @@ python3 ~/.agents/skills/job-apply/scripts/db.py export-md --out ~/Documents/job
 
 - `search_jobs.py` → `record_search` (unless `--no-db`); scores via `config/scoring.yaml`
 - `find_contacts.py` → `record_contacts` (unless `--no-db`)
-- Tailor / apply → `db.py apply` (agent must run; applied auto-logs `outcome=sent`)
+- Tailor / apply → `db.py apply` (agent must run; the first applied update auto-logs one `outcome=sent`; repeated updates are idempotent)
 - Replies / ghosts → `db.py outcome` when known
 
 ## Wiki export

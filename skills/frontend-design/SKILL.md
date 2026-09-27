@@ -32,6 +32,16 @@ Report only:
 
 From a URL/screenshot/brand: extract palette roles, type, density, surface language, distinctive motifs — then adapt, do not clone copyrighted assets.
 
+### Inspiration (fetch when stuck or greenfield)
+
+Use as taste references and module sources. Adapt to the project's tokens/primitives; do not paste wholesale or invent a second design system.
+
+- Craft / anti-slop skills catalog: https://ui-skills.com
+- Motion restraint: https://emilkowal.ski/ui/you-dont-need-animations
+- Product transitions: https://transitions.dev/
+- Design system checklist: https://designsystemchecklist.com
+- Component catalogs (Lego): see `design-systems-reference`
+
 ## Slop check (fail if present)
 
 - Generic AI font stacks (Inter/Roboto/Arial defaults with no character) when brand allows better
@@ -45,5 +55,5 @@ From a URL/screenshot/brand: extract palette roles, type, density, surface langu
 
 - `frontend-web-development` — implementation
 - `design-md-gallery` — known-brand DESIGN.md references only
-- `design-systems-reference` — tokens/component-library work only
+- `design-systems-reference` — tokens, component catalogs, a11y/licensing
 - Not for backend, legal, or SEO alone

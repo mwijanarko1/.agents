@@ -11,6 +11,7 @@ Run the project's real quality gates after meaningful changes or before a PR.
 ## Workflow
 
 1. **Discover** scripts from `package.json` / `Makefile` / `pyproject` / CI config — do not assume npm.
+   Run the closest relevant fast check first. Then run applicable broader gates below when scope warrants or before a PR.
 2. **Build** (if the project has one). Stop on failure.
 3. **Typecheck** when configured.
 4. **Lint** when configured; do not claim ready with lint errors.

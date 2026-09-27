@@ -18,7 +18,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from db import DEFAULT_DB, record_search  # noqa: E402
 from detect_apply_channel import detect_apply_channel  # noqa: E402
-from scoring_lib import JOB_APPLY_ROOT, load_yaml, score_job  # noqa: E402
+from scoring_lib import JOB_APPLY_ROOT, gate_job, load_yaml, score_job  # noqa: E402
 
 UA = "job-apply-skill/1.0 (+local personal use)"
 
@@ -307,6 +307,7 @@ def main() -> int:
         j["apply_channel_confidence"] = ch["confidence"]
         j["apply_channel_reason"] = ch["reason"]
         j["apply_channel_signals"] = ch.get("signals") or []
+        j["gate"] = gate_job(j, channel=j.get("apply_channel", ""), cfg=cfg)
         if ch.get("apply_email"):
             j["apply_email"] = ch["apply_email"]
         if not args.include_skipped and result["action"] == "skip":

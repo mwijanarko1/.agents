@@ -61,6 +61,10 @@ Audit and, when implementation access exists, fix the technical foundations that
 ## Structured data and machine surfaces
 
 - Valid JSON-LD uses the appropriate entity type, matches visible content, and does not invent reviews, prices, availability, or other claims.
+- `Organization.sameAs` may include multiple external profiles that help identify and disambiguate the organization, such as official social profiles and genuine review pages.
+- Every `sameAs` URL must unambiguously represent the exact same entity. Do not put product, package, article, or generic directory pages in `Organization.sameAs` merely because they mention the brand; model products separately when appropriate.
+- Do not recommend "entity stacking" or padding `sameAs` with low-quality directory listings as a ranking tactic. Prefer fewer accurate properties and authoritative identity pages. Structured data can aid understanding and search presentation, but it does not guarantee rankings, rich results, or Knowledge Graph inclusion.
+- Use [Google's Organization documentation](https://developers.google.com/search/docs/appearance/structured-data/organization) as the authority for Google behavior and [Schema.org's `sameAs` definition](https://schema.org/sameAs) for identity semantics.
 - `llms.txt` and documentation entry points are accurate when the product ships them; public API/docs URLs are stable and linked.
 - Do not serve materially different content to crawlers and users (cloaking).
 

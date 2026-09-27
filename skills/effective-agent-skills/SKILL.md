@@ -26,7 +26,7 @@ A skill is a small workflow loaded only when needed. Keep it narrow.
 1. Check `skills/INDEX.md` for an existing skill to extend.
 2. Write the smallest behavior-changing `SKILL.md`.
 3. Add examples/references only when needed.
-4. Regenerate routing index; run `python3 ~/.agents/scripts/validate_agent_policy.py`.
+4. Validate the changed skill with `python3 ~/.agents/skills/.system/skill-creator/scripts/quick_validate.py <skill-directory>`.
 
 ## Audit mode (stocktake)
 

@@ -7,9 +7,35 @@ import re
 import sys
 from pathlib import Path
 
-import yaml
+try:
+    import yaml
+except ModuleNotFoundError:  # PyYAML is optional; system Python on macOS lacks it
+    yaml = None
 
 MAX_SKILL_NAME_LENGTH = 64
+
+
+def _simple_frontmatter(text):
+    """Parse top-level keys without PyYAML. Nested and block values become strings."""
+    data, key = {}, None
+    for line in text.splitlines():
+        if not line.strip() or line.lstrip().startswith("#"):
+            continue
+        if line[0] in " \t":
+            if key is None:
+                raise ValueError(f"Indented line before any key: {line.strip()}")
+            data[key] = f"{data[key]} {line.strip()}".strip()
+            continue
+        k, sep, v = line.partition(":")
+        if not sep:
+            raise ValueError(f"Expected 'key: value', got: {line}")
+        key, v = k.strip(), v.strip()
+        if v in (">", "|", ">-", "|-", ">+", "|+"):
+            v = ""
+        elif len(v) >= 2 and v[0] == v[-1] and v[0] in "'\"":
+            v = v[1:-1]
+        data[key] = v
+    return data
 
 
 def validate_skill(skill_path):
@@ -31,13 +57,23 @@ def validate_skill(skill_path):
     frontmatter_text = match.group(1)
 
     try:
-        frontmatter = yaml.safe_load(frontmatter_text)
+        if yaml is None:
+            frontmatter = _simple_frontmatter(frontmatter_text)
+        else:
+            frontmatter = yaml.safe_load(frontmatter_text)
         if not isinstance(frontmatter, dict):
             return False, "Frontmatter must be a YAML dictionary"
-    except yaml.YAMLError as e:
+    except (ValueError, getattr(yaml, "YAMLError", ValueError)) as e:
         return False, f"Invalid YAML in frontmatter: {e}"
 
-    allowed_properties = {"name", "description", "license", "allowed-tools", "metadata"}
+    allowed_properties = {
+        "name",
+        "description",
+        "license",
+        "compatibility",
+        "allowed-tools",
+        "metadata",
+    }
 
     unexpected_keys = set(frontmatter.keys()) - allowed_properties
     if unexpected_keys:

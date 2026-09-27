@@ -275,7 +275,7 @@ greenlight guidelines search "privacy"   # full-text search
 
 ## Output Formats
 
-All scan commands support:
+`preflight`, `codescan`, `ipa`, and `scan` support (`privacy` takes no flags; use `preflight --format json` for machine output):
 
 ```bash
 --format terminal   # colored terminal output (default)

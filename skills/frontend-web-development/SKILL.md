@@ -9,7 +9,7 @@ Implement web features (prefer Next.js App Router when the repo uses it). Pair w
 
 ## Workflow
 
-1. Match existing project structure, package manager, and UI kit — do not invent a second stack.
+1. Match existing project structure, package manager, and UI kit, do not invent a second stack.
 2. Prefer Server Components for data; mark `'use client'` only for browser state/events.
 3. Colocate feature UI, hooks, and server actions under the feature when the repo already does.
 4. Forms: server actions or existing form lib; validate on server; accessible labels/errors.
@@ -18,7 +18,7 @@ Implement web features (prefer Next.js App Router when the repo uses it). Pair w
 
 ## Defaults
 
-- **shadcn**: use existing `components/ui` and project `components.json`. Add missing pieces via the project's established shadcn workflow — not hand-rolled duplicates.
+- **shadcn**: use existing `components/ui` and project `components.json`. Add missing pieces via the project's established shadcn workflow, not hand-rolled duplicates. Shadcn Studio registry URLs include the style segment: `/r/{style}/{name}.json`.
 - **Icons**: check `package.json` first. Prefer already-installed sets. When adding is justified: Phosphor, Hugeicons, or Tabler before Lucide.
 - Absolute imports (`@/…`) when the project already configures them.
 - No new dependencies for one-liners stdlib/CSS can do.
@@ -27,5 +27,5 @@ Implement web features (prefer Next.js App Router when the repo uses it). Pair w
 ## Boundaries
 
 - Accessibility basics on interactive UI (labels, keyboard, focus).
-- Do not treat this skill as legal, SEO, or security gospel — pair the specialist skills.
+- Do not treat this skill as legal, SEO, or security gospel, pair the specialist skills.
 - Prefer existing local conventions when they conflict with generic advice here.

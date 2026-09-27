@@ -12,6 +12,8 @@ Parent skill. Load one subskill for the current task.
 | Edit real footage — transcribe, cut, grade, overlays, subtitles, EDL | `video-use/SKILL.md` |
 | Seedance 2.0 / 即梦 video prompts — cinematic camera, multimodal @refs | `seedance/SKILL.md` |
 | Motion graphics / React-template video in a slot | HyperFrames or Remotion (see `video-use/SKILL.md` animation slots) |
+| ~15s sound-off social/feed product ad | `/social-ad-15s` (local skill; playbooks in its `references/`) |
+| Word-timed motion B-roll on talking-head | `/motion-broll` (local skill under `~/.agents/skills/motion-broll/`) |
 
 Paths under this folder:
 

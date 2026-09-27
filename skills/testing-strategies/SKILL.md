@@ -21,7 +21,7 @@ For features, bug fixes, and runtime refactors:
 4. Run the closest fast test target, then broader checks if shared behavior is touched.
 5. Report tests run, or why not.
 
-Exceptions: docs-only, mechanical no-behavior change, no runnable harness, external constraint. State reason + alternative verification. Use `python3 ~/.agents/scripts/tdd_evidence.py` for RED/GREEN/exception evidence when hooks require it.
+Exceptions: docs-only, mechanical no-behavior change, no runnable harness, external constraint. State reason + alternative verification. Follow the active harness evidence requirements; if its required evidence mechanism is unavailable, report the blocker instead of claiming compliance.
 
 Do not edit production code until RED is real (executed failure, or intentional compile-time RED on the buggy path).
 

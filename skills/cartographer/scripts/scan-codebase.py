@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Codebase scanner for Cartographer skill.
-Scans a directory and provides file tree with token counts using tiktoken.
+Scans a directory and provides file tree with token estimates.
 """
 
 import os
@@ -14,11 +14,12 @@ from typing import Dict, List, Tuple
 try:
     import tiktoken
 except ImportError:
-    print("Error: tiktoken not installed. Install with: pip install tiktoken", file=sys.stderr)
-    sys.exit(1)
+    tiktoken = None
 
 def count_tokens(text: str, encoding_name: str = "cl100k_base") -> int:
-    """Count tokens in text using tiktoken."""
+    """Count tokens with tiktoken, or estimate from UTF-8 bytes."""
+    if tiktoken is None:
+        return (len(text.encode("utf-8")) + 3) // 4
     try:
         encoding = tiktoken.get_encoding(encoding_name)
         return len(encoding.encode(text))

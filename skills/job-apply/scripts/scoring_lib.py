@@ -150,6 +150,27 @@ def score_job(
     }
 
 
+def gate_job(job: dict, *, channel: str = "", cfg: dict | None = None) -> str:
+    """Map a scored job to a gate: exclude|ask|skip|review|auto."""
+    cfg = cfg if cfg is not None else load_yaml()
+    res = score_job(job, cfg=cfg)
+    if res["excluded"]:
+        return "exclude"
+    ask = (cfg.get("gates") or {}).get("ask") or {}
+    if (ask.get("channel_unknown") and (channel or "").lower() == "unknown") or _any_in(
+        (job.get("description") or ""), ask.get("description_any")
+    ):
+        return "ask"
+    thresholds = cfg.get("thresholds") or {}
+    st = float(thresholds.get("shortlist", 4.0))
+    dt = float(thresholds.get("draft_outreach", 5.0))
+    if res["score"] < st:
+        return "skip"
+    if res["score"] < dt:
+        return "review"
+    return "auto"
+
+
 def banned_line_hits(body: str, plays: dict | None = None) -> list[str]:
     plays = plays if plays is not None else load_plays()
     body_l = (body or "").lower()

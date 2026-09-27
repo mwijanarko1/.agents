@@ -30,6 +30,7 @@ Blueprints live in `blueprints-index.md`. Each entry points to `blueprints/<id>.
 | Read one blueprint's full recipe                                               | `blueprints/<id>.md`                                |
 | Author a scene transition (CSS-driven, between two clips)                      | `transitions/overview.md`, `transitions/catalog.md` |
 | Look up a broader motion-design technique                                      | `techniques.md`                                     |
+| Motion blur — shutter smear on an element, and when not to use it              | `references/motion-blur.md`                         |
 | Analyze an existing composition's animation map                                | `scripts/animation-map.mjs`                         |
 | GSAP API — timeline / tweens / position parameters                             | `adapters/gsap.md`                                  |
 | GSAP — drop-in effect recipes                                                  | `rules/gsap-effects.md`                             |
@@ -37,6 +38,7 @@ Blueprints live in `blueprints-index.md`. Each entry points to `blueprints/<id>.
 | GSAP — eases / stagger                                                         | `adapters/gsap-easing-and-stagger.md`               |
 | GSAP — timeline / labels                                                       | `adapters/gsap-timeline-and-labels.md`              |
 | Lottie / dotLottie (After Effects exports, `window.__hfLottie`)                | `adapters/lottie.md`                                |
+| Character animation (walk cycle, mascot, jointed puppet, gestures)             | `adapters/lottie.md` → Characters                   |
 | Three.js / WebGL (3D scenes, `AnimationMixer`, `hf-seek`)                      | `adapters/three.md`                                 |
 | Anime.js (`window.__hfAnime`)                                                  | `adapters/animejs.md`                               |
 | CSS keyframes (`animation-delay` / `play-state` / `fill-mode`)                 | `adapters/css-animations.md`                        |
@@ -48,7 +50,7 @@ Blueprints live in `blueprints-index.md`. Each entry points to `blueprints/<id>.
 ## Picking a runtime
 
 - **GSAP** is the default for 95% of motion work — covers timeline orchestration, transforms, easing, stagger. All atomic rules in this skill are GSAP-based.
-- **Lottie** when an asset has its own pre-baked timeline (typically After Effects exports).
+- **Lottie** when an asset has its own pre-baked timeline (typically After Effects exports), including characters that walk, gesture or react.
 - **Three.js** for 3D scenes, camera motion, shader-driven visuals.
 - **Anime.js** for lightweight tweening when GSAP is overkill.
 - **CSS** for simple repeated motifs, decoration, shimmer — no JavaScript animation cost.

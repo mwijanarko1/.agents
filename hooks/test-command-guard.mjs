@@ -26,6 +26,9 @@ const blocked = [
   "gh api -X DELETE /repos/owner/repo",
   "gh auth token",
   "sudo shutdown -h now",
+  "rm -f ~/.pi/agent/extensions/command-guard.ts",
+  "mv /tmp/replacement ~/.pi/agent/extensions/tool-loop-guard.ts",
+  "printf unsafe > ~/.pi/agent/auth.json",
 ];
 
 const allowed = [
@@ -49,10 +52,13 @@ const allowed = [
 for (const command of blocked) assert.equal(evaluateCommand(command).blocked, true, `expected block: ${command}`);
 for (const command of allowed) assert.equal(evaluateCommand(command).blocked, false, `expected allow: ${command}`);
 assert.throws(() => evaluateCommand(""), /missing shell command/);
+process.env.PI_PROTECTED_MAINTENANCE = "1";
+assert.equal(evaluateCommand("rm -f ~/.pi/agent/extensions/command-guard.ts").blocked, false);
+delete process.env.PI_PROTECTED_MAINTENANCE;
 
 const cli = fileURLToPath(new URL("./command-guard.mjs", import.meta.url));
 const malformed = spawnSync(process.execPath, [cli], { input: "not json", encoding: "utf8" });
 assert.equal(malformed.status, 2);
 assert.match(malformed.stderr, /failed closed/);
 
-console.log(`passed: ${blocked.length + allowed.length + 2}, failed: 0`);
+console.log(`passed: ${blocked.length + allowed.length + 4}, failed: 0`);

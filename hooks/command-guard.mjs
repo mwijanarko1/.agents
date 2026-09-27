@@ -6,6 +6,12 @@ import { pathToFileURL } from "node:url";
 
 const HOME = os.homedir();
 const SHELLS = new Set(["sh", "bash", "zsh", "dash", "ksh"]);
+const PROTECTED_FILES = [
+  path.join(HOME, ".pi", "agent", "auth.json"),
+  path.join(HOME, ".agents", "hooks", "command-guard.mjs"),
+  path.join(HOME, ".pi", "agent", "extensions", "command-guard.ts"),
+  path.join(HOME, ".pi", "agent", "extensions", "tool-loop-guard.ts"),
+].map((value) => path.resolve(value));
 
 function tokenize(source) {
   const commands = [];
@@ -106,6 +112,40 @@ function catastrophicPath(value) {
   return /^\/Users\/[^/]+\/?$/.test(clean);
 }
 
+function shellPath(value) {
+  if (typeof value !== "string" || !value || value.startsWith("-")) return null;
+  const expanded = expand(value.replace(/^['"]|['"]$/g, ""), new Map([["HOME", HOME]]));
+  if (expanded.includes("$") || expanded.includes("*")) return null;
+  return path.resolve(expanded);
+}
+
+function protectedTarget(value) {
+  const target = shellPath(value);
+  return target !== null && PROTECTED_FILES.some((protectedFile) => protectedFile === target || protectedFile.startsWith(`${target}${path.sep}`));
+}
+
+function positional(args) {
+  return args.filter((arg) => arg !== "--" && !arg.startsWith("-"));
+}
+
+function protectedMutationReason(executable, args, tokens) {
+  if (process.env.PI_PROTECTED_MAINTENANCE === "1") return null;
+  for (let index = 0; index < tokens.length - 1; index += 1) {
+    if (/^>{1,2}$/.test(tokens[index]) && protectedTarget(tokens[index + 1])) return "protected agent file modification";
+  }
+  const targets = positional(args);
+  if (["rm", "unlink", "trash", "touch", "truncate", "chmod", "chown"].includes(executable) && targets.some(protectedTarget)) {
+    return "protected agent file modification";
+  }
+  if (["mv", "install"].includes(executable) && targets.some(protectedTarget)) return "protected agent file modification";
+  if (executable === "cp" && protectedTarget(targets.at(-1))) return "protected agent file modification";
+  if (executable === "tee" && targets.some(protectedTarget)) return "protected agent file modification";
+  if (executable === "sed" && args.some((arg) => arg === "-i" || arg.startsWith("-i")) && targets.some(protectedTarget)) {
+    return "protected agent file modification";
+  }
+  return null;
+}
+
 function optionValue(args, longName) {
   const direct = args.find((arg) => arg.startsWith(`${longName}=`));
   if (direct) return direct.slice(longName.length + 1);
@@ -115,6 +155,8 @@ function optionValue(args, longName) {
 
 function inspectInvocation(invocation) {
   const { executable, args, tokens } = invocation;
+  const protectedReason = protectedMutationReason(executable, args, tokens);
+  if (protectedReason) return protectedReason;
   if (executable === "rm") {
     const targets = args.filter((arg) => arg === "-" || !arg.startsWith("-")).filter((arg) => arg !== "--");
     if (args.includes("--no-preserve-root") || targets.some(catastrophicPath)) return "catastrophic filesystem deletion";

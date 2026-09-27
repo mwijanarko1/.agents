@@ -1,8 +1,6 @@
 ---
 name: continuous-learning-v2
 description: Maintain project-scoped learning observations, instincts, and memory.
-origin: ECC
-version: 2.1.0
 ---
 
 # Continuous Learning v2

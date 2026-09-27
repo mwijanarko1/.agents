@@ -8,7 +8,6 @@ description: >
   Mikhail approves. Use when the user says job-apply, find jobs, cold outreach, email
   hiring manager, tailor my CV, find hiring manager, log application, apply online, or
   job search from my CV.
-argument-hint: "[search|tailor|contacts|outreach|apply|list|run] [query...]"
 ---
 
 # Job Apply (channel follows the listing)

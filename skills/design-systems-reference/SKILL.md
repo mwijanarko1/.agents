@@ -22,6 +22,18 @@ Open the **system's own docs** for anything you apply. The list is a directory, 
 
 Compare: component APIs, token structure, a11y guidance, docs shape, content/voice notes.
 
+## Component catalogs (inspiration / Lego)
+
+Fetch when the project needs a pattern and local primitives are thin. Prefer existing project components first. Copy patterns into the repo's stack and tokens; do not add a second kit by default.
+
+- https://ui.shadcn.com/ — primitives + copy-own model
+- https://coss.com/ui — Base UI component library
+- https://reui.io/components — composed shadcn product blocks
+- https://www.beautifului.dev/ — AI-native interface primitives
+- https://beui.dev/ — animated React/Next blocks (shadcn CLI)
+- https://www.rareui.com/ — rare animated React components
+- https://transitions.dev/ — product UI transition patterns
+
 ## Checklist
 
 - Tokens: roles (not raw hex in components), spacing scale, type ramp, dark/light if required

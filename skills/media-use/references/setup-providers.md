@@ -12,7 +12,7 @@ heygen auth login --oauth # OAuth = free subscription credits; --api-key bills A
 This unlocks the FREE path for bgm/sfx/image/icon catalog search, TTS (voice), and avatar videos. Sign in with `--oauth` — the free allowance rides on the OAuth session (an API key bills API credits instead). **media-use requires heygen >= v0.3.0 uniformly** (the OAuth free-usage path needs it), so `--doctor` nudges older CLIs to update even for API-key-only use. Before resolving anything, verify setup with:
 
 ```bash
-node <SKILL_DIR>/scripts/resolve.mjs --doctor
+npx hyperframes media-use resolve --doctor
 ```
 
 ## Providers
@@ -31,7 +31,7 @@ see the ladder and override.
 | image     | heygen search free-usage path; optional local mflux; codex `image_gen` upsell                                                                                                 |
 | voice     | heygen tts free-usage path; optional local **Kokoro** (free, on-device)                                                                                                       |
 | icon      | heygen asset search free-usage path                                                                                                                                           |
-| logo      | svgl, then simple-icons, then GitHub org avatar, then domain favicon (all free)                                                                                               |
+| logo      | theSVG (thesvg.org), then GitHub org avatar, then domain favicon (all free)                                                                                                   |
 | grade/lut | local core-preset map, params/CDN look index, deterministic `buildCube` fallback                                                                                              |
 | video     | heygen avatar video free-usage path (sign-in nudge on auth failure); optional local LTX (`videogen` ladder). Image-to-video / photo-avatar / dub stay manual `heygen` recipes |
 
