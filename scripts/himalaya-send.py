@@ -96,18 +96,20 @@ def verify_attach_files(paths: list[Path]) -> list[Path]:
 
 def attachment_basenames_in_mime(mime: str) -> set[str]:
     names: set[str] = set()
+    # Unfold RFC 5322 header continuation (CRLF/LF + WSP).
+    unfolded = re.sub(r"\r?\n[ \t]+", " ", mime)
     # Content-Disposition: attachment; filename="X" or filename=X
     for m in re.finditer(
-        r'Content-Disposition:\s*attachment\s*;[^\n]*filename\*?=(?:UTF-8\'\')?"?([^";\r\n]+)"?',
-        mime,
-        flags=re.IGNORECASE,
+        r'Content-Disposition:\s*attachment\s*;.*?filename\*?=(?:UTF-8\'\'\')?"?([^";\r\n]+)"?',
+        unfolded,
+        flags=re.IGNORECASE | re.DOTALL,
     ):
         names.add(Path(m.group(1).strip()).name)
     # Also catch name= on Content-Type
     for m in re.finditer(
-        r'Content-Type:[^\n]*name="?([^";\r\n]+)"?',
-        mime,
-        flags=re.IGNORECASE,
+        r'Content-Type:.*?name="?([^";\r\n]+)"?',
+        unfolded,
+        flags=re.IGNORECASE | re.DOTALL,
     ):
         names.add(Path(m.group(1).strip()).name)
     return names

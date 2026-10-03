@@ -20,7 +20,7 @@ This folder contains reusable task workflows. Open only the matching skill's `SK
 | React Native/Expo | `vercel-react-native-skills`, `expo-docs` |
 | Backend/API/security | `backend-architecture`, `security-vulnerability-mitigation`, `t3mp3st`, `website-compliance` |
 | Search visibility | `technical-seo` for crawl/index infrastructure; `ai-search-optimization` for retrieval, citation, and answer-ready content |
-| Agent workflow/delegation | `agent-delegation`, `advisor` (Herdr Pi Astra high second opinion), `verification-loop`, `testing-strategies` |
+| Agent workflow/delegation | `agent-delegation`, `advisor` (Herdr Pi Astra high second opinion), `workflow-1` (plan/review here; Grok 4.5 Pi implementer over intercom), `verification-loop`, `testing-strategies` |
 | Pi configuration, recovery, and learning state | `pi-system-maintenance`; use `update-pi-extensions` only for package updates |
 | Code quality/review | `testing-strategies`, `dead-code-detector`, `thermo-nuclear-review`, `thermo-nuclear-code-quality-review` |
 | GitHub pull requests | `pull-request` |
